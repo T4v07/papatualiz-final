@@ -1,0 +1,99 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 100px; /* Espaçamento entre as seções */
+    margin-top: 50px;
+  }
+  
+  /* Seção alternada esquerda/direita */
+  .section {
+    display: flex;
+    align-items: flex-start; /* Alinhar ao topo */
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* Alternância de layout */
+  .left {
+    flex-direction: row;
+  }
+  
+  .right {
+    flex-direction: row-reverse;
+  }
+  
+  /* Retângulo grande */
+  .largeRectangle {
+    width: 50%;
+    height: 700px; /* Altura aumentada */
+    background-color: black; /* Preto para futura imagem */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px; /* Espaçamento à direita */
+  }
+  
+  /* Seção direita: ajuste do espaçamento */
+  .right .largeRectangle {
+    margin-right: 0; /* Remove o espaçamento à direita */
+    margin-left: 20px; /* Adiciona espaçamento à esquerda */
+  }
+  
+  /* Texto dentro dos retângulos grandes */
+  .textContainer {
+    color: white;
+    padding: 30px;
+    width: 100%;
+  }
+  
+  .textContainer h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .textContainer p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .textContainer button {
+    background: white;
+    color: black;
+    padding: 14px 22px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  
+  /* Grid dos produtos */
+  .productsGrid {
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px; /* Espaçamento entre os produtos */
+    align-self: stretch; /* Alinha a altura dos pequenos com o grande */
+  }
+  
+  /* Retângulos pequenos */
+  .productCard {
+    background: #e0e0e0;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    height: 100%; /* Altura 100% para preencher o espaço */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Alinha o conteúdo */
+  }
+  
+  /* Retângulo escuro dentro dos pequenos */
+  .productImage {
+    height: 150px; /* Altura reduzida dos retângulos internos */
+    background-color: #333;
+    border-radius: 8px;
+    flex-grow: 0; /* Impede que ocupe todo o espaço */
+  }

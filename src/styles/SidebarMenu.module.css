@@ -1,0 +1,67 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background-color: #1a1a1a;
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.menuHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.backButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.menuList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menuItem {
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.menuItem:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.arrow {
+    font-size: 18px;
+}

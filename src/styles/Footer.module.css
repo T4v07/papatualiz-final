@@ -1,0 +1,22 @@
+.footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+.logoContainer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.logo {
+    height: 40px; /* Ajuste conforme necessário */
+}
+
+.copyright {
+    font-size: 14px;
+    margin-top: 80px; /* Ajuste para alinhar bem o texto */
+}

@@ -1,0 +1,66 @@
+/* Estilos para o Carrossel */
+.slick-prev:before,
+.slick-next:before {
+  color: black !important;
+  font-size: 25px;
+}
+
+.slick-prev {
+  left: -30px !important;
+}
+
+.slick-next {
+  right: -30px !important;
+}
+
+/* Espaçamento entre os slides */
+.slick-slide {
+  padding: 0 10px;
+}
+
+/* Estilo para os slides */
+.slideWrapper {
+  display: flex;
+  background-color: #f5f5f5;
+  height: 260px;
+  margin: 0 15px;
+  align-items: center;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Estilo para o título "Os mais procurados!" */
+.title {
+  margin-top: 30px;
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Estilo para os cards */
+.card {
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardImage {
+  background-color: black;
+  width: 170px;
+  height: 220px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+}
+
+.cardText {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+}
