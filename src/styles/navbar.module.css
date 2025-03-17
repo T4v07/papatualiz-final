@@ -75,20 +75,22 @@
   color: #003366;
 }
 
-/* Ícones de Ação (estrutura vertical) */
+/* Ícones de Ação */
 .icons {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.icons a {
+.icons a, .iconWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #ffffff;
   text-decoration: none;
   font-size: 14px;
+  cursor: pointer;
+  position: relative;
 }
 
 .icons .icon {
@@ -96,11 +98,56 @@
   margin-bottom: 4px;
 }
 
-/* Área Pessoal Logado (dropdown) */
+/* Dropdown container */
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  min-width: 200px;
+  text-align: left;
+}
+
+/* Cabeçalho do dropdown */
+.dropdown h4 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #003366;
+}
+
+/* Texto dentro do dropdown */
+.dropdownText {
+  font-size: 14px;
+  color: black;
+  padding: 5px 0;
+}
+
+/* Itens do dropdown */
+.dropdownItem, .dropdownLink {
+  display: block;
+  padding: 8px 0;
+  color: #003366;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.dropdownItem:hover, .dropdownLink:hover {
+  color: #1a1a1a;
+  text-decoration: underline;
+}
+
+/* Área Pessoal (não alterada) */
 .userMenu {
-  position: relative; /* para posicionar o dropdown */
+  position: relative;
   display: flex;
-  flex-direction: column; /* Ícone em cima, texto embaixo */
+  flex-direction: column;
   align-items: center;
   color: #ffffff;
   text-decoration: none;
@@ -113,21 +160,7 @@
   margin-bottom: 4px;
 }
 
-/* Dropdown container */
-.dropdown {
-  position: absolute;
-  top: 70px; /* Ajuste conforme necessário */
-  right: 0;
-  background-color: #ffffff;
-  color: #000000;
-  padding: 1rem;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 999;
-  min-width: 200px; /* Largura mínima para o menu */
-}
-
-/* Cabeçalho do dropdown (iniciais + nome/email) */
+/* Dropdown da Área Pessoal */
 .dropdownHeader {
   display: flex;
   align-items: center;
@@ -138,11 +171,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #0071ce; /* Cor do círculo com iniciais */
+  background-color: #0071ce;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: white;
   font-weight: bold;
   margin-right: 1rem;
 }
@@ -152,11 +185,22 @@
   flex-direction: column;
 }
 
-/* Itens do dropdown (Editar Conta, Logout, etc.) */
+.editContaLink {
+  font-weight: bold;
+  color: #003366;
+  text-decoration: none;
+  padding: 10px 0;
+}
+
+.editContaLink:hover {
+  text-decoration: underline;
+}
+
+/* Itens do dropdown */
 .dropdownItem {
   padding: 0.5rem 0;
   cursor: pointer;
-  color: #000000; /* Cor padrão do texto dos itens */
+  color: black;
 }
 
 .dropdownItem:hover {

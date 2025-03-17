@@ -1,106 +1,126 @@
-/* Container principal: sidebar + conteúdo */
+/* Página completa */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container principal */
 .accountContainer {
-    display: flex;
-    min-height: 100vh; /* página ocupa altura total */
-    background-color: #f5f5f5; /* fundo claro */
-  }
-  
-  /* SIDEBAR */
-  .sidebar {
-    width: 250px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-right: 1px solid #ddd; /* linha divisória */
-  }
-  
-  /* Seção de perfil no topo do sidebar */
-  .profileSection {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  /* Bolinha com iniciais, por exemplo "ET" */
-  .profileCircle {
-    width: 60px;
-    height: 60px;
-    background-color: #003366;
-    border-radius: 50%;
-    color: #fff;
-    font-weight: bold;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 10px; /* centraliza e dá espaço */
-  }
-  
-  /* Menu de navegação do sidebar */
-  .navMenu {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* espaçamento entre itens */
-  }
-  
-  .navMenu a {
-    color: #333;
-    text-decoration: none;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .navMenu a:hover {
-    color: #0071ce; /* destaque ao passar o mouse */
-  }
-  
-  /* CONTEÚDO PRINCIPAL */
-  .mainContent {
-    flex: 1; /* ocupa o restante do espaço */
-    padding: 20px;
-  }
-  
-  /* Título */
-  .mainContent h2 {
-    margin-bottom: 20px;
-  }
-  
-  /* GRID de cartões */
-  .cardsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  /* Cada cartão individual */
-  .card {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .card h3 {
-    margin-bottom: 10px;
-    color: #003366;
-  }
-  
-  .card p {
-    flex: 1; /* empurra o botão para baixo */
-    margin-bottom: 10px;
-  }
-  
-  .card button {
-    background-color: #0071ce;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .card button:hover {
-    background-color: #005b9f;
-  }
-  
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f0f0; /* Cinza claro */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px; /* Ajuste fino para evitar sobreposição */
+  background-color: #1a1a1a; /* Preto */
+  padding: 20px;
+  border-right: 2px solid #333; /* Cinza escuro */
+  color: white;
+  position: fixed; /* Fixa a sidebar */
+  height: 100vh; /* Mantém ocupando a altura toda */
+  left: 0;
+  top: 60px; /* Deixa espaço para a navbar */
+}
+
+/* Seção de perfil */
+.profileSection {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Foto de perfil */
+.profilePhoto {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+}
+
+/* Bolinha com iniciais */
+.profileCircle {
+  width: 70px;
+  height: 70px;
+  background-color: #002244; /* Azul escuro */
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+/* Email */
+.email {
+  font-size: 14px;
+  word-wrap: break-word;
+  color: #ccc; /* Branco escuro */
+}
+
+/* Menu */
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navMenu a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #444;
+  font-weight: bold;
+}
+
+.navMenu a:hover {
+  color: #004080; /* Azul escuro mais vibrante */
+}
+
+
+.mainContent {
+  flex: 1;
+  padding: 20px;
+  margin-top: 25px; /* Mantém a margem superior */
+  margin-left: 280px; /* PUXA O CONTEÚDO PARA A DIREITA */
+}
+
+
+
+/* Cartões */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: #ffffff; /* Branco */
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  color: #002244; /* Azul escuro */
+}
+
+.card button {
+  background-color: #1a1a1a; /* Preto */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background-color: #333; /* Preto mais claro */
+}

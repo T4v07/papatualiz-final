@@ -1,5 +1,5 @@
-// pages/api/register.js
 import bcrypt from "bcryptjs";
+import nodemailer from "nodemailer";
 import { pool } from "../../utils/db";
 
 export default async function handler(req, res) {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
         .json({ message: "Email ou Username já cadastrado!" });
     }
 
-    // Gera um código de verificação (se você precisar disso)
+    // Gera um código de verificação
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     // Hasheia a senha para armazenamento seguro
@@ -35,8 +35,35 @@ export default async function handler(req, res) {
       [username, hashedPassword, nome, email, telefone, verificationCode]
     );
 
+    // Configuração do envio de e-mail via SMTP
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      secure: false,
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: "Código de Verificação - SportsET",
+      html: `
+        <h2>Bem-vindo ao SportsET!</h2>
+        <p>Seu código de verificação é: <strong>${verificationCode}</strong></p>
+        <p>Insira este código para confirmar seu e-mail e ativar sua conta.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
     return res.status(200).json({
-      message: "Usuário registrado com sucesso!",
+      message: "Usuário registrado com sucesso! Código enviado para o e-mail.",
     });
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
