@@ -1,49 +1,34 @@
-/* Página completa */
 .pageContainer {
   display: flex;
   flex-direction: column;
 }
 
-/* Container principal */
 .accountContainer {
   display: flex;
   min-height: 100vh;
-  background-color: #f0f0f0; /* Cinza claro */
+  background-color: #f0f0f0;
 }
 
-/* Sidebar */
 .sidebar {
-  width: 260px; /* Ajuste fino para evitar sobreposição */
-  background-color: #1a1a1a; /* Preto */
+  width: 260px;
+  background-color: #1a1a1a;
   padding: 20px;
-  border-right: 2px solid #333; /* Cinza escuro */
   color: white;
-  position: fixed; /* Fixa a sidebar */
-  height: 100vh; /* Mantém ocupando a altura toda */
+  position: fixed;
+  height: 100vh;
   left: 0;
-  top: 60px; /* Deixa espaço para a navbar */
+  top: 60px;
 }
 
-/* Seção de perfil */
 .profileSection {
   text-align: center;
   margin-bottom: 30px;
 }
 
-/* Foto de perfil */
-.profilePhoto {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid white;
-}
-
-/* Bolinha com iniciais */
 .profileCircle {
   width: 70px;
   height: 70px;
-  background-color: #002244; /* Azul escuro */
+  background-color: #002244;
   border-radius: 50%;
   color: white;
   font-weight: bold;
@@ -54,73 +39,132 @@
   margin: 0 auto 10px;
 }
 
-/* Email */
-.email {
-  font-size: 14px;
-  word-wrap: break-word;
-  color: #ccc; /* Branco escuro */
-}
-
-/* Menu */
 .navMenu {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.navMenu a {
+.navMenu button {
+  background: none;
+  border: none;
   color: white;
-  text-decoration: none;
-  padding: 10px 0;
-  border-bottom: 1px solid #444;
-  font-weight: bold;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
 }
 
-.navMenu a:hover {
-  color: #004080; /* Azul escuro mais vibrante */
+.navMenu button:hover {
+  color: #004080;
 }
-
 
 .mainContent {
   flex: 1;
   padding: 20px;
-  margin-top: 25px; /* Mantém a margem superior */
-  margin-left: 280px; /* PUXA O CONTEÚDO PARA A DIREITA */
+  margin-left: 280px;
 }
 
-
-
-/* Cartões */
-.cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background-color: #ffffff; /* Branco */
+.section {
+  background: white;
   padding: 20px;
   border-radius: 8px;
-  border: 2px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-.card h3 {
-  margin-bottom: 10px;
-  color: #002244; /* Azul escuro */
-}
-
-.card button {
-  background-color: #1a1a1a; /* Preto */
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+.form label {
   font-weight: bold;
+  color: #002244;
+}
+
+.form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.saveButton {
+  background-color: #002244;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.card button:hover {
-  background-color: #333; /* Preto mais claro */
+.saveButton:hover {
+  background-color: #004080;
+}
+
+.cancelButton {
+  background-color: #ccc;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  background-color: #bbb;
+}
+
+/* Notificação visual */
+.notificacao {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+  z-index: 9999;
+  min-width: 280px;
+}
+
+.sucesso {
+  border-left: 6px solid green;
+  color: green;
+}
+
+.erro {
+  border-left: 6px solid red;
+  color: red;
+}
+
+.notificacao button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #888;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }

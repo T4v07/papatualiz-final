@@ -18,7 +18,6 @@ export default function Login() {
     setError("");
 
     try {
-      // Chama a rota de API (lado do servidor)
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -26,16 +25,13 @@ export default function Login() {
       });
 
       const data = await response.json();
+
       if (!response.ok) {
-        // Se a API retornar erro, exibe mensagem
         setError(data.message || "Erro ao fazer login");
         return;
       }
 
-      // Se tudo der certo, salva usuário no AuthContext
-      login(data.user);
-
-      // Redireciona para a página "home"
+      login(data.user); // <-- salva user com ID, email, nome etc.
       router.push("/home");
     } catch (err) {
       setError("Erro de conexão. Tente novamente.");

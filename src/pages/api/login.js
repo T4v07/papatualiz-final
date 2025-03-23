@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   const { username, password } = req.body;
 
   try {
-    // Procura pelo usuário com o username fornecido
     const [rows] = await pool.query(
       "SELECT * FROM Utilizador WHERE Username = ?",
       [username]
@@ -22,17 +21,15 @@ export default async function handler(req, res) {
 
     const user = rows[0];
 
-    // Compara a senha digitada com a senha hasheada do banco
     const isMatch = await bcrypt.compare(password, user.Password);
     if (!isMatch) {
       return res.status(401).json({ message: "Senha incorreta!" });
     }
 
-    // Se quiser gerar um token JWT, você pode fazer aqui.
-    // Exemplo simples sem token:
     return res.status(200).json({
       message: "Login bem-sucedido!",
       user: {
+        id: user.ID_utilizador,           // <-- ESSENCIAL
         username: user.Username,
         email: user.Email,
         nome: user.Nome,

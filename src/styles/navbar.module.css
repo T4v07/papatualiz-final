@@ -19,7 +19,7 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .navbarContainer {
@@ -36,7 +36,7 @@
   align-items: center;
   font-size: 22px;
   cursor: pointer;
-  color: #ffffff;
+  color: white;
 }
 
 .menuText {
@@ -58,7 +58,7 @@
   border-radius: 30px;
   width: 50%;
   max-width: 600px;
-  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
 .searchBar input {
@@ -75,22 +75,23 @@
   color: #003366;
 }
 
-/* Ícones de Ação */
+/* Ícones */
 .icons {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.icons a, .iconWrapper {
+.icons a,
+.iconWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #ffffff;
+  color: white;
   text-decoration: none;
   font-size: 14px;
-  cursor: pointer;
   position: relative;
+  cursor: pointer;
 }
 
 .icons .icon {
@@ -98,116 +99,7 @@
   margin-bottom: 4px;
 }
 
-/* Dropdown container */
-.dropdown {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  background-color: white;
-  color: black;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-  min-width: 200px;
-  text-align: left;
-}
-
-/* Cabeçalho do dropdown */
-.dropdown h4 {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #003366;
-}
-
-/* Texto dentro do dropdown */
-.dropdownText {
-  font-size: 14px;
-  color: black;
-  padding: 5px 0;
-}
-
-/* Itens do dropdown */
-.dropdownItem, .dropdownLink {
-  display: block;
-  padding: 8px 0;
-  color: #003366;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.dropdownItem:hover, .dropdownLink:hover {
-  color: #1a1a1a;
-  text-decoration: underline;
-}
-
-/* Área Pessoal (não alterada) */
-.userMenu {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.userMenu .icon {
-  font-size: 22px;
-  margin-bottom: 4px;
-}
-
-/* Dropdown da Área Pessoal */
-.dropdownHeader {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.profileCircle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #0071ce;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  margin-right: 1rem;
-}
-
-.profileInfo {
-  display: flex;
-  flex-direction: column;
-}
-
-.editContaLink {
-  font-weight: bold;
-  color: #003366;
-  text-decoration: none;
-  padding: 10px 0;
-}
-
-.editContaLink:hover {
-  text-decoration: underline;
-}
-
-/* Itens do dropdown */
-.dropdownItem {
-  padding: 0.5rem 0;
-  cursor: pointer;
-  color: black;
-}
-
-.dropdownItem:hover {
-  background-color: #f2f2f2;
-}
-
-/* Responsividade */
+/* Responsivo */
 @media (max-width: 768px) {
   .searchBar {
     width: 100%;
