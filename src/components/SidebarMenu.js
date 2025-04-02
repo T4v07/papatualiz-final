@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/SidebarMenu.module.css";
+import Link from "next/link";
 
 const SidebarMenu = ({ isOpen, onClose }) => {
   const [activeMenu, setActiveMenu] = useState(null);
@@ -59,6 +60,14 @@ const SidebarMenu = ({ isOpen, onClose }) => {
           </li>
         ))}
       </ul>
+
+      {!activeMenu && (
+        <div className={styles.servicosContainer}>
+          <Link href="/servicosLogin" className={styles.servicosLink}>
+            SERVIÇOS
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

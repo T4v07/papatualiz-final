@@ -1,0 +1,93 @@
+.container {
+  padding: 40px;
+  background: #f7f7f7;
+}
+
+
+.titulo {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+
+.vazio {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.vazio img {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+.vazio p {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.vazio .btn {
+  background: #002244;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.conteudo {
+  display: flex;
+  gap: 30px;
+}
+
+.lista {
+  flex: 2;
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  background: white;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  gap: 15px;
+}
+
+.item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item h4 {
+  margin: 0;
+}
+
+.item button {
+  background: #c62828;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.resumo {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.btnCheckout {
+  margin-top: 15px;
+  background: #002244;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+}

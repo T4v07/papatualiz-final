@@ -1,33 +1,23 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useRouter } from "next/router";
 import AuthContext from "../context/AuthContext";
 import Navbar from "../components/navbar";
+import SidebarConta from "../components/SidebarConta";
 import styles from "../styles/minhaConta.module.css";
 
 const MinhaConta = () => {
-  const { user, logout, login } = useContext(AuthContext) || {};
+  const { user, login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    id: "",
-    nome: "",
-    email: "",
-    telefone: "",
-    endereco: "",
-    dataNascimento: "",
-    senhaAtual: "",
-    novaSenha: "",
+    id: "", nome: "", email: "", telefone: "", endereco: "",
+    dataNascimento: "", senhaAtual: "", novaSenha: ""
   });
-
   const [notificacao, setNotificacao] = useState({ tipo: "", mensagem: "" });
-  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
-
     const fetchUserData = async () => {
       try {
         const response = await fetch(`/api/getUser?email=${user.email}`);
         const data = await response.json();
-
         if (response.ok) {
           setFormData({
             id: data.ID_utilizador,
@@ -36,18 +26,15 @@ const MinhaConta = () => {
             telefone: data.Telefone || "",
             endereco: data.Endereco || "",
             dataNascimento: data.DataNascimento?.split("T")[0] || "",
-            senhaAtual: "",
-            novaSenha: "",
+            senhaAtual: "", novaSenha: ""
           });
         } else {
-          setNotificacao({ tipo: "erro", mensagem: `Erro: ${data.message}` });
+          setNotificacao({ tipo: "erro", mensagem: data.message });
         }
-      } catch (error) {
-        console.error("Erro ao carregar os dados:", error);
+      } catch {
         setNotificacao({ tipo: "erro", mensagem: "Erro ao carregar os dados." });
       }
     };
-
     fetchUserData();
   }, [user]);
 
@@ -61,34 +48,21 @@ const MinhaConta = () => {
       setNotificacao({ tipo: "erro", mensagem: "Nome e Email são obrigatórios." });
       return;
     }
-
     try {
       const response = await fetch("/api/updateUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-
       if (response.ok) {
-        const novoUser = {
-          ...user,
-          nome: formData.nome,
-          email: formData.email,
-        };
-        login(novoUser);
+        login({ ...user, nome: formData.nome, email: formData.email });
         setNotificacao({ tipo: "sucesso", mensagem: "Dados atualizados com sucesso!" });
-
-        setTimeout(() => {
-          setNotificacao({ tipo: "", mensagem: "" });
-          window.location.reload();
-        }, 2000);
+        setTimeout(() => window.location.reload(), 2000);
       } else {
         setNotificacao({ tipo: "erro", mensagem: data.message });
       }
-    } catch (error) {
-      console.error("Erro ao atualizar:", error);
+    } catch {
       setNotificacao({ tipo: "erro", mensagem: "Erro ao atualizar os dados." });
     }
   };
@@ -96,31 +70,14 @@ const MinhaConta = () => {
   return (
     <div className={styles.pageContainer}>
       <Navbar />
-
       {notificacao.mensagem && (
-        <div className={`${styles.notificacao} ${notificacao.tipo === "sucesso" ? styles.sucesso : styles.erro}`}>
+        <div className={`${styles.notificacao} ${styles[notificacao.tipo]}`}>
           <span>{notificacao.tipo === "sucesso" ? "✅" : "❌"} {notificacao.mensagem}</span>
           <button onClick={() => setNotificacao({ tipo: "", mensagem: "" })}>✖</button>
         </div>
       )}
-
       <div className={styles.accountContainer}>
-        <aside className={styles.sidebar}>
-          <div className={styles.profileSection}>
-            <div className={styles.profileCircle}>
-              {formData.nome ? formData.nome.charAt(0).toUpperCase() : "?"}
-            </div>
-            <h3>{formData.nome || "Usuário"}</h3>
-            <p className={styles.email}>{formData.email || "email@exemplo.com"}</p>
-          </div>
-          <nav className={styles.navMenu}>
-            <button>As minhas compras</button>
-            <button>Favoritos</button>
-            <button className={styles.active}>Gerir a minha conta</button>
-            <button className={styles.logoutBtn} onClick={logout}>Sair</button>
-          </nav>
-        </aside>
-
+        <SidebarConta active="conta" />
         <main className={styles.mainContent}>
           <section className={styles.section}>
             <h2>Gerir a minha conta</h2>
@@ -128,32 +85,21 @@ const MinhaConta = () => {
             <form className={styles.form}>
               <label>Nome:</label>
               <input type="text" name="nome" value={formData.nome} onChange={handleInputChange} />
-
               <label>Email:</label>
               <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
-
               <label>Telefone:</label>
               <input type="text" name="telefone" value={formData.telefone} onChange={handleInputChange} />
-
               <label>Morada:</label>
               <input type="text" name="endereco" value={formData.endereco} onChange={handleInputChange} />
-
               <label>Data de Nascimento:</label>
               <input type="date" name="dataNascimento" value={formData.dataNascimento} onChange={handleInputChange} />
-
               <label>Palavra-passe Atual:</label>
               <input type="password" name="senhaAtual" value={formData.senhaAtual} onChange={handleInputChange} />
-
               <label>Nova Palavra-passe:</label>
               <input type="password" name="novaSenha" value={formData.novaSenha} onChange={handleInputChange} />
-
               <div className={styles.buttonGroup}>
-                <button type="button" className={styles.saveButton} onClick={handleSaveChanges}>
-                  Salvar Alterações
-                </button>
-                <button type="button" className={styles.cancelButton} onClick={() => window.location.reload()}>
-                  Cancelar
-                </button>
+                <button type="button" className={styles.saveButton} onClick={handleSaveChanges}>Salvar Alterações</button>
+                <button type="button" className={styles.cancelButton} onClick={() => window.location.reload()}>Cancelar</button>
               </div>
             </form>
           </section>

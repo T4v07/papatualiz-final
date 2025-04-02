@@ -1,0 +1,93 @@
+.adminContainer {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .initials {
+    width: 42px;
+    height: 42px;
+    background-color: #003366;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
+  }
+  
+  .profile p {
+    margin: 0;
+    font-size: 12px;
+    color: #cccccc;
+  }
+  
+  .navMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .navMenu button {
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    font-size: 15px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+  
+  .navMenu button:hover {
+    background-color: #004080;
+  }
+  
+  .active {
+    background-color: #003366;
+    font-weight: bold;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 40px;
+    margin-left: 270px;
+  }
+  
+  .mainContent h2 {
+    color: #002244;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .mainContent p {
+    color: #333;
+    font-size: 16px;
+  }
+  

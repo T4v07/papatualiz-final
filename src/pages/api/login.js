@@ -29,10 +29,11 @@ export default async function handler(req, res) {
     return res.status(200).json({
       message: "Login bem-sucedido!",
       user: {
-        id: user.ID_utilizador,           // <-- ESSENCIAL
+        id: user.ID_utilizador,
         username: user.Username,
         email: user.Email,
         nome: user.Nome,
+        Tipo_de_Conta: user.Tipo_de_Conta, // <-- ESSENCIAL!
       },
     });
   } catch (error) {

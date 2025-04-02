@@ -10,13 +10,14 @@
     z-index: 1000;
     display: flex;
     flex-direction: column;
-}
-
-.sidebar.open {
+    justify-content: space-between;
+  }
+  
+  .sidebar.open {
     left: 0;
-}
-
-.menuHeader {
+  }
+  
+  .menuHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,31 +25,24 @@
     font-size: 18px;
     font-weight: bold;
     border-bottom: 1px solid white;
-}
-
-.closeButton {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.backButton {
+  }
+  
+  .closeButton,
+  .backButton {
     background: none;
     border: none;
     color: white;
     font-size: 16px;
     cursor: pointer;
-}
-
-.menuList {
+  }
+  
+  .menuList {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.menuItem {
+  }
+  
+  .menuItem {
     padding: 15px;
     font-size: 16px;
     cursor: pointer;
@@ -56,12 +50,35 @@
     justify-content: space-between;
     align-items: center;
     transition: background 0.3s;
-}
-
-.menuItem:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.arrow {
+  }
+  
+  .menuItem:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .arrow {
     font-size: 18px;
-}
+  }
+  
+  /* Estilo para o botão de Serviços */
+  .servicosContainer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #444;
+  }
+  
+  .servicosLink {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    background-color: #003366;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  
+  .servicosLink:hover {
+    background-color: #0055aa;
+  }
+  

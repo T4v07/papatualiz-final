@@ -1,0 +1,71 @@
+.sidebar {
+    width: 260px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    color: white;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 60px;
+  }
+  
+  .profileSection {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .profileCircle {
+    width: 70px;
+    height: 70px;
+    background-color: #002244;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+  }
+  
+  .email {
+    font-size: 12px;
+    color: #ccc;
+  }
+  
+  .navMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .navMenu button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .navMenu button:hover {
+    color: #004080;
+  }
+  
+  .active {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  .logoutBtn {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    text-align: left;
+  }
+  

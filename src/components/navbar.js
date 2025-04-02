@@ -1,4 +1,4 @@
-// src/components/navbar.js
+// src/components/Navbar.js
 import { useState, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,11 +17,21 @@ import FavoritosDropdown from "./FavoritosDropdown";
 import AjudaDropdown from "./AjudaDropdown";
 import AreaPessoalDropdown from "./AreaPessoalDropdown";
 import CarrinhoDropdown from "./CarrinhoDropdown";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext) || {};
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovered, setHovered] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/pesquisa?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <>
@@ -40,10 +50,17 @@ const Navbar = () => {
             <Image src="/logo3.png" alt="Logo" width={140} height={40} />
           </Link>
 
-          <div className={styles.searchBar}>
-            <input type="text" placeholder="Pesquisa um produto, desporto..." />
-            <FaSearch className={styles.searchIcon} />
-          </div>
+          <form onSubmit={handleSearch} className={styles.searchBar}>
+            <input
+              type="text"
+              placeholder="Pesquisa um produto, desporto..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit">
+              <FaSearch className={styles.searchIcon} />
+            </button>
+          </form>
 
           <nav className={styles.icons}>
             {/* FAVORITOS */}
