@@ -1,7 +1,7 @@
 // pages/servicosLogin.js
-import { useState, useContext } from "react";
+import {useState, useContext } from "react";
+import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/router";
-import AuthContext from "../context/AuthContext";
 import Navbar from "../components/navbar";
 import styles from "../styles/auth.module.css";
 

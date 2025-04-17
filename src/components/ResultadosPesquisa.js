@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styles from "@/styles/pesquisa.module.css";
+import produtoStyles from "@/styles/produtoCard.module.css";
+import AuthContext from "@/context/AuthContext";
 
 export default function ResultadosPesquisa() {
   const [produtos, setProdutos] = useState([]);
+  const [favoritos, setFavoritos] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
   const [filtros, setFiltros] = useState({ marca: "", cor: "", categoria: "" });
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -14,11 +18,28 @@ export default function ResultadosPesquisa() {
     fetch(`/api/produtos/pesquisa?q=${termo}`)
       .then((res) => res.json())
       .then((data) => setProdutos(data));
-  }, []);
 
-  const handleAddCarrinho = (produtoId) => {
-    console.log("Adicionar ao carrinho:", produtoId);
-    // lógica real depois
+    if (user) {
+      fetch(`/api/favoritos/listar?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setFavoritos(data.map((f) => f.ID_produto)));
+    }
+  }, [user]);
+
+  const handleAddFavorito = async (produtoId) => {
+    if (!user) return alert("Precisas fazer login para adicionar aos favoritos.");
+    const res = await fetch("/api/favoritos/adicionar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email, produtoId }),
+    });
+    if (res.ok) {
+      setFavoritos((prev) =>
+        prev.includes(produtoId)
+          ? prev.filter((id) => id !== produtoId)
+          : [...prev, produtoId]
+      );
+    }
   };
 
   const produtosFiltrados = produtos.filter((p) => {
@@ -60,14 +81,31 @@ export default function ResultadosPesquisa() {
         <h2>Resultado da pesquisa: "{pesquisa}"</h2>
         <div className={styles.gridProdutos}>
           {produtosFiltrados.map((produto) => (
-            <div key={produto.ID_produto} className={styles.card}>
-              <img src={produto.Foto} alt={produto.Nome_Produtos} />
-              <h4>{produto.Nome_Produtos}</h4>
+            <div key={produto.ID_produto} className={produtoStyles.card}>
+              <div style={{ position: "relative" }}>
+                <img src={produto.Foto} alt={produto.Nome_Produtos} />
+                {user && (
+                  <button
+                    onClick={() => handleAddFavorito(produto.ID_produto)}
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      background: "none",
+                      border: "none",
+                      fontSize: 22,
+                      cursor: "pointer",
+                      color: favoritos.includes(produto.ID_produto) ? "red" : "#ccc",
+                    }}
+                  >
+                    ♥
+                  </button>
+                )}
+              </div>
+              <h3>{produto.Nome_Produtos}</h3>
               <p>{produto.Marca}</p>
-              <p>{produto.Preco} €</p>
-              <button onClick={() => handleAddCarrinho(produto.ID_produto)}>
-                Adicionar ao carrinho
-              </button>
+              <p>{parseFloat(produto.Preco).toFixed(2)} €</p>
+              <button>Adicionar ao carrinho</button>
             </div>
           ))}
         </div>

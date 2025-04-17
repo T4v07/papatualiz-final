@@ -1,7 +1,7 @@
 // src/pages/areaAdmin.js
-import { useContext, useEffect } from "react";
+import {useContext, useEffect } from "react";
+import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/router";
-import AuthContext from "../context/AuthContext";
 import SidebarAdmin from "../components/admin/SidebarAdmin"; // Importa o SidebarAdmin
 import AdminDashboard from "../components/admin/AdminDashboard"; // Dashboard do Admin
 import styles from "../styles/admin.module.css";

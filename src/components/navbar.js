@@ -1,5 +1,5 @@
-// src/components/Navbar.js
-import { useState, useContext } from "react";
+import {useState, useContext } from "react";
+import AuthContext from "@/context/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -10,7 +10,6 @@ import {
   FaShoppingCart,
   FaSearch,
 } from "react-icons/fa";
-import AuthContext from "../context/AuthContext";
 import SidebarMenu from "./SidebarMenu";
 import styles from "../styles/navbar.module.css";
 import FavoritosDropdown from "./FavoritosDropdown";
@@ -20,7 +19,7 @@ import CarrinhoDropdown from "./CarrinhoDropdown";
 import { useRouter } from "next/router";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext) || {};
+  const { user } = useContext(AuthContext); // ✅ Agora funcionando
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovered, setHovered] = useState("");
   const [searchQuery, setSearchQuery] = useState("");

@@ -91,3 +91,149 @@
     font-size: 16px;
   }
   
+
+  /* ... existente acima ... */
+
+.logoutContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: calc(100% - 40px);
+}
+
+.logoutButton {
+  width: 100%;
+  padding: 10px;
+  background-color: #c62828;
+  color: white;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.logoutButton:hover {
+  background-color: #a32121;
+}
+
+
+/* Tabela de Encomendas */
+.tabelaContainer {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela thead {
+  background-color: #002244;
+  color: white;
+}
+
+.tabela th,
+.tabela td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.tabela tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.morada {
+  max-width: 300px;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.estado {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.pendente {
+  color: orange;
+}
+
+.empreparação {
+  color: goldenrod;
+}
+
+.enviado {
+  color: dodgerblue;
+}
+
+.entregue {
+  color: seagreen;
+}
+
+.selectEstado {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: white;
+  font-size: 14px;
+}
+.formContainer {
+  background: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+}
+
+.formTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #002244;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.formRow input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  min-width: 180px;
+}
+
+.botaoAcao {
+  background-color: #003366;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.botaoAcao:hover {
+  background-color: #002244;
+}
+
+.botaoCancelar {
+  background-color: #999;
+}
+
+.botaoCancelar:hover {
+  background-color: #777;
+}

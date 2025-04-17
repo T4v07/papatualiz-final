@@ -6,64 +6,69 @@ import { pool } from "@/utils/db";
 
 export const config = {
   api: {
-    bodyParser: false, // necessário para utilizar formidable
+    bodyParser: false,
   },
 };
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    fs.mkdirSync(uploadDir, { recursive: true });
-
-    const form = formidable({
-      uploadDir,
-      keepExtensions: true,
-      maxFileSize: 5 * 1024 * 1024,
-      filter: ({ mimetype }) => mimetype && mimetype.startsWith("image"),
-    });
-
     try {
-      const [fields, files] = await form.parse(req);
+      const uploadDir = path.join(process.cwd(), "public", "uploads");
+      fs.mkdirSync(uploadDir, { recursive: true });
 
-      const {
-        nome,
-        modelo,
-        marca,
-        cor,
-        preco,
-        stock,
-        tipoCategoria,
-        descricao,
-      } = fields;
+      const form = formidable({
+        uploadDir,
+        keepExtensions: true,
+        maxFileSize: 5 * 1024 * 1024, // 5MB
+        filter: ({ mimetype }) => mimetype && mimetype.startsWith("image"),
+      });
 
-      if (!nome || !modelo || !marca || !preco || !stock || !tipoCategoria) {
-        return res.status(400).json({ message: "Campos obrigatórios não preenchidos." });
-      }
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          console.error("Erro ao processar form:", err);
+          return res.status(500).json({ message: "Erro ao processar formulário." });
+        }
 
-      const fotoFile = files.foto?.[0] || null;
-      const fotoPath = fotoFile ? "/uploads/" + path.basename(fotoFile.filepath) : null;
+        const {
+          nome,
+          modelo,
+          marca,
+          cor,
+          preco,
+          stock,
+          tipoCategoria,
+          descricao,
+        } = fields;
 
-      await pool.execute(
-        `INSERT INTO Produtos 
-        (Nome_Produtos, Modelo, Marca, Cor, Preco, Stock, Tipo_de_Categoria, Descricao, Foto)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          nome[0],
-          modelo[0],
-          marca[0],
-          cor?.[0] || "",
-          preco[0],
-          stock[0],
-          tipoCategoria[0],
-          descricao?.[0] || "",
-          fotoPath,
-        ]
-      );
+        if (!nome || !modelo || !marca || !preco || !stock || !tipoCategoria) {
+          return res.status(400).json({ message: "Campos obrigatórios não preenchidos." });
+        }
 
-      return res.status(201).json({ message: "Produto adicionado!" });
+        const fotoFile = files.foto?.[0];
+        const fotoPath = fotoFile ? "/uploads/" + path.basename(fotoFile.filepath) : null;
+
+        await pool.execute(
+          `INSERT INTO Produtos 
+          (Nome_Produtos, Modelo, Marca, Cor, Preco, Stock, Tipo_de_Categoria, Descricao, Foto)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            nome[0],
+            modelo[0],
+            marca[0],
+            cor?.[0] || "",
+            preco[0],
+            stock[0],
+            tipoCategoria[0],
+            descricao?.[0] || "",
+            fotoPath,
+          ]
+        );
+
+        return res.status(201).json({ message: "Produto adicionado com sucesso!" });
+      });
     } catch (err) {
-      console.error("Erro ao processar:", err);
-      return res.status(500).json({ message: "Erro no servidor." });
+      console.error("Erro no POST:", err);
+      return res.status(500).json({ message: "Erro ao processar produto." });
     }
   }
 
@@ -86,13 +91,13 @@ export default async function handler(req, res) {
         JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
       `);
 
-      res.status(200).json(produtos);
+      return res.status(200).json(produtos);
     } catch (err) {
-      console.error("Erro ao buscar produtos:", err);
-      res.status(500).json({ message: "Erro ao buscar produtos" });
+      console.error("Erro no GET:", err);
+      return res.status(500).json({ message: "Erro ao buscar produtos." });
     }
-  } else {
-    res.setHeader("Allow", ["GET", "POST"]);
-    res.status(405).end(`Método ${req.method} não permitido`);
   }
+
+  res.setHeader("Allow", ["GET", "POST"]);
+  return res.status(405).json({ message: `Método ${req.method} não permitido` });
 }

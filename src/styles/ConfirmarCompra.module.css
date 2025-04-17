@@ -1,0 +1,20 @@
+.container {
+    padding: 50px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .sucesso {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .erro {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .aviso {
+    font-style: italic;
+  }
+  

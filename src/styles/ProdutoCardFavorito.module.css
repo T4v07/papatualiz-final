@@ -1,0 +1,98 @@
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .imagem {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .semImagem {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .info {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .info h3 {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .info p {
+    margin: 2px 0;
+    font-size: 14px;
+    color: #444;
+  }
+  
+  .preco {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0;
+    color: #002244;
+  }
+  
+  .acoes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+  
+  .botaoCarrinho {
+    flex: 1;
+    background-color: #002244;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 14px;
+  }
+  
+  .botaoCarrinho:hover {
+    background-color: #004080;
+  }
+  
+  .favoritoBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 8px;
+  }
+  
+  .coracao {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  
+  .coracao:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+  

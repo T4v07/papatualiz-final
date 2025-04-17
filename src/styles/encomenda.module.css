@@ -1,0 +1,55 @@
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .titulo {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #1e1e1e;
+  }
+  
+  .formulario {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .grupo {
+    margin-bottom: 20px;
+  }
+  
+  .rotulo {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .campo {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btnSubmeter {
+    background-color: #004085;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .btnSubmeter:hover {
+    background-color: #002d5a;
+  }
+  

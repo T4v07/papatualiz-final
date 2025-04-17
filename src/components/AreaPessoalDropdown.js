@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import {useContext } from "react";
+import AuthContext from "@/context/AuthContext";
 import styles from "../styles/dropdowns.module.css";
 
 const AreaPessoalDropdown = () => {
@@ -31,6 +31,7 @@ const AreaPessoalDropdown = () => {
 
       <Link href="/minhasCompras" className={styles.linkItem}>As minhas compras</Link>
       <Link href="/favoritos" className={styles.linkItem}>Favoritos</Link>
+      <Link href="/minhasEncomenda" className={styles.linkItem}>Encomenda</Link>
       <Link href="/minhaConta" className={styles.linkItem}>Gerir a minha conta</Link>
 
       <button className={styles.logoutBtn} onClick={logout}>Logout</button>

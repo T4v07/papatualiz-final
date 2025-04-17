@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
-import styles from "../styles/minhaConta.module.css";
+import {useContext } from "react";
+import AuthContext from "@/context/AuthContext";
+import styles from "../styles/minhaContaSidebarMelhorada.module.css";
 import { useRouter } from "next/router";
 
 const SidebarConta = ({ active }) => {
@@ -11,25 +11,43 @@ const SidebarConta = ({ active }) => {
 
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.profileSection}>
-        <div className={styles.profileCircle}>
+      <div className={styles.perfil}>
+        <div className={styles.avatar}>
           {user?.nome ? getInitial(user.nome) : "?"}
         </div>
-        <h3>{user?.nome || "Usuário"}</h3>
-        <p className={styles.email}>{user?.email}</p>
+        <div className={styles.info}>
+          <h3>{user?.nome || "Usuário"}</h3>
+          <p>{user?.email}</p>
+        </div>
       </div>
-      <nav className={styles.navMenu}>
-        <button className={active === "compras" ? styles.active : ""} onClick={() => router.push("/minhasCompras")}>
-          As minhas compras
+
+      <nav className={styles.menu}>
+        <button
+          className={active === "compras" ? styles.ativo : ""}
+          onClick={() => router.push("/minhasCompras")}
+        >
+          🛒 Minhas Compras
         </button>
-        <button className={active === "favoritos" ? styles.active : ""} onClick={() => router.push("/favoritos")}>
-          Favoritos
+        <button
+          className={active === "favoritos" ? styles.ativo : ""}
+          onClick={() => router.push("/favoritos")}
+        >
+          ❤️ Favoritos
         </button>
-        <button className={active === "conta" ? styles.active : ""} onClick={() => router.push("/minhaConta")}>
-          Gerir a minha conta
+        <button
+          className={active === "encomendas" ? styles.ativo : ""}
+          onClick={() => router.push("/minhasEncomendas")}
+        >
+          📦 Encomendas
         </button>
-        <button className={styles.logoutBtn} onClick={logout}>
-          Sair
+        <button
+          className={active === "conta" ? styles.ativo : ""}
+          onClick={() => router.push("/minhaConta")}
+        >
+          ⚙️ Gerir Conta
+        </button>
+        <button className={styles.logout} onClick={logout}>
+          🚪 Sair
         </button>
       </nav>
     </aside>

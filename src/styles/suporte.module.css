@@ -1,0 +1,84 @@
+.container {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  background-color: #f9f9f9;
+  min-height: 80vh;
+}
+
+.card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  transition: all 0.3s ease;
+}
+
+.titulo {
+  font-size: 26px;
+  font-weight: bold;
+  color: #003366;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.formulario label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.formulario input,
+.formulario textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: #003366;
+}
+
+.botao {
+  background-color: #003366;
+  color: white;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+.botao:hover {
+  background-color: #002244;
+}
+
+.sucesso {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+}
+
+.erro {
+  color: #b22222;
+  font-weight: 500;
+  margin-bottom: 15px;
+  text-align: center;
+}

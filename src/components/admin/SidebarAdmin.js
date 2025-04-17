@@ -1,17 +1,19 @@
-import { useContext } from "react";
-import AuthContext from "../../context/AuthContext"; // IMPORTAÇÃO CORRETA: default
+import {useContext } from "react";
+import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import styles from "../../styles/admin.module.css";
 
 export default function SidebarAdmin() {
-  const { user } = useContext(AuthContext); // FUNCIONA COM O DEFAULT EXPORT
+  const { user, logout } = useContext(AuthContext);
   const router = useRouter();
 
   const links = [
     { label: "Dashboard", path: "/areaAdmin" },
     { label: "Gestão de Produtos", path: "/admin/produtos" },
     { label: "Gestão de Categorias", path: "/admin/categorias" },
+    { label: "Gerir Encomendas", path: "/admin/encomendas" },
     { label: "Gestão de Utilizadores", path: "/admin/utilizadores" },
+    { label: "Funcionários", path: "/admin/funcionarios" },
     { label: "Ver Compras", path: "/admin/compras" },
     { label: "Controle de Estoque", path: "/admin/estoque" },
   ];
@@ -42,6 +44,12 @@ export default function SidebarAdmin() {
             {link.label}
           </button>
         ))}
+      </div>
+
+      <div className={styles.logoutContainer}>
+        <button className={styles.logoutButton} onClick={logout}>
+          Logout
+        </button>
       </div>
     </div>
   );

@@ -22,20 +22,21 @@ export default async function handler(req, res) {
         .json({ message: "Email ou Username já cadastrado!" });
     }
 
-    // Gera um código de verificação
+    // Gera código de verificação
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Hasheia a senha para armazenamento seguro
+    // Hasheia a senha
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insere o novo usuário com a senha hasheada
+    // Insere como CLIENTE explicitamente
     await pool.query(
-      `INSERT INTO Utilizador (Username, Password, Nome, Email, Telefone, Codigo_Verificacao, Verificado)
-       VALUES (?, ?, ?, ?, ?, ?, 0)`,
+      `INSERT INTO Utilizador 
+      (Username, Password, Nome, Email, Telefone, Codigo_Verificacao, Verificado, Tipo_de_Conta)
+      VALUES (?, ?, ?, ?, ?, ?, 0, 'Cliente')`,
       [username, hashedPassword, nome, email, telefone, verificationCode]
     );
 
-    // Configuração do envio de e-mail via SMTP
+    // Envia e-mail com o código
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
@@ -44,9 +45,7 @@ export default async function handler(req, res) {
         pass: process.env.SMTP_PASS,
       },
       secure: false,
-      tls: {
-        rejectUnauthorized: false,
-      },
+      tls: { rejectUnauthorized: false },
     });
 
     const mailOptions = {

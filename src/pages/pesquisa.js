@@ -9,10 +9,10 @@ export default function Pesquisa() {
   const { user } = useContext(AuthContext);
   const router = useRouter();
   const [produtos, setProdutos] = useState([]);
+  const [favoritos, setFavoritos] = useState([]);
   const [filtros, setFiltros] = useState({ marca: "", cor: "", categoria: "" });
   const [paginaAtual, setPaginaAtual] = useState(1);
   const produtosPorPagina = 6;
-
   const termo = router.query.q || "";
 
   useEffect(() => {
@@ -22,6 +22,30 @@ export default function Pesquisa() {
         .then((data) => setProdutos(data));
     }
   }, [termo]);
+
+  useEffect(() => {
+    if (user) {
+      fetch(`/api/favoritos/listar?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setFavoritos(data.map((f) => f.ID_produto)));
+    }
+  }, [user]);
+
+  const handleToggleFavorito = async (produtoId) => {
+    if (!user) return alert("Faz login para adicionar aos favoritos.");
+    const res = await fetch("/api/favoritos/adicionar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email, produtoId }),
+    });
+    if (res.ok) {
+      setFavoritos((prev) =>
+        prev.includes(produtoId)
+          ? prev.filter((id) => id !== produtoId)
+          : [...prev, produtoId]
+      );
+    }
+  };
 
   const filtrados = produtos.filter((p) => {
     const matchMarca = filtros.marca ? p.Marca === filtros.marca : true;
@@ -65,7 +89,6 @@ export default function Pesquisa() {
 
         <main className={styles.resultados}>
           <h2>Resultado para: "{termo}"</h2>
-
           <div className={styles.sugestoes}>
             <p>🔍 Sugestões:</p>
             {sugestoes.map((s, i) => (
@@ -74,16 +97,24 @@ export default function Pesquisa() {
               </button>
             ))}
           </div>
-
           <div className={styles.gridProdutos}>
             {produtosPaginados.map((produto) => (
-              <ProdutoCard key={produto.ID_produto} produto={produto} userId={user?.id} />
+              <ProdutoCard
+                key={produto.ID_produto}
+                produto={produto}
+                userId={user?.id}
+                favoritos={favoritos}
+                onToggleFavorito={handleToggleFavorito}
+              />
             ))}
           </div>
-
           <div className={styles.paginacao}>
             {Array.from({ length: Math.ceil(filtrados.length / produtosPorPagina) }).map((_, i) => (
-              <button key={i} onClick={() => setPaginaAtual(i + 1)} className={paginaAtual === i + 1 ? styles.ativo : ""}>
+              <button
+                key={i}
+                onClick={() => setPaginaAtual(i + 1)}
+                className={paginaAtual === i + 1 ? styles.ativo : ""}
+              >
                 {i + 1}
               </button>
             ))}

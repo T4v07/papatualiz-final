@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-const AuthContext = createContext();
+const AuthContext = createContext(); // exportação default removida
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
