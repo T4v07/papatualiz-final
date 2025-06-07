@@ -16,7 +16,7 @@ const MinhaConta = () => {
     if (!user) return;
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/getUser?email=${user.email}`);
+        const response = await fetch(`/api/getUser?email=${user?.Email}`);
         const data = await response.json();
         if (response.ok) {
           setFormData({
@@ -56,7 +56,7 @@ const MinhaConta = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        login({ ...user, nome: formData.nome, email: formData.email });
+        login({ ...user, Nome: formData.nome, Email: formData.email });
         setNotificacao({ tipo: "sucesso", mensagem: "Dados atualizados com sucesso!" });
         setTimeout(() => window.location.reload(), 2000);
       } else {

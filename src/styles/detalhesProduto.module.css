@@ -1,0 +1,165 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+}
+
+.breadcrumb {
+  width: 100%;
+  max-width: 1200px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.breadcrumb a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  width: 100%;
+  max-width: 1200px;
+  gap: 40px;
+}
+
+.imagemContainer {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imagem {
+  width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+
+.info {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.nome {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.categoria {
+  font-size: 14px;
+  font-weight: 600;
+  color: #004080;
+  margin-bottom: 6px;
+}
+
+.marcaModelo,
+.cor,
+.referencia {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.preco {
+  font-size: 26px;
+  font-weight: 700;
+  color: #e60023;
+  margin: 10px 0;
+}
+
+.stock {
+  font-size: 14px;
+  color: green;
+  margin-bottom: 10px;
+}
+
+.botaoCarrinho {
+  background-color: #003c71;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: fit-content;
+}
+
+.botaoCarrinho:hover {
+  background-color: #0052a3;
+}
+
+.descricao {
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  max-width: 1000px;
+}
+
+.fichaTecnica {
+  background-color: #f2f8ff;
+  border-left: 4px solid #0070f3;
+  padding: 16px 20px;
+  margin: 40px auto 20px;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+.fichaTecnica h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #002244;
+}
+
+.maisInfo {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #333;
+}
+
+.maisInfo p {
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.voltarBtn {
+  margin-top: 30px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.voltarBtn:hover {
+  background-color: #f0f0f0;
+}

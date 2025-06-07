@@ -1,5 +1,4 @@
-// /pages/minhasCompras.js
-import {useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import AuthContext from "@/context/AuthContext";
 import Navbar from "../components/navbar";
 import SidebarConta from "../components/SidebarConta";
@@ -12,7 +11,7 @@ export default function MinhasCompras() {
   useEffect(() => {
     const fetchCompras = async () => {
       if (!user) return;
-      const res = await fetch(`/api/compras-do-utilizador?email=${user.email}`);
+      const res = await fetch(`/api/compras-do-utilizador?email=${user?.Email}`);
       const data = await res.json();
       if (res.ok) setCompras(data);
     };

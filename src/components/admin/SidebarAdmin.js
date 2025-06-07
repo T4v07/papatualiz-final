@@ -1,7 +1,8 @@
-import {useContext } from "react";
-import AuthContext from "@/context/AuthContext";
+// components/admin/SidebarAdmin.js
+import { useContext } from "react";
 import { useRouter } from "next/router";
-import styles from "../../styles/admin.module.css";
+import AuthContext from "@/context/AuthContext";
+import styles from "@/styles/admin.module.css";
 
 export default function SidebarAdmin() {
   const { user, logout } = useContext(AuthContext);
@@ -24,30 +25,32 @@ export default function SidebarAdmin() {
 
   return (
     <div className={styles.sidebar}>
-      <div className={styles.profile}>
-        <div className={styles.initials}>
-          {user?.Nome?.[0]?.toUpperCase() || "A"}
+      <div>
+        <div className={styles.profile}>
+          <div className={styles.initials}>
+            {user?.Nome?.[0]?.toUpperCase() || "A"}
+          </div>
+          <div>
+            <h4>{user?.Nome || "Administrador"}</h4>
+            <p>{user?.Email || "admin@example.com"}</p>
+          </div>
         </div>
-        <div>
-          <h4>{user?.Nome || "Administrador"}</h4>
-          <p>{user?.Email || "admin@example.com"}</p>
-        </div>
-      </div>
 
-      <div className={styles.navMenu}>
-        {links.map((link) => (
-          <button
-            key={link.path}
-            onClick={() => handleNavigate(link.path)}
-            className={router.pathname === link.path ? styles.active : ""}
-          >
-            {link.label}
-          </button>
-        ))}
+        <div className={styles.navMenu}>
+          {links.map((link) => (
+            <button
+              key={link.path}
+              onClick={() => handleNavigate(link.path)}
+              className={router.pathname === link.path ? styles.active : ""}
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={styles.logoutContainer}>
-        <button className={styles.logoutButton} onClick={logout}>
+        <button onClick={logout} className={styles.logoutButton}>
           Logout
         </button>
       </div>

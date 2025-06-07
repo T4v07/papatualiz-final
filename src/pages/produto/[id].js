@@ -1,95 +1,77 @@
+// pages/produto/[id].js
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
-import Navbar from "@/components/navbar";
-import styles from "@/styles/produtoDetalhes.module.css";
 import AuthContext from "@/context/AuthContext";
+import Navbar from "@/components/navbar";
+import styles from "@/styles/detalhesProduto.module.css";
+import Link from "next/link";
 
 export default function ProdutoDetalhes() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useContext(AuthContext);
+
   const [produto, setProduto] = useState(null);
-  const [erro, setErro] = useState("");
 
   useEffect(() => {
-    if (!id) return;
-
-    const fetchProduto = async () => {
-      try {
-        const res = await fetch(`/api/produtos/${id}`);
-        if (!res.ok) throw new Error("Produto não encontrado");
-        const data = await res.json();
-        setProduto(data);
-      } catch (err) {
-        setErro("Tenta voltar à loja e escolher outro produto.");
-        console.error("Erro ao buscar produto:", err);
-      }
-    };
-
-    fetchProduto();
+    if (id) {
+      fetch(`/api/verprodutos/${id}`)
+        .then((res) => res.json())
+        .then((data) => setProduto(data))
+        .catch((error) => console.error(error));
+    }
   }, [id]);
 
   const adicionarCarrinho = async () => {
-    if (!user) {
-      alert("Tens de estar logado para adicionar ao carrinho.");
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/carrinho", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ID_utilizador: user.ID_utilizador,
-          ID_produto: produto.ID_produto,
-          Quantidade: 1,
-        }),
-      });
-
-      if (res.ok) {
-        alert("Produto adicionado ao carrinho!");
-      } else {
-        alert("Erro ao adicionar ao carrinho.");
-      }
-    } catch (err) {
-      console.error("Erro:", err);
-      alert("Erro ao adicionar produto.");
-    }
+    if (!user?.ID_utilizador) return alert("Faz login primeiro.");
+    await fetch("/api/carrinho/adicionar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id_utilizador: user.ID_utilizador,
+        id_produto: produto.ID_produto,
+        quantidade: 1,
+      }),
+    });
+    alert("Adicionado ao carrinho!");
   };
+
+  if (!produto) return <p>A carregar...</p>;
 
   return (
     <>
       <Navbar />
-      <div className={styles.container}>
-        {erro ? (
-          <p>{erro}</p>
-        ) : produto ? (
-          <>
-            <div className={styles.imagemContainer}>
-              <img
-                src={produto.Foto || "/images/no-image.png"}
-                alt={produto.Nome_Produtos}
-                className={styles.imagem}
-              />
-            </div>
-            <div className={styles.detalhes}>
-              <h2>{produto.Nome_Produtos}</h2>
-              <p><strong>Modelo:</strong> {produto.Modelo}</p>
-              <p><strong>Marca:</strong> {produto.Marca}</p>
-              <p><strong>Cor:</strong> {produto.Cor}</p>
-              <p><strong>Preço:</strong> €{parseFloat(produto.Preco).toFixed(2)}</p>
-              <p className={styles.descricao}>{produto.Descricao}</p>
-
-              <div className={styles.botoes}>
-                <button onClick={adicionarCarrinho}>🛒 Adicionar ao Carrinho</button>
-                <button disabled>❤️ Favoritar</button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <p>Carregando produto...</p>
-        )}
+      <div className={styles.breadcrumb}>
+        <Link href="/"><span>🏠 Voltar para loja</span></Link> / {produto.Nome_Produtos}
       </div>
+
+      <div className={styles.container}>
+        <div className={styles.left}>
+          <img src={produto.Foto} alt={produto.Nome_Produtos} className={styles.imagem} />
+        </div>
+
+        <div className={styles.right}>
+          <h1>{produto.Nome_Produtos}</h1>
+          <p className={styles.categoria}>{produto.Tipo_de_Produto}</p>
+          <p className={styles.marca}>{produto.Marca} - {produto.Modelo}</p>
+          <p className={styles.preco}>{parseFloat(produto.Preco).toFixed(2)} €</p>
+          <p className={styles.stock}>
+            {produto.Stock > 0 ? `Disponível (${produto.Stock} unidades)` : "Indisponível"}
+          </p>
+          <p className={styles.referencia}>Ref: #{produto.ID_produto}</p>
+
+          <button onClick={adicionarCarrinho} className={styles.btnCarrinho}>🛒 Adicionar ao Carrinho</button>
+
+          <div className={styles.descricao}>{produto.Descricao}</div>
+        </div>
+      </div>
+
+      <div className={styles.fichaTecnica}>
+        <h3>📘 Ficha Técnica</h3>
+        <p>{produto.Ficha_Tecnica}</p>
+      </div>
+
+      
     </>
   );
 }

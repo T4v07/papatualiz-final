@@ -1,0 +1,100 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.comConteudoComSidebar {
+  flex: 1;
+  padding: 40px;
+  margin-left: 260px; /* espaço da sidebar */
+  background-color: #f9f9f9;
+}
+
+.tituloPrincipal {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #002244;
+}
+
+.tituloSecao {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.formulario input[type="file"] {
+  padding: 4px;
+}
+
+.formulario button[type="submit"] {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #002244;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.formulario button[type="submit"]:hover {
+  background-color: #004488;
+}
+
+.imagemPreview {
+  max-width: 200px;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.tabelaProdutos {
+  width: 100%;
+  margin-top: 2rem;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tabelaProdutos th,
+.tabelaProdutos td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.tabelaProdutos th {
+  background-color: #003366;
+  color: white;
+}
+
+.tabelaProdutos tr:hover {
+  background-color: #f9f9f9;
+}

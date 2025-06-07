@@ -1,30 +1,54 @@
-import styles from "@/styles/ProdutoCardFavorito.module.css";
+import styles from "@/styles/minhaConta.module.css";
+import Link from "next/link";
 
-export default function ProdutoCardFavorito({ produto, onToggleFavorito, onAddCarrinho }) {
+export default function ProdutoCardFavorito({
+  produto,
+  onToggleFavorito,
+  onAddCarrinho,
+  favoritos = [],
+  selecionado,
+  onSelecionar,
+}) {
+  const isFavorito = favoritos.includes(produto.ID_produto);
+
   return (
     <div className={styles.card}>
-      {produto.Foto ? (
-        <img src={produto.Foto} alt={produto.Nome_Produtos} />
-      ) : (
-        <div className={styles.semImagem}>Sem imagem</div>
-      )}
+      <Link href={`/produto/${produto.ID_produto}`} className={styles.linkSemEstilo}>
+        {produto.Foto ? (
+          <img src={produto.Foto} alt={produto.Nome_Produtos} style={{ width: "100%", height: "180px", objectFit: "contain", marginBottom: "10px" }} />
+        ) : (
+          <div style={{ textAlign: "center", marginBottom: "10px" }}>Sem imagem</div>
+        )}
+        <h4>{produto.Nome_Produtos}</h4>
+        <p>{produto.Marca}</p>
+        <p style={{ fontWeight: "bold", color: "#002244" }}>{parseFloat(produto.Preco).toFixed(2)} €</p>
+      </Link>
 
-      <h3>{produto.Nome_Produtos}</h3>
-      <p className={styles.marca}>{produto.Marca}</p>
-      <p className={styles.preco}><strong>{parseFloat(produto.Preco).toFixed(2)} €</strong></p>
-
-      <div className={styles.acoes}>
-        <button className={styles.botaoCarrinho} onClick={() => onAddCarrinho(produto.ID_produto)}>
-          Adicionar ao carrinho
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
+        <button className={styles.saveButton} onClick={() => onAddCarrinho(produto.ID_produto)}>
+          🛒 Carrinho
         </button>
-        <button className={styles.favoritoBtn} onClick={() => onToggleFavorito(produto.ID_produto)} title="Remover dos favoritos">
+        <button onClick={() => onToggleFavorito(produto.ID_produto)} style={{ background: "none", border: "none", cursor: "pointer" }}>
           <img
-            src="/images/coracaoadic.jpg"
+            src={
+              isFavorito
+                ? "/images/coracaoadicpreenchido.jpg"
+                : "/images/coracaoadic.jpg"
+            }
             alt="Favorito"
-            className={styles.coracao}
+            style={{ width: "28px", height: "28px" }}
           />
         </button>
       </div>
+
+      <label style={{ fontSize: "0.85rem", color: "#444", marginTop: "8px", display: "block" }}>
+        <input
+          type="checkbox"
+          checked={selecionado}
+          onChange={() => onSelecionar(produto.ID_produto)}
+        />{" "}
+        Selecionar
+      </label>
     </div>
   );
 }

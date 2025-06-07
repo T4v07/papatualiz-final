@@ -19,26 +19,37 @@ export default function ResultadosPesquisa() {
       .then((res) => res.json())
       .then((data) => setProdutos(data));
 
-    if (user) {
-      fetch(`/api/favoritos/listar?email=${user.email}`)
+    if (user?.ID_utilizador) {
+      fetch(`/api/favoritos/listar?id_utilizador=${user.ID_utilizador}`)
         .then((res) => res.json())
-        .then((data) => setFavoritos(data.map((f) => f.ID_produto)));
+        .then((data) => setFavoritos(data.map((f) => f.ID_produto)))
+        .catch((err) => console.error("Erro ao carregar favoritos:", err));
     }
   }, [user]);
 
   const handleAddFavorito = async (produtoId) => {
-    if (!user) return alert("Precisas fazer login para adicionar aos favoritos.");
+    if (!user?.ID_utilizador) {
+      alert("Precisas de fazer login para usar favoritos.");
+      return;
+    }
+
     const res = await fetch("/api/favoritos/adicionar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: user.email, produtoId }),
+      body: JSON.stringify({
+        id_utilizador: user.ID_utilizador,
+        id_produto: produtoId,
+      }),
     });
+
     if (res.ok) {
       setFavoritos((prev) =>
         prev.includes(produtoId)
           ? prev.filter((id) => id !== produtoId)
           : [...prev, produtoId]
       );
+    } else {
+      alert("Erro ao atualizar favorito");
     }
   };
 

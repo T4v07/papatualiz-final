@@ -26,18 +26,20 @@ export default async function handler(req, res) {
       return res.status(401).json({ message: "Senha incorreta!" });
     }
 
-    return res.status(200).json({
+        return res.status(200).json({
       message: "Login bem-sucedido!",
       user: {
-        id: user.ID_utilizador,
-        username: user.Username,
-        email: user.Email,
-        nome: user.Nome,
-        Tipo_de_Conta: user.Tipo_de_Conta, // <-- ESSENCIAL!
+        ID_utilizador: user.ID_utilizador,
+        Username: user.Username,
+        Email: user.Email,
+        Nome: user.Nome,
+        Tipo_de_Conta: user.Tipo_de_Conta,
       },
     });
+    
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     return res.status(500).json({ message: "Erro ao fazer login." });
   }
 }
+  

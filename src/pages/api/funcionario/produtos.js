@@ -1,7 +1,7 @@
-// pages/api/funcionario/produtos.js
-import formidable from "formidable";
+import { IncomingForm } from "formidable";
 import fs from "fs";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 import { pool } from "@/utils/db";
 
 export const config = {
@@ -11,61 +11,87 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    fs.mkdirSync(uploadDir, { recursive: true });
-
-    const form = formidable({
-      uploadDir,
-      keepExtensions: true,
-      maxFileSize: 5 * 1024 * 1024,
-      filter: ({ mimetype }) => mimetype && mimetype.startsWith("image"),
-    });
-
+  if (req.method === "GET") {
     try {
-      const [fields, files] = await form.parse(req);
-
-      const {
-        nome,
-        modelo,
-        marca,
-        cor,
-        preco,
-        stock,
-        tipoCategoria,
-        descricao,
-      } = fields;
-
-      if (!nome || !modelo || !marca || !preco || !stock || !tipoCategoria) {
-        return res.status(400).json({ message: "Campos obrigatórios não preenchidos." });
-      }
-
-      const fotoFile = files.foto?.[0] || null;
-      const fotoPath = fotoFile ? "/uploads/" + path.basename(fotoFile.filepath) : null;
-
-      await pool.execute(
-        `INSERT INTO Produtos 
-        (Nome_Produtos, Modelo, Marca, Cor, Preco, Stock, Tipo_de_Categoria, Descricao, Foto)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          nome[0],
-          modelo[0],
-          marca[0],
-          cor?.[0] || "",
-          preco[0],
-          stock[0],
-          tipoCategoria[0],
-          descricao?.[0] || "",
-          fotoPath,
-        ]
-      );
-
-      return res.status(201).json({ message: "Produto adicionado!" });
+      const [rows] = await pool.query(`
+        SELECT p.*, c.Tipo_de_Categoria
+        FROM Produtos p
+        LEFT JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
+        ORDER BY p.ID_produto DESC
+      `);
+      return res.status(200).json(rows);
     } catch (err) {
-      console.error("Erro ao adicionar produto:", err);
-      return res.status(500).json({ message: "Erro ao adicionar produto." });
+      console.error("Erro no GET:", err);
+      return res.status(500).json({ error: "Erro ao buscar produtos." });
     }
   }
 
-  return res.status(405).json({ message: "Método não permitido." });
+  if (req.method === "POST") {
+    const form = new IncomingForm({
+      uploadDir: path.join(process.cwd(), "public/uploads"),
+      keepExtensions: true,
+      maxFileSize: 10 * 1024 * 1024, // 10MB
+    });
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        console.error("Erro ao processar form:", err);
+        return res.status(500).json({ error: "Erro ao processar formulário." });
+      }
+
+      const {
+        nome, modelo, marca, marcaOutro, genero, generoOutro, idade, idadeOutro,
+        cor, corOutro, descricao, fichaTecnica, preco, peso, stock,
+        material, materialOutro, usoRecomendado, garantia,
+        tecnologia, tecnologiaOutro, origem, origemOutro,
+        desconto, novo, tipoCategoria,
+        tamanhoRoupa, tamanhoCalcado, tamanhoObjeto
+      } = fields;
+
+      let nomeImagem = "";
+      if (files.foto && files.foto[0]) {
+        const oldPath = files.foto[0].filepath;
+        const ext = path.extname(files.foto[0].originalFilename || ".jpg");
+        nomeImagem = `${uuidv4()}${ext}`;
+        const newPath = path.join(process.cwd(), "public/uploads", nomeImagem);
+        fs.renameSync(oldPath, newPath);
+      }
+
+      try {
+        const query = `
+          INSERT INTO Produtos (
+            Nome_Produtos, Modelo, Marca, MarcaOutro, Genero, GeneroOutro,
+            Idade, Idade_Outro, Cor, Cor_Outro, Descricao, Ficha_Tecnica,
+            Preco, Peso, Stock, Material, Material_Outro, Uso_Recomendado,
+            Garantia, Tecnologia, Tecnologia_Outro, Origem, Origem_Outro,
+            Desconto, Novo, Tipo_de_Categoria, Tamanho_Roupa, Tamanho_Calcado,
+            Tamanho_Objeto, Foto
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const values = [
+          nome || "", modelo || "", marca || "", marcaOutro || "",
+          genero || "", generoOutro || "", idade || "", idadeOutro || "",
+          cor || "", corOutro || "", descricao || "", fichaTecnica || "",
+          parseFloat(preco) || 0, peso || "", parseInt(stock) || 0,
+          material || "", materialOutro || "", usoRecomendado || "",
+          garantia || "", tecnologia || "", tecnologiaOutro || "",
+          origem || "", origemOutro || "", parseInt(desconto) || 0,
+          novo === "Sim" ? 1 : 0,
+          parseInt(tipoCategoria) || null,
+          tamanhoRoupa || "", tamanhoCalcado || "", tamanhoObjeto || "",
+          nomeImagem
+        ];
+
+        await pool.query(query, values);
+        return res.status(200).json({ mensagem: "Produto guardado com sucesso." });
+      } catch (err) {
+        console.error("Erro no INSERT:", err);
+        return res.status(500).json({ error: "Erro ao guardar produto." });
+      }
+    });
+  } else {
+    res.setHeader("Allow", ["GET", "POST"]);
+    return res.status(405).json({ error: `Método ${req.method} não permitido.` });
+  }
 }

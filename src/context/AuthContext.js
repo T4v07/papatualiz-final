@@ -7,22 +7,34 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
+ useEffect(() => {
+  if (typeof window !== "undefined") {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
         setUser(JSON.parse(storedUser));
+      } catch (err) {
+        console.error("Erro ao ler user do localStorage:", err);
+        localStorage.removeItem("user");
+        setUser(null);
       }
-    } catch (err) {
-      console.error("Erro ao ler o user do localStorage:", err);
-      localStorage.removeItem("user");
     }
-  }, []);
+  }
+}, []);
+
 
   const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+  const normalizado = {
+    ID_utilizador: userData.ID_utilizador || userData.id,
+    Nome: userData.Nome || userData.nome,
+    Email: userData.Email || userData.email,
+    Tipo_de_Conta: userData.Tipo_de_Conta || userData.tipo_de_conta || "Cliente",
   };
+
+  setUser(normalizado);
+  localStorage.setItem("user", JSON.stringify(normalizado));
+};
+
 
   const logout = () => {
     setUser(null);

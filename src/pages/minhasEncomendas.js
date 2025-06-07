@@ -1,4 +1,3 @@
-// /pages/minhasEncomendas.js
 import { useEffect, useState, useContext } from "react";
 import AuthContext from "@/context/AuthContext";
 import Navbar from "@/components/navbar";
@@ -14,7 +13,7 @@ export default function MinhasEncomendas() {
   useEffect(() => {
     const fetchEncomendas = async () => {
       if (!user) return;
-      const res = await fetch(`/api/encomendas-do-utilizador?email=${user.email}`);
+      const res = await fetch(`/api/encomendas-do-utilizador?email=${user?.Email}`);
       const data = await res.json();
       if (res.ok) setEncomendas(data);
     };
@@ -29,7 +28,7 @@ export default function MinhasEncomendas() {
         <SidebarConta active="encomendas" />
         <main className={styles.mainContent}>
           <section className={styles.section}>
-            <h2>As minhas encomendas</h2>
+            <h2>📦 As minhas encomendas</h2>
             {encomendas.length === 0 ? (
               <p>(Ainda não tens encomendas registradas)</p>
             ) : (

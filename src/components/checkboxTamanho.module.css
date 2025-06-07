@@ -1,0 +1,30 @@
+.container {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #002244;
+}
+
+.lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: #f8f8f8;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.lista label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.opcao {
+  color: #333;
+}

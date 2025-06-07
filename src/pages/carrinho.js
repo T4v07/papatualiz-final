@@ -1,3 +1,4 @@
+// /pages/carrinho.js
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "@/context/AuthContext";
 import Navbar from "@/components/navbar";
@@ -11,8 +12,8 @@ export default function CarrinhoPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (user?.id) {
-      fetch(`/api/carrinho?id_utilizador=${user.id}`)
+    if (user?.ID_utilizador) {
+      fetch(`/api/carrinho?id_utilizador=${user.ID_utilizador}`)
         .then(res => res.json())
         .then(data => setItens(Array.isArray(data) ? data : []));
     }
@@ -22,7 +23,7 @@ export default function CarrinhoPage() {
     await fetch("/api/carrinho/remover", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id_utilizador: user.id, id_produto }),
+      body: JSON.stringify({ id_utilizador: user.ID_utilizador, id_produto }),
     });
     setItens(prev => prev.filter(p => p.ID_produto !== id_produto));
   };
@@ -37,9 +38,9 @@ export default function CarrinhoPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        id_utilizador: user.id,
-        userNome: user.nome,
-        userEmail: user.email,
+        id_utilizador: user.ID_utilizador,
+        userNome: user.Nome,
+        userEmail: user.Email,
       }),
     });
 
@@ -48,11 +49,10 @@ export default function CarrinhoPage() {
 
     if (res.ok) {
       setItens([]);
-      router.push("/compra-pendente"); // redireciona para nova página
+      router.push("/compra-pendente");
     } else {
       alert(data.message || "Erro ao processar pedido.");
     }
-    
   };
 
   const subtotal = itens.reduce((acc, item) => acc + item.Preco * item.Quantidade, 0);
@@ -90,7 +90,11 @@ export default function CarrinhoPage() {
             <div className={styles.resumo}>
               <h3>Resumo do Pedido</h3>
               <p>Total: <strong>{subtotal.toFixed(2)} €</strong></p>
-              <button className={styles.btnCheckout} onClick={finalizarCompra} disabled={loading}>
+              <button
+                className={styles.btnCheckout}
+                onClick={finalizarCompra}
+                disabled={loading}
+              >
                 {loading ? "Finalizando..." : "Finalizar Compra"}
               </button>
             </div>

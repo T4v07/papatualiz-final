@@ -1,8 +1,8 @@
-// components/SidebarFuncionario.js
+// components/funcionario/SidebarFuncionario.js
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import AuthContext from "@/context/AuthContext";
-import styles from "@/styles/admin.module.css";
+import styles from "@/styles/admin.module.css"; // usa o mesmo CSS do admin
 
 export default function SidebarFuncionario() {
   const { user, logout } = useContext(AuthContext);
@@ -16,30 +16,34 @@ export default function SidebarFuncionario() {
     { label: "Ajuda ao Cliente", path: "/funcionario/suporte" },
   ];
 
-  const handleNavigate = (path) => router.push(path);
+  const handleNavigate = (path) => {
+    router.push(path);
+  };
 
   return (
     <div className={styles.sidebar}>
-      <div className={styles.profile}>
-        <div className={styles.initials}>
-          {user?.Nome?.[0]?.toUpperCase() || "F"}
+      <div>
+        <div className={styles.profile}>
+          <div className={styles.initials}>
+            {user?.Nome?.[0]?.toUpperCase() || "F"}
+          </div>
+          <div>
+            <h4>{user?.Nome || "Funcionário"}</h4>
+            <p>{user?.Email || "func@example.com"}</p>
+          </div>
         </div>
-        <div>
-          <h4>{user?.Nome || "Funcionário"}</h4>
-          <p>{user?.Email || "func@example.com"}</p>
-        </div>
-      </div>
 
-      <div className={styles.navMenu}>
-        {links.map((link) => (
-          <button
-            key={link.path}
-            onClick={() => handleNavigate(link.path)}
-            className={router.pathname === link.path ? styles.active : ""}
-          >
-            {link.label}
-          </button>
-        ))}
+        <div className={styles.navMenu}>
+          {links.map((link) => (
+            <button
+              key={link.path}
+              onClick={() => handleNavigate(link.path)}
+              className={router.pathname === link.path ? styles.active : ""}
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={styles.logoutContainer}>

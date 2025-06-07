@@ -4,7 +4,7 @@ import RectangleBox from "../components/RectangleBox";
 import FeaturedProducts from "../components/FeaturedProducts"; 
 import styles from "../styles/home.module.css"; // Importe o CSS do home
 import Footer from "../components/Footer";
-
+import Link from "next/link"; // certifica-te que está no topo
 
 export default function Home() {
   return (
@@ -23,17 +23,39 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <h2 className="text-left mb-4">Os mais procurados!</h2>
-      <div className="d-flex flex-wrap gap-3 justify-content-center">
-        {["Casacos desportivos", "Calçado desportivo", "Calça desportiva", "Acessório desportivo", "Equipamento desportivo", "Acampamento"].map((item, index) => (
-          <div key={index} className="card" style={{ width: "170px" }}>
-            <div className="card-img-top bg-dark" style={{ height: "220px" }}></div>
-            <div className="card-body">
-              <p className="card-text text-center">{item}</p>
-            </div>
-          </div>
-        ))}
+    
+
+<h2 className="text-left mb-4">Os mais procurados!</h2>
+<div className="d-flex flex-wrap gap-3 justify-content-center">
+  {[
+    { nome: "Casacos desportivos", imagem: "/imagens/casaco.jpg" },
+    { nome: "Calçado desportivo", imagem: "/imagens/calcado.jpg" },
+    { nome: "Calça desportiva", imagem: "/imagens/calca.jpg" },
+    { nome: "Acessório desportivo", imagem: "/imagens/acessorio.jpg" },
+    { nome: "Equipamento desportivo", imagem: "/imagens/equipamento.jpg" },
+    { nome: "Acampamento", imagem: "/imagens/acampamento.jpg" },
+  ].map((item, index) => (
+    <Link key={index} href={`/pesquisa?termo=${encodeURIComponent(item.nome)}`} passHref>
+      <div className="card" style={{ width: "170px", cursor: "pointer" }}>
+        <img
+          src={item.imagem}
+          alt={item.nome}
+          className="card-img-top"
+          style={{
+            height: "220px",
+            objectFit: "cover",
+            borderTopLeftRadius: "0.375rem",
+            borderTopRightRadius: "0.375rem"
+          }}
+        />
+        <div className="card-body">
+          <p className="card-text text-center">{item.nome}</p>
+        </div>
       </div>
+    </Link>
+  ))}
+</div>
+
       <Carousel />
       <div className={styles.spacing}></div> {/* Espaçamento entre Carousel e RectangleBox */}
       <RectangleBox />

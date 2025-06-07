@@ -237,3 +237,101 @@
 .botaoCancelar:hover {
   background-color: #777;
 }
+/* Estilos base aplicáveis a ambas as sidebars */
+.sidebar {
+  width: 220px;
+  background-color: #0e0e0e;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.initials {
+  background-color: #1e1e1e;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+}
+
+.profile h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.profile p {
+  margin: 0;
+  font-size: 12px;
+  color: #cccccc;
+}
+
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navMenu button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 10px 0;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navMenu button:hover {
+  background-color: #1e1e1e;
+  color: #d3d3d3;
+}
+
+.active {
+  background-color: #0f3057;
+  color: #ffffff;
+  font-weight: bold;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
+.logoutContainer {
+  margin-top: auto;
+}
+
+.logoutButton {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+  background-color: #e74c3c;
+}
