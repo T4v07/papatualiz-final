@@ -1,15 +1,8 @@
 // utils/db.js
 import mysql from "mysql2/promise";
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
 
-dotenv.config(); // Carrega as variáveis do .env
-
-// Lê o certificado SSL se estiver configurado
-const sslCa = process.env.DB_SSL_CA
-  ? fs.readFileSync(path.resolve(process.cwd(), process.env.DB_SSL_CA), "utf8")
-  : null;
+// Lê o certificado SSL diretamente da variável de ambiente
+const sslCa = process.env.DB_SSL_CA || null;
 
 export const pool = mysql.createPool({
   host: process.env.DB_HOST,
