@@ -1,5 +1,5 @@
 // src/components/ProdutoCard.js
-import styles from './ProdutoCard.module.css';
+import styles from './produtoCard.module.css';
 
 export default function ProdutoCard({ produto, onClick }) {
   const preco = parseFloat(produto.Preco) || 0;
