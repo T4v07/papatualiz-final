@@ -98,3 +98,8 @@
 .spacing {
   margin-top: 100px; /* Ajuste o valor conforme necessário */
 }
+.btn-outline-light:hover {
+  background-color: white;
+  color: black;
+  transition: 0.3s ease;
+}

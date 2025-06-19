@@ -1,7 +1,6 @@
+// pages/api/funcionario/produtos.js
 import { IncomingForm } from "formidable";
-import fs from "fs";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
+import { v2 as cloudinary } from "cloudinary";
 import { pool } from "@/utils/db";
 
 export const config = {
@@ -10,6 +9,12 @@ export const config = {
   },
 };
 
+// Configuração Cloudinary com variáveis de ambiente
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
@@ -28,15 +33,37 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     const form = new IncomingForm({
-      uploadDir: path.join(process.cwd(), "public/uploads"),
-      keepExtensions: true,
       maxFileSize: 10 * 1024 * 1024, // 10MB
+      keepExtensions: true,
+      multiples: false,
     });
 
     form.parse(req, async (err, fields, files) => {
       if (err) {
         console.error("Erro ao processar form:", err);
         return res.status(500).json({ error: "Erro ao processar formulário." });
+      }
+      // IMPORTANTE: certifique-se de ter as variáveis de ambiente configuradas
+      const cloudinary = require('cloudinary').v2;
+
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+
+      let imageUrl = "";
+      if (files.foto && files.foto[0]) {
+        const filePath = files.foto[0].filepath;
+        try {
+          const result = await cloudinary.uploader.upload(filePath, {
+            folder: "produtos",
+          });
+          imageUrl = result.secure_url;
+        } catch (uploadErr) {
+          console.error("Erro ao fazer upload para Cloudinary:", uploadErr);
+          return res.status(500).json({ error: "Erro ao fazer upload da imagem." });
+        }
       }
 
       const {
@@ -47,16 +74,6 @@ export default async function handler(req, res) {
         desconto, novo, tipoCategoria,
         tamanhoRoupa, tamanhoCalcado, tamanhoObjeto
       } = fields;
-
-      let nomeImagem = "";
-      if (files.foto && files.foto[0]) {
-        const oldPath = files.foto[0].filepath;
-        const ext = path.extname(files.foto[0].originalFilename || ".jpg");
-        nomeImagem = `${uuidv4()}${ext}`;
-        const newPath = path.join(process.cwd(), "public/uploads", nomeImagem);
-        fs.renameSync(oldPath, newPath);
-      }
-
       try {
         const query = `
           INSERT INTO Produtos (
@@ -80,7 +97,7 @@ export default async function handler(req, res) {
           novo === "Sim" ? 1 : 0,
           parseInt(tipoCategoria) || null,
           tamanhoRoupa || "", tamanhoCalcado || "", tamanhoObjeto || "",
-          nomeImagem
+          imageUrl // <- imagem da Cloudinary
         ];
 
         await pool.query(query, values);

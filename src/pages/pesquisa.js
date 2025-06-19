@@ -323,48 +323,55 @@ export default function Pesquisa() {
         </aside>
 
         <main className={styles.resultados}>
-          <h2>Resultados para: "{termo}"</h2>
+  {termo && termo.trim() !== "" ? (
+    <h2>Resultados para: "{termo}"</h2>
+  ) : (
+    <h2>Nenhum produto encontrado</h2>
+  )}
 
-          <div className={styles.sugestoes}>
-            <p>Sugestões:</p>
-            {sugestoes.map((s, i) => (
-              <button
-                key={i}
-                className={styles.sugestaoBtn}
-                onClick={() => router.push(`/pesquisa?q=${s}`)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+  <div className={styles.sugestoes}>
+    <p>Sugestões:</p>
+    {sugestoes.map((s, i) => (
+      <button
+        key={i}
+        className={styles.sugestaoBtn}
+        onClick={() => router.push(`/pesquisa?q=${s}`)}
+      >
+        {s}
+      </button>
+    ))}
+  </div>
 
-          <div className={styles.gridProdutos}>
-            {produtosPaginados.length === 0 ? (
-              <p>Nenhum produto encontrado.</p>
-            ) : (
-              produtosPaginados.map((produto) => (
-                <ProdutoCard
-                  key={produto.ID_produto}
-                  produto={produto}
-                  mostrarFavorito={false}
-                  onClick={() => router.push(`/produto/${produto.ID_produto}`)}
-                />
-              ))
-            )}
-          </div>
+  <div className={styles.gridProdutos}>
+    {termo && produtosPaginados.length === 0 ? (
+      <p>Nenhum produto encontrado.</p>
+    ) : (
+      produtosPaginados.map((produto) => (
+        <ProdutoCard
+          key={produto.ID_produto}
+          produto={produto}
+          mostrarFavorito={false}
+          onClick={() => router.push(`/produto/${produto.ID_produto}`)}
+        />
+      ))
+    )}
+  </div>
 
-          <div className={styles.paginacao}>
-            {Array.from({ length: totalPaginas }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setPaginaAtual(i + 1)}
-                className={paginaAtual === i + 1 ? styles.ativo : ""}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-        </main>
+  {produtosFiltrados.length > 0 && (
+    <div className={styles.paginacao}>
+      {Array.from({ length: totalPaginas }, (_, i) => (
+        <button
+          key={i}
+          onClick={() => setPaginaAtual(i + 1)}
+          className={paginaAtual === i + 1 ? styles.ativo : ""}
+        >
+          {i + 1}
+        </button>
+      ))}
+    </div>
+  )}
+</main>
+
       </div>
     </>
   );
