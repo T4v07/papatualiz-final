@@ -137,7 +137,7 @@ export default function Home() {
         ))}
       </div>
 
-<Carousel />
+<carousel />
 <div className={styles.spacing}></div>
       <div className={styles.spacing}></div>
       <RectangleBox />
