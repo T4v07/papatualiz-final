@@ -1,7 +1,6 @@
 import Navbar from "../components/navbar";
 import RectangleBox from "../components/RectangleBox";
 import FeaturedProducts from "../components/FeaturedProducts";
-import Carousel from "../components/carousel"; 
 import styles from "../styles/home.module.css";
 import Footer from "../components/Footer";
 import Link from "next/link";
@@ -137,8 +136,7 @@ export default function Home() {
         ))}
       </div>
 
-<carousel />
-<div className={styles.spacing}></div>
+
       <div className={styles.spacing}></div>
       <RectangleBox />
       <div className={styles.spacing}></div>
