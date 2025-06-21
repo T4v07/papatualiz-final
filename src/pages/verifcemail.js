@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar"; // IMPORTAR A NAVBAR
+import Navbar from "@/components/navbar"; // IMPORTAR A NAVBAR
 
 import styles from "../styles/verifcemail.module.css";
 
