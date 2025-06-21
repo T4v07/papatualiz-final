@@ -64,3 +64,10 @@
     background-color: black; /* Cor preta */
     border-radius: 6px;
 }
+.categoryImage {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

@@ -249,16 +249,26 @@ export default function AdicionarProdutoFuncionario() {
     </tr>
   </thead>
   <tbody>
-    {produtos.map((produto) => (
-      <tr key={produto.ID_produto}>
-        <td>{produto.Nome_Produtos}</td>
-        <td>{produto.Modelo}</td>
-        <td>{parseFloat(produto.Preco).toFixed(2)}€</td>
-        <td>{produto.Stock}</td>
-        <td>{produto.Tipo_de_Categoria}</td>
-      </tr>
-    ))}
-  </tbody>
+  {produtos.map((produto) => (
+    <tr key={produto.ID_produto}>
+      <td>{produto.Nome_Produtos}</td>
+      <td>{produto.Modelo}</td>
+      <td>{parseFloat(produto.Preco).toFixed(2)}€</td>
+      <td>{produto.Stock}</td>
+      <td>{produto.Tipo_de_Categoria}</td>
+      <td>
+        <button
+          type="button"
+          onClick={() => carregarProdutoParaEdicao(produto)}
+          className={styles.botaoEditar}
+        >
+          Editar
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
 </table>
 
 <ToastContainer position="top-right" autoClose={3000} />

@@ -1,22 +1,30 @@
 .footer {
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-    position: relative;
+  background-color: black;
+  color: white;
+  width: 100vw;
+  margin: 0;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-.logoContainer {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+.innerFooter {
+  max-width: 1300px;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .logo {
-    height: 40px; /* Ajuste conforme necessário */
+  height: 40px;
 }
 
 .copyright {
-    font-size: 14px;
-    margin-top: 80px; /* Ajuste para alinhar bem o texto */
+  font-size: 14px;
+  text-align: center;
+  flex: 1;
 }

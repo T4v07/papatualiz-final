@@ -3,15 +3,14 @@ import styles from "../styles/dropdowns.module.css";
 
 const CarrinhoDropdown = () => {
   return (
-    <div className={styles.dropdownBox}>
-      <div className={styles.seta}></div>
-      <div className={styles.dropdownContent}>
+    <div className={styles.dropdownAtivo}>
+      <div className={styles.dropdownBox}>
+        <div className={styles.seta}></div>
         <h4 className={styles.dropdownTitle}>CARRINHO</h4>
         <div className={styles.carrinhoContent}>
-          <div className={styles.carrinhoIcon}></div>
-          <p className={styles.carrinhoMensagem}>O carrinho está vazio!</p>
+          <p className={styles.carrinhoMensagem}></p>
           <Link href="/carrinho" className={styles.continuarLink}>
-            Continuar a comprar
+            Ir para o carrinho
           </Link>
         </div>
       </div>

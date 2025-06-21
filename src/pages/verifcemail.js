@@ -1,106 +1,62 @@
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Navbar from "../components/navbar";
-import styles from "../styles/auth.module.css";
+import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar"; // IMPORTAR A NAVBAR
 
-export default function VerifyEmail() {
+import styles from "../styles/verifcemail.module.css";
+
+export default function Verifcemail() {
   const router = useRouter();
-  const [code, setCode] = useState("");
-  const [email, setEmail] = useState(router.query.email || ""); // Captura o e-mail da URL automaticamente
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [resendMessage, setResendMessage] = useState("");
+  const { email: emailQuery } = router.query;
+
+  const [email, setEmail] = useState("");
+  const [codigo, setCodigo] = useState("");
 
   useEffect(() => {
-    if (router.query.email) {
-      setEmail(router.query.email);
-    }
-  }, [router.query.email]);
+    if (emailQuery) setEmail(emailQuery);
+  }, [emailQuery]);
 
-  const handleVerify = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess(false);
-
-    try {
-      const response = await fetch("/api/verifyCode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setSuccess(true);
-        setTimeout(() => {
-          router.push("/login"); // Redireciona para login após sucesso
-        }, 2000);
-      } else {
-        setError(data.message);
-      }
-    } catch (err) {
-      console.error("Erro ao verificar código:", err);
-      setError("Erro ao verificar código. Tente novamente.");
-    }
+  const handleVerificar = () => {
+    console.log("Verificando com código:", codigo);
   };
 
-  const handleResendCode = async () => {
-    if (!email) {
-      setError("Digite seu e-mail primeiro para reenviar o código.");
-      return;
-    }
-
-    setError("");
-    setResendMessage("Enviando novo código...");
-
-    try {
-      const response = await fetch("/api/resendCode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setResendMessage("Novo código enviado para o seu e-mail!");
-      } else {
-        setError(data.message);
-      }
-    } catch (err) {
-      console.error("Erro ao reenviar código:", err);
-      setError("Erro ao reenviar código. Tente novamente.");
-    }
+  const handleReenviar = () => {
+    console.log("Reenviando código para:", email);
   };
 
   return (
     <>
-      <Navbar />
-      <div className={styles.authContainer}>
-        <div className={styles.authCard}>
-          <h2 className={styles.title}>Verificar E-mail</h2>
-          {error && <div className={styles.error}>{error}</div>}
-          {success && <div className={styles.success}>Conta verificada com sucesso! Redirecionando...</div>}
-          {resendMessage && <div className={styles.success}>{resendMessage}</div>}
+      <Navbar /> {/* ADICIONA A NAVBAR AQUI */}
 
-          <form onSubmit={handleVerify} className={styles.form}>
+      <div className={styles.container}>
+        <div className={styles.imageSide}></div>
+
+        <div className={styles.formSide}>
+          <div className={styles.formBox}>
+            <h2>Verificar E-mail</h2>
+
             <input
               type="email"
-              placeholder="Digite seu e-mail"
+              className={styles.input}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              readOnly
             />
+
             <input
               type="text"
+              className={styles.input}
               placeholder="Código de Verificação"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              required
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
             />
-            <button type="submit" className={styles.submitButton}>Verificar</button>
-          </form>
 
-          <button onClick={handleResendCode} className={styles.resendButton}>Reenviar Código</button>
+            <button className={styles.button} onClick={handleVerificar}>
+              Verificar
+            </button>
+
+            <button className={styles.button} onClick={handleReenviar}>
+              Reenviar Código
+            </button>
+          </div>
         </div>
       </div>
     </>

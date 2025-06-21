@@ -1,4 +1,4 @@
-import {useState, useContext } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import AuthContext from "@/context/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,11 +19,13 @@ import CarrinhoDropdown from "./CarrinhoDropdown";
 import { useRouter } from "next/router";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext); // ✅ Agora funcionando
+  const { user } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hovered, setHovered] = useState("");
+  const [activeDropdown, setActiveDropdown] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+
+  const dropdownRef = useRef(null);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -32,6 +34,26 @@ const Navbar = () => {
     }
   };
 
+  const toggleDropdown = (nome) => {
+    setActiveDropdown((prev) => (prev === nome ? "" : nome));
+  };
+
+  // 👉 Fecha dropdowns ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setActiveDropdown("");
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <div className={styles.notificationBar}>
@@ -39,7 +61,7 @@ const Navbar = () => {
       </div>
 
       <header className={styles.navbar}>
-        <div className={styles.navbarContainer}>
+        <div className={styles.navbarContainer} ref={dropdownRef}>
           <div className={styles.menuIcon} onClick={() => setMenuOpen(true)}>
             <FaBars />
             <span className={styles.menuText}>menu</span>
@@ -65,35 +87,44 @@ const Navbar = () => {
             {/* FAVORITOS */}
             <div
               className={styles.iconWrapper}
-              onMouseEnter={() => setHovered("favoritos")}
-              onMouseLeave={() => setHovered("")}
+              onClick={() => toggleDropdown("favoritos")}
             >
               <FaHeart className={styles.icon} />
               <span>Favoritos</span>
-              {hovered === "favoritos" && <FavoritosDropdown />}
+              {activeDropdown === "favoritos" && (
+                <div className={styles.dropdownAtivo}>
+                  <FavoritosDropdown />
+                </div>
+              )}
             </div>
 
             {/* AJUDA */}
             <div
               className={styles.iconWrapper}
-              onMouseEnter={() => setHovered("ajuda")}
-              onMouseLeave={() => setHovered("")}
+              onClick={() => toggleDropdown("ajuda")}
             >
               <FaQuestionCircle className={styles.icon} />
               <span>Ajuda</span>
-              {hovered === "ajuda" && <AjudaDropdown />}
+              {activeDropdown === "ajuda" && (
+                <div className={styles.dropdownAtivo}>
+                  <AjudaDropdown />
+                </div>
+              )}
             </div>
 
             {/* ÁREA PESSOAL */}
             {user ? (
               <div
                 className={styles.iconWrapper}
-                onMouseEnter={() => setHovered("area")}
-                onMouseLeave={() => setHovered("")}
+                onClick={() => toggleDropdown("area")}
               >
                 <FaUser className={styles.icon} />
                 <span>Área Pessoal</span>
-                {hovered === "area" && <AreaPessoalDropdown />}
+                {activeDropdown === "area" && (
+                  <div className={styles.dropdownAtivo}>
+                    <AreaPessoalDropdown />
+                  </div>
+                )}
               </div>
             ) : (
               <Link href="/login">
@@ -105,12 +136,15 @@ const Navbar = () => {
             {/* CARRINHO */}
             <div
               className={styles.iconWrapper}
-              onMouseEnter={() => setHovered("carrinho")}
-              onMouseLeave={() => setHovered("")}
+              onClick={() => toggleDropdown("carrinho")}
             >
               <FaShoppingCart className={styles.icon} />
               <span>Carrinho</span>
-              {hovered === "carrinho" && <CarrinhoDropdown />}
+              {activeDropdown === "carrinho" && (
+                <div className={styles.dropdownAtivo}>
+                  <CarrinhoDropdown />
+                </div>
+              )}
             </div>
           </nav>
         </div>

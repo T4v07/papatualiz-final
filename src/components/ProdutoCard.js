@@ -7,12 +7,9 @@ export default function ProdutoCard({ produto, onClick }) {
   const temDesconto = desconto > 0;
   const precoFinal = (preco - desconto).toFixed(2);
 
-  // Caminho da imagem com fallback
   const imagemSrc =
     produto.Foto && produto.Foto.trim() !== ""
-      ? produto.Foto.startsWith("/images/uploads/")
-        ? produto.Foto
-        : `/images/uploads/${produto.Foto.replace(/^\/+|\\+/g, '')}`
+      ? produto.Foto
       : "/images/uploads/sem-imagem.png";
 
   return (

@@ -1,102 +1,223 @@
-.authContainer {
+/* ========== CONTAINER SPLIT ========== */
+.splitContainer {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.imageSide {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.imageSide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ========== FORM SIDE ========== */
+.formSide {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh; /* Ajustado para acomodar a navbar */
-  background: #ffffff; /* Fundo branco para um design mais limpo */
+  padding: 60px 40px;
+  background-color: #ffffff;
 }
 
+/* ========== CARD FORM ========== */
 .authCard {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 350px;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #002244;
+  margin-bottom: 28px;
+  text-align: left;
 }
 
-.form input {
+/* ========== INPUTS ========== */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.inputGroup input {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: 14px 40px 14px 40px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.2s ease;
 }
 
-.form input:focus {
-  border-color: #007bff;
+.inputGroup input:focus {
+  border-color: #0050ff;
   outline: none;
-  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 6px rgba(0, 80, 255, 0.3);
 }
 
-.submitButton,
-.resendButton {
-  width: 100%;
-  padding: 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+.icon {
+  position: absolute;
+  left: 14px;
+  color: #888;
+}
+
+.toggleIcon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
   cursor: pointer;
-  transition: 0.3s;
+  z-index: 2;
+}
+
+/* ========== BUTTONS ========== */
+.submitButton {
+  width: 100%;
+  padding: 14px;
+  background-color: #0050ff;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   margin-top: 10px;
 }
 
-.submitButton:hover,
-.resendButton:hover {
-  background: #0056b3;
+.submitButton:hover {
+  background-color: #003dcc;
 }
 
-.resendButton {
-  background: #28a745; /* Verde para destacar */
-}
-
-.resendButton:hover {
-  background: #218838;
-}
-
+/* ========== TEXTO DE MUDAR DE PÁGINA ========== */
 .switch {
-  margin-top: 12px;
+  margin-top: 20px;
   font-size: 14px;
+  text-align: left;
   color: #333;
 }
 
 .switch span {
-  color: #007bff;
-  font-weight: bold;
+  color: #0050ff;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .switch span:hover {
   text-decoration: underline;
 }
 
-.error,
-.success {
-  padding: 12px;
-  border-radius: 5px;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
+/* ========== MENSAGENS ========== */
 .error {
-  background: #ffdddd;
+  background: #ffe5e5;
   color: #d8000c;
+  padding: 10px 12px;
   border-left: 4px solid #d8000c;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.success {
-  background: #ddffdd;
-  color: #28a745;
-  border-left: 4px solid #28a745;
+/* ========== RESPONSIVO MOBILE ========== */
+@media (max-width: 768px) {
+  .splitContainer {
+    flex-direction: column;
+  }
+
+  .imageSide {
+    height: 240px;
+    width: 100%;
+    background-position: center center;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .formSide {
+    padding: 32px 24px;
+  }
+
+  .authCard {
+    padding: 28px 24px;
+    box-shadow: none;
+  }
+
+  .title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .switch {
+    text-align: center;
+  }
+}
+
+/* ========== DIVISOR (CASO USE FUTURAMENTE) ========== */
+.divider {
+  text-align: center;
+  margin: 16px 0;
+  position: relative;
+  font-size: 13px;
+  color: #888;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #ddd;
+}
+
+.divider::before {
+  left: 0;
+}
+.divider::after {
+  right: 0;
+}
+.imageSide {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
 }

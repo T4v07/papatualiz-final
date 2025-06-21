@@ -13,6 +13,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    const termo = `%${q}%`;
+
     const [rows] = await pool.query(
       `
       SELECT 
@@ -48,12 +50,12 @@ export default async function handler(req, res) {
         p.Descricao LIKE ? OR
         c.Tipo_de_Categoria LIKE ?
       `,
-      Array(7).fill(`%${q}%`)
+      [termo, termo, termo, termo, termo, termo, termo]
     );
 
     res.status(200).json(rows);
   } catch (error) {
-    console.error('Erro ao buscar produtos:', error);
-    res.status(500).json({ message: 'Erro interno ao buscar produtos' });
+    console.error("❌ ERRO MYSQL:", error); // Mostra no terminal o erro real
+    res.status(500).json({ message: "Erro interno ao buscar produtos", erro: error.message });
   }
 }

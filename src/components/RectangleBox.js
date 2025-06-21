@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import styles from "../styles/RectangleBox.module.css";
 
 const RectangleBox = () => {
@@ -6,91 +7,173 @@ const RectangleBox = () => {
     {
       category: "Running Deals!",
       description: "Descobre as melhores promoções em artigos de corrida.",
-      buttonText: "Ver oferta",
+      buttonText: "Ver mais",
+      searchTerm: "corrida",
+      categoryImageUrl:
+        "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750422481/jakob-owens-A4579vLezz8-unsplash_lh7k4l.jpg",
       products: [
-        { name: "Tênis de Corrida", imageUrl: "caminho/para/tenis.jpg" },
-        { name: "Meias esportivas", imageUrl: "caminho/para/meias.jpg" },
-        { name: "Calção esportivo", imageUrl: "caminho/para/calcao.jpg" },
-        { name: "Camiseta", imageUrl: "caminho/para/camiseta.jpg" },
-        { name: "Suporte para celular", imageUrl: "caminho/para/suporte.jpg" },
-        { name: "Garrafa térmica", imageUrl: "caminho/para/garrafa.jpg" },
+        {
+          id: 26,
+          name: "Tênis de Corrida Pro",
+          brand: "VelociRun",
+          priceOriginal: "89,99€",
+          priceFinal: "75,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750413856/produtos/zom1ph3y83mqfo9akwpk.jpg",
+        },
+        {
+          id: 31,
+          name: "Calção Esportivo",
+          brand: "Kalenji",
+          priceFinal: "14,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750418860/produtos/assm1a76pim6zyktlwkd.jpg",
+        },
+        {
+          id: 30,
+          name: "Meias Esportivas",
+          brand: "Domyos",
+          priceFinal: "6,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750418641/produtos/ukn3aigdkb3l7znuri7h.jpg",
+        },
+        {
+          id: 32,
+          name: "Camiseta Técnica de Corrida",
+          brand: "Kalenji",
+          priceOriginal: "12,99€",
+          priceFinal: "16,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750419073/produtos/sslcwkzby75agusnoxhs.jpg",
+        },
+        {
+          id: 33,
+          name: "Cinto de Hidratação",
+          brand: "Kalenji",
+          priceFinal: "19,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750419353/produtos/kvbzqto1p6efayixfaar.jpg",
+        },
+        {
+          id: 34,
+          name: "Garrafa Térmica Esportiva",
+          brand: "Aptonia",
+          priceOriginal: "22,90€",
+          priceFinal: "14,90€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750419838/produtos/l6khojsvlzlenjuc25zl.jpg",
+        },
       ],
       isLeft: true,
-      categoryImageUrl: "caminho/para/categoria-running.jpg", // Imagem da categoria
     },
     {
       category: "Cycling Deals!",
       description: "Descobre as melhores promoções nas bicicletas.",
-      buttonText: "Ver oferta",
+      buttonText: "Ver mais",
+      searchTerm: "ciclismo",
+      categoryImageUrl:
+        "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750422477/benson-low-p4vpkXBpxBA-unsplash_zxjlk0.jpg",
       products: [
-        { name: "Capacete", imageUrl: "caminho/para/capacete.jpg" },
-        { name: "Luvas para ciclismo", imageUrl: "caminho/para/luvas.jpg" },
-        { name: "Bicicleta", imageUrl: "caminho/para/bicicleta.jpg" },
-        { name: "Óculos de proteção", imageUrl: "caminho/para/oculos.jpg" },
-        { name: "Cadeado para bike", imageUrl: "caminho/para/cadeado.jpg" },
-        { name: "Mochila de hidratação", imageUrl: "caminho/para/mochila.jpg" },
+        {
+          id: 35,
+          name: "Capacete de Ciclismo",
+          brand: "Van Rysel",
+          priceFinal: "39,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750420047/produtos/ge1o310ptq9bulsviirh.jpg",
+        },
+        {
+          id: 36,
+          name: "Luvas para Ciclismo",
+          brand: "Bianchi",
+          priceFinal: "15,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750175846/produtos/de51ynjxaxeyao6mgphl.jpg",
+        },
+        {
+          id: 37,
+          name: "Bicicleta de Estrada",
+          brand: "Triban",
+          priceOriginal: "699,99€",
+          priceFinal: "696,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750420371/produtos/zrddg3t3mqs9skvv9qym.jpg",
+        },
+        {
+          id: 38,
+          name: "Óculos de Proteção para Ciclismo",
+          brand: "Van Rysel",
+          priceFinal: "24,99€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750420811/produtos/irmzc9ej7dj7ceeqykc6.jpg",
+        },
+        {
+          id: 39,
+          name: "Camisola de Ciclismo",
+          brand: "Van Rysel",
+          priceFinal: "29,90€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750421046/produtos/yotbexjyrfl4io4egwwe.jpg",
+        },
+        {
+          id: 40,
+          name: "Mochila de Hidratação",
+          brand: "CamelBak",
+          priceFinal: "54,90€",
+          imageUrl:
+            "https://res.cloudinary.com/dk56q7rsl/image/upload/v1750421653/produtos/xl4iwuhsqp8e1ou2eowi.jpg",
+        },
       ],
       isLeft: false,
-      categoryImageUrl: "caminho/para/categoria-cycling.jpg", // Imagem da categoria
-    },
-    {
-      category: "Mountain Deals!",
-      description: "Descobre as melhores promoções em artigos de montanha.",
-      buttonText: "Ver oferta",
-      products: [
-        { name: "Botas de montanha", imageUrl: "caminho/para/botas.jpg" },
-        { name: "Jaqueta impermeável", imageUrl: "caminho/para/jaqueta.jpg" },
-        { name: "Bastões de caminhada", imageUrl: "caminho/para/bastoes.jpg" },
-        { name: "Lanterna LED", imageUrl: "caminho/para/lanterna.jpg" },
-        { name: "Kit primeiros socorros", imageUrl: "caminho/para/kit.jpg" },
-        { name: "Mapa topográfico", imageUrl: "caminho/para/mapa.jpg" },
-      ],
-      isLeft: true,
-      categoryImageUrl: "caminho/para/categoria-mountain.jpg", // Imagem da categoria
-    },
-    {
-      category: "Camping Deals!",
-      description: "Descobre as melhores promoções em artigos de acampamento.",
-      buttonText: "Ver oferta",
-      products: [
-        { name: "Barraca", imageUrl: "caminho/para/barraca.jpg" },
-        { name: "Saco de dormir", imageUrl: "caminho/para/saco.jpg" },
-        { name: "Fogareiro portátil", imageUrl: "caminho/para/fogareiro.jpg" },
-        { name: "Isolante térmico", imageUrl: "caminho/para/isolante.jpg" },
-        { name: "Lanterna de cabeça", imageUrl: "caminho/para/lanterna-cabeca.jpg" },
-        { name: "Cadeira dobrável", imageUrl: "caminho/para/cadeira.jpg" },
-      ],
-      isLeft: false,
-      categoryImageUrl: "caminho/para/categoria-camping.jpg", // Imagem da categoria
     },
   ];
 
   return (
     <div className={styles.container}>
       {categories.map((category, index) => (
-        <div key={index} className={`${styles.section} ${category.isLeft ? styles.left : styles.right}`}>
-          {/* Retângulo grande */}
+        <div
+          key={index}
+          className={`${styles.section} ${category.isLeft ? styles.left : styles.right}`}
+        >
           <div
             className={styles.largeRectangle}
-            style={{ backgroundImage: `url('${category.categoryImageUrl}')` }} // Imagem da categoria
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('${category.categoryImageUrl}')`,
+              height: "480px",
+            }}
           >
-            <div className={styles.textContainer}>
+            <div className={styles.textContainerOverlay}>
               <h2>{category.category}</h2>
               <p>{category.description}</p>
-              <button>{category.buttonText}</button>
+              <Link
+                href={`/pesquisa?q=${encodeURIComponent(category.searchTerm)}`}
+                passHref
+              >
+                <button className={styles.blueButton}>{category.buttonText}</button>
+              </Link>
             </div>
           </div>
 
-          {/* Grid de produtos */}
-          <div className={styles.productsGrid}>
+          <div className={styles.productsGrid} style={{ minHeight: "480px" }}>
             {category.products.map((product, idx) => (
-              <div key={idx} className={styles.productCard}>
-                <div
-                  className={styles.productImage}
-                  style={{ backgroundImage: `url('${product.imageUrl}')` }} // Imagem do produto
-                ></div>
-                <p>{product.name}</p>
-              </div>
+              <Link key={idx} href={`/produto/${product.id}`} passHref>
+                <div className={styles.productCard}>
+                  <div
+                    className={styles.productImage}
+                    style={{ backgroundImage: `url('${product.imageUrl}')` }}
+                  />
+                  <p className={styles.productName}>{product.name}</p>
+                  <p className={styles.productBrand}>{product.brand}</p>
+
+                  <p>
+                    {product.priceOriginal &&
+                      product.priceOriginal !== product.priceFinal && (
+                        <span className={styles.oldPrice}>{product.priceOriginal}</span>
+                      )}
+                    <span className={styles.productPrice}>{product.priceFinal}</span>
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
