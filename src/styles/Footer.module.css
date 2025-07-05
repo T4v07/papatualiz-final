@@ -1,30 +1,123 @@
 .footer {
-  background-color: black;
-  color: white;
-  width: 100vw;
-  margin: 0;
-  padding: 40px 0;
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
+  background-color: #111;
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.innerFooter {
-  max-width: 1300px;
-  width: 100%;
-  padding: 0 20px;
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.columns {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
-.logo {
-  height: 40px;
+.columns div {
+  flex: 1 1 180px;
+  min-width: 180px;
 }
 
-.copyright {
+.columns h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  color: #00b4ff;
+}
+
+.columns ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.columns li {
+  margin-bottom: 8px;
   font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.columns li:hover {
+  color: #ccc;
+}
+
+/* Ícones das redes sociais */
+.socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.socials img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.socials img:hover {
+  transform: scale(1.1);
+}
+
+/* Parte inferior do footer */
+.bottom {
+  border-top: 1px solid #444;
+  padding-top: 20px;
   text-align: center;
-  flex: 1;
+}
+
+.bottom img {
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.bottom p {
+  font-size: 13px;
+  color: #bbb;
+  margin: 0;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .columns div {
+    min-width: unset;
+  }
+
+  .socials {
+    justify-content: flex-start;
+  }
+
+  .bottom img {
+    height: 32px;
+  }
+
+  .content {
+    margin: 0;
+    padding: 0 16px;
+  }
+
+  .columns h3 {
+    font-size: 15px;
+  }
+
+  .columns li {
+    font-size: 13px;
+  }
+
+  .bottom p {
+    font-size: 12px;
+  }
 }

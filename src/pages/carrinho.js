@@ -1,106 +1,58 @@
-// /pages/carrinho.js
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "@/context/AuthContext";
-import Navbar from "@/components/navbar";
-import styles from "@/styles/carrinho.module.css";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import ProdutoCarrinho from "@/components/ProdutoCarrinho";
+import axios from "axios";
 
 export default function CarrinhoPage() {
-  const { user } = useContext(AuthContext);
-  const [itens, setItens] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [produtos, setProdutos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const id_utilizador = 1; // ✅ Troca isso mais tarde pelo ID real do utilizador logado
 
   useEffect(() => {
-    if (user?.ID_utilizador) {
-      fetch(`/api/carrinho?id_utilizador=${user.ID_utilizador}`)
-        .then(res => res.json())
-        .then(data => setItens(Array.isArray(data) ? data : []));
-    }
-  }, [user]);
+    const fetchCarrinho = async () => {
+      try {
+        const res = await axios.get(`/api/carrinho?id_utilizador=${id_utilizador}`);
+        setProdutos(res.data);
+      } catch (err) {
+        console.error("Erro ao buscar carrinho:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const removerItem = async (id_produto) => {
-    await fetch("/api/carrinho/remover", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id_utilizador: user.ID_utilizador, id_produto }),
-    });
-    setItens(prev => prev.filter(p => p.ID_produto !== id_produto));
-  };
+    fetchCarrinho();
+  }, []);
 
-  const finalizarCompra = async () => {
-    const confirmar = confirm("Deseja finalizar a compra?");
-    if (!confirmar) return;
-
-    setLoading(true);
-
-    const res = await fetch("/api/compra", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id_utilizador: user.ID_utilizador,
-        userNome: user.Nome,
-        userEmail: user.Email,
-      }),
-    });
-
-    const data = await res.json();
-    setLoading(false);
-
-    if (res.ok) {
-      setItens([]);
-      router.push("/compra-pendente");
-    } else {
-      alert(data.message || "Erro ao processar pedido.");
-    }
-  };
-
-  const subtotal = itens.reduce((acc, item) => acc + item.Preco * item.Quantidade, 0);
+  const total = produtos.reduce((acc, item) => acc + item.Preco * item.Quantidade, 0);
 
   return (
-    <>
-      <Navbar />
-      <div className={styles.container}>
-        <h2 className={styles.titulo}>🛒 Carrinho de Compras</h2>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold mb-6">Carrinho</h1>
 
-        {itens.length === 0 ? (
-          <div className={styles.vazio}>
-            <img src="/vazio.png" alt="Carrinho vazio" />
-            <p>O teu carrinho está vazio.</p>
-            <a href="/" className={styles.btnVoltar}>Voltar à loja</a>
+      {loading ? (
+        <p>Carregando...</p>
+      ) : produtos.length === 0 ? (
+        <p>O carrinho está vazio.</p>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            {produtos.map((produto) => (
+              <ProdutoCarrinho key={produto.ID_carrinho} produto={produto} />
+            ))}
           </div>
-        ) : (
-          <div className={styles.conteudo}>
-            <ul className={styles.lista}>
-              {itens.map((item) => (
-                <li key={item.ID_produto} className={styles.item}>
-                  <img src={item.Foto || "/sem-foto.jpg"} alt={item.Nome_Produtos} />
-                  <div className={styles.info}>
-                    <h4>{item.Nome_Produtos}</h4>
-                    <p><strong>Marca:</strong> {item.Marca}</p>
-                    <p><strong>Quantidade:</strong> {item.Quantidade}</p>
-                    <p><strong>Preço:</strong> {Number(item.Preco).toFixed(2)} €</p>
-                    <button className={styles.btnRemover} onClick={() => removerItem(item.ID_produto)}>
-                      Remover
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className={styles.resumo}>
-              <h3>Resumo do Pedido</h3>
-              <p>Total: <strong>{subtotal.toFixed(2)} €</strong></p>
-              <button
-                className={styles.btnCheckout}
-                onClick={finalizarCompra}
-                disabled={loading}
-              >
-                {loading ? "Finalizando..." : "Finalizar Compra"}
-              </button>
-            </div>
+
+          <div className="bg-white p-4 shadow rounded h-fit">
+            <h2 className="text-xl font-semibold mb-4">Resumo da Encomenda</h2>
+            <p className="mb-2">Total: <span className="font-bold">{total.toFixed(2)} €</span></p>
+            <button
+              className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded transition"
+              onClick={() => window.location.href = "/moradaenvio"}
+            >
+              Finalizar Compra
+            </button>
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }

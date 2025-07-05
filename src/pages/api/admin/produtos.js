@@ -14,140 +14,117 @@ export const config = {
 
 function sanitizar(valor) {
   if (valor === undefined || valor === "") return null;
-  if (!isNaN(valor)) return valor;
+  if (!isNaN(valor)) return parseFloat(valor);
+  if (typeof valor === "string" && valor.length > 255) return valor.substring(0, 255);
   return valor;
 }
 
 export default async function handler(req, res) {
-  if (req.method === "POST" || req.method === "PUT") {
-    const form = formidable({ keepExtensions: true });
+  if (req.method === "POST") {
+    const form = formidable({ keepExtensions: true, multiples: true });
 
     form.parse(req, async (err, fields, files) => {
       if (err) return res.status(500).json({ message: "Erro no processamento." });
 
       try {
-        let fotoUrl = null;
-        const file = files.foto?.[0];
+        const fotosFiles = files.fotos || [];
+        const fotosArray = Array.isArray(fotosFiles) ? fotosFiles : [fotosFiles];
+        const variacoes = JSON.parse(fields.variacoes || "[]");
 
-        if (file) {
-          const uploaded = await cloudinary.uploader.upload(file.filepath, {
-            folder: "produtos",
-          });
-          fotoUrl = uploaded.secure_url;
-        }
-
-        const values = {
-          id: sanitizar(fields.id?.[0]),
-          nome: sanitizar(fields.nome?.[0]),
-          modelo: sanitizar(fields.modelo?.[0]),
-          marca: sanitizar(fields.marca?.[0]),
-          genero: sanitizar(fields.genero?.[0]),
-          idade: sanitizar(fields.idade?.[0]),
-          idadeOutro: sanitizar(fields.idadeOutro?.[0]),
-          cor: sanitizar(fields.cor?.[0]),
-          corOutro: sanitizar(fields.corOutro?.[0]),
-          preco: sanitizar(parseFloat(fields.preco?.[0])),
-          peso: sanitizar(parseFloat(fields.peso?.[0])),
-          descricao: sanitizar(fields.descricao?.[0]),
-          stock: sanitizar(parseInt(fields.stock?.[0])),
-          tipoCategoria: sanitizar(parseInt(fields.tipoCategoria?.[0])),
-          fichaTecnica: sanitizar(fields.fichaTecnica?.[0]),
-          tamanhoRoupa: sanitizar(fields.tamanhoRoupa?.[0]),
-          tamanhoInicial: sanitizar(fields.tamanhoInicial?.[0]),
-          tamanhoFinal: sanitizar(fields.tamanhoFinal?.[0]),
-          tamanhoCalcado: sanitizar(fields.tamanhoCalcado?.[0]),
-          tamanhoObjeto: sanitizar(fields.tamanhoObjeto?.[0]),
-          material: sanitizar(fields.material?.[0]),
-          materialOutro: sanitizar(fields.materialOutro?.[0]),
-          usoRecomendado: sanitizar(fields.usoRecomendado?.[0]),
-          garantia: sanitizar(fields.garantia?.[0]),
-          tecnologia: sanitizar(fields.tecnologia?.[0]),
-          tecnologiaOutro: sanitizar(fields.tecnologiaOutro?.[0]),
-          origem: sanitizar(fields.origem?.[0]),
-          origemOutro: sanitizar(fields.origemOutro?.[0]),
-          desconto: sanitizar(parseFloat(fields.desconto?.[0])),
-          novo: fields.novo?.[0] === "Sim" ? 1 : 0,
-          foto: fotoUrl,
+        const produtoDados = {
+          nome: sanitizar(fields.nome),
+          modelo: sanitizar(fields.modelo),
+          marca: sanitizar(fields.marca),
+          marcaOutro: sanitizar(fields.MarcaOutro),
+          genero: sanitizar(fields.genero),
+          generoOutro: sanitizar(fields.GeneroOutro),
+          idade: sanitizar(fields.idade),
+          idadeOutro: sanitizar(fields.Idade_Outro),
+          preco: sanitizar(fields.preco),
+          peso: sanitizar(fields.peso),
+          descricao: sanitizar(fields.descricao),
+          tipoCategoria: parseInt(fields.tipoCategoria),
+          fichaTecnica: sanitizar(fields.Ficha_Tecnica),
+          material: sanitizar(fields.material),
+          materialOutro: sanitizar(fields.Material_Outro),
+          usoRecomendado: sanitizar(fields.Uso_Recomendado),
+          garantia: sanitizar(fields.garantia),
+          tecnologia: sanitizar(fields.tecnologia),
+          tecnologiaOutro: sanitizar(fields.Tecnologia_Outro),
+          origem: sanitizar(fields.origem),
+          origemOutro: sanitizar(fields.Origem_Outro),
+          desconto: sanitizar(fields.desconto),
+          novo: fields.novo === "Sim" ? 1 : 0,
         };
 
-        if (req.method === "POST") {
-          await pool.execute(`
-            INSERT INTO Produtos (
-              Nome_Produtos, Modelo, Marca, Genero, Idade, Idade_Outro,
-              Cor, Cor_Outro, Foto, Preco, Peso, Descricao, Stock,
-              Tipo_de_Categoria, Ficha_Tecnica,
-              Tamanho_Roupa, Tamanho_Calcado, Tamanho_Objeto,
-              Material, Material_Outro, Uso_Recomendado, Garantia,
-              Tecnologia, Tecnologia_Outro, Origem, Origem_Outro,
-              Desconto, Novo, Ativo
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
-          `, [
-            values.nome, values.modelo, values.marca, values.genero, values.idade, values.idadeOutro,
-            values.cor, values.corOutro, values.foto, values.preco, values.peso, values.descricao, values.stock,
-            values.tipoCategoria, values.fichaTecnica,
-            values.tamanhoRoupa, values.tamanhoCalcado, values.tamanhoObjeto,
-            values.material, values.materialOutro, values.usoRecomendado, values.garantia,
-            values.tecnologia, values.tecnologiaOutro, values.origem, values.origemOutro,
-            values.desconto, values.novo
-          ]);
-
-          return res.status(201).json({ message: "Produto adicionado com sucesso!" });
+        const fotosUrls = [];
+        for (const foto of fotosArray) {
+          const uploadResult = await cloudinary.uploader.upload(foto.filepath, {
+            folder: "produtos",
+          });
+          fotosUrls.push(uploadResult.secure_url);
         }
 
-        if (req.method === "PUT") {
-          const [existing] = await pool.query("SELECT Foto FROM Produtos WHERE ID_produto = ?", [values.id]);
-          const fotoFinal = values.foto || existing[0]?.Foto || null;
+        const [result] = await pool.execute(
+          `INSERT INTO Produtos (
+            Nome_Produtos, Modelo, Marca, MarcaOutro, Genero, GeneroOutro,
+            Idade, Idade_Outro, Preco, Peso, Descricao, Tipo_de_Categoria,
+            Ficha_Tecnica, Material, Material_Outro, Uso_Recomendado, Garantia,
+            Tecnologia, Tecnologia_Outro, Origem, Origem_Outro, Desconto, Novo, Ativo
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+          [
+            produtoDados.nome,
+            produtoDados.modelo,
+            produtoDados.marca,
+            produtoDados.marcaOutro,
+            produtoDados.genero,
+            produtoDados.generoOutro,
+            produtoDados.idade,
+            produtoDados.idadeOutro,
+            produtoDados.preco,
+            produtoDados.peso,
+            produtoDados.descricao,
+            produtoDados.tipoCategoria,
+            produtoDados.fichaTecnica,
+            produtoDados.material,
+            produtoDados.materialOutro,
+            produtoDados.usoRecomendado,
+            produtoDados.garantia,
+            produtoDados.tecnologia,
+            produtoDados.tecnologiaOutro,
+            produtoDados.origem,
+            produtoDados.origemOutro,
+            produtoDados.desconto,
+            produtoDados.novo,
+          ]
+        );
 
-          await pool.execute(`
-            UPDATE Produtos SET
-              Nome_Produtos=?, Modelo=?, Marca=?, Genero=?, Idade=?, Idade_Outro=?,
-              Cor=?, Cor_Outro=?, Foto=?, Preco=?, Peso=?, Descricao=?, Stock=?,
-              Tipo_de_Categoria=?, Ficha_Tecnica=?,
-              Tamanho_Roupa=?, Tamanho_Calcado=?, Tamanho_Objeto=?,
-              Tamanho_Inicial=?, Tamanho_Final=?,
-              Material=?, Material_Outro=?, Uso_Recomendado=?, Garantia=?,
-              Tecnologia=?, Tecnologia_Outro=?, Origem=?, Origem_Outro=?,
-              Desconto=?, Novo=?
-            WHERE ID_produto = ?
-          `, [
-            values.nome, values.modelo, values.marca, values.genero, values.idade, values.idadeOutro,
-            values.cor, values.corOutro, fotoFinal, values.preco, values.peso, values.descricao, values.stock,
-            values.tipoCategoria, values.fichaTecnica,
-            values.tamanhoRoupa, values.tamanhoCalcado, values.tamanhoObjeto,
-            values.tamanhoInicial, values.tamanhoFinal,
-            values.material, values.materialOutro, values.usoRecomendado, values.garantia,
-            values.tecnologia, values.tecnologiaOutro, values.origem, values.origemOutro,
-            values.desconto, values.novo, values.id
-          ]);
+        const produtoId = result.insertId;
 
-          return res.status(200).json({ message: "Produto atualizado com sucesso!" });
+        for (const url of fotosUrls) {
+          await pool.execute(
+            `INSERT INTO ProdutoFotos (produto_id, url) VALUES (?, ?)`,
+            [produtoId, url]
+          );
         }
+
+        for (const variacao of variacoes) {
+          await pool.execute(
+            `INSERT INTO ProdutoVariacoes (produto_id, cor, tamanho, stock) VALUES (?, ?, ?, ?)`,
+            [produtoId, variacao.cor, variacao.tamanho, variacao.stock]
+          );
+        }
+
+        return res.status(201).json({ message: "Produto adicionado com sucesso!" });
       } catch (error) {
         console.error("Erro geral:", error);
         return res.status(500).json({ message: "Erro interno ao salvar produto." });
       }
     });
+
     return;
   }
 
-  if (req.method === "GET") {
-    try {
-      const [produtos] = await pool.query(`
-        SELECT 
-          p.*, 
-          c.Tipo_de_Produto, 
-          c.Tipo_de_Categoria,
-          c.ID_categoria AS ID_categoria
-        FROM Produtos p
-        JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
-      `);
-      return res.status(200).json(produtos);
-    } catch (err) {
-      console.error("Erro ao buscar produtos:", err);
-      return res.status(500).json({ message: "Erro ao buscar produtos." });
-    }
-  }
-
-  res.setHeader("Allow", ["GET", "POST", "PUT"]);
-  return res.status(405).json({ message: `Método ${req.method} não permitido.` });
+  res.setHeader("Allow", ["POST"]);
+  res.status(405).json({ message: `Método ${req.method} não permitido.` });
 }

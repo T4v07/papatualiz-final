@@ -58,15 +58,32 @@
   }
 }
 
+/* ========== TEXTOS ========== */
+.brand {
+  font-size: 26px;
+  font-weight: 800;
+  color: #002244;
+  margin-bottom: 6px;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .title {
   font-size: 28px;
   font-weight: 700;
   color: #002244;
-  margin-bottom: 28px;
+  margin-bottom: 8px;
   text-align: left;
 }
 
-/* ========== INPUTS ========== */
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* ========== FORMULARIO ========== */
 .form {
   display: flex;
   flex-direction: column;
@@ -110,7 +127,7 @@
   z-index: 2;
 }
 
-/* ========== BUTTONS ========== */
+/* ========== BOTÃO ========== */
 .submitButton {
   width: 100%;
   padding: 14px;
@@ -129,7 +146,7 @@
   background-color: #003dcc;
 }
 
-/* ========== TEXTO DE MUDAR DE PÁGINA ========== */
+/* ========== LINKS ========== */
 .switch {
   margin-top: 20px;
   font-size: 14px;
@@ -147,7 +164,7 @@
   text-decoration: underline;
 }
 
-/* ========== MENSAGENS ========== */
+/* ========== ERROS ========== */
 .error {
   background: #ffe5e5;
   color: #d8000c;
@@ -159,7 +176,7 @@
   font-weight: 500;
 }
 
-/* ========== RESPONSIVO MOBILE ========== */
+/* ========== RESPONSIVO ========== */
 @media (max-width: 768px) {
   .splitContainer {
     flex-direction: column;
@@ -186,12 +203,16 @@
     text-align: center;
   }
 
+  .brand {
+    text-align: center;
+  }
+
   .switch {
     text-align: center;
   }
 }
 
-/* ========== DIVISOR (CASO USE FUTURAMENTE) ========== */
+/* ========== DIVISOR OPCIONAL ========== */
 .divider {
   text-align: center;
   margin: 16px 0;
@@ -216,8 +237,46 @@
 .divider::after {
   right: 0;
 }
-.imageSide {
-  flex: 1;
-  background-size: cover;
-  background-position: center;
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #002244;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+.backOverlay {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  text-decoration: none;
+  z-index: 2;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  transition: color 0.2s ease;
+}
+
+.backOverlay:hover {
+  color: #eaeaea;
 }

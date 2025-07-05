@@ -11,12 +11,13 @@ export default function SidebarAdmin() {
   const links = [
     { label: "Dashboard", path: "/areaAdmin" },
     { label: "Gestão de Produtos", path: "/admin/produtos" },
+    { label: "Adicionar Produto", path: "/admin/adicprodutoadm" },
     { label: "Gestão de Categorias", path: "/admin/categorias" },
     { label: "Gerir Encomendas", path: "/admin/encomendas" },
     { label: "Gestão de Utilizadores", path: "/admin/utilizadores" },
     { label: "Funcionários", path: "/admin/funcionarios" },
     { label: "Ver Compras", path: "/admin/compras" },
-    { label: "Controle de Estoque", path: "/admin/estoque" },
+    { label: "Controle de Stock", path: "/admin/estoque" },
   ];
 
   const handleNavigate = (path) => {

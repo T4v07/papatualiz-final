@@ -138,33 +138,30 @@ const RectangleBox = () => {
           <div
             className={styles.largeRectangle}
             style={{
-              backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('${category.categoryImageUrl}')`,
-              height: "480px",
+              backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.1)), url('${category.categoryImageUrl}')`,
             }}
           >
             <div className={styles.textContainerOverlay}>
               <h2>{category.category}</h2>
               <p>{category.description}</p>
-              <Link
-                href={`/pesquisa?q=${encodeURIComponent(category.searchTerm)}`}
-                passHref
-              >
+              <Link href={`/pesquisa?q=${encodeURIComponent(category.searchTerm)}`}>
                 <button className={styles.blueButton}>{category.buttonText}</button>
               </Link>
             </div>
           </div>
 
-          <div className={styles.productsGrid} style={{ minHeight: "480px" }}>
-            {category.products.map((product, idx) => (
-              <Link key={idx} href={`/produto/${product.id}`} passHref>
+          <div className={styles.productsGrid}>
+            {category.products.map((product) => (
+              <Link key={product.id} href={`/produto/${product.id}`}>
                 <div className={styles.productCard}>
                   <div
                     className={styles.productImage}
-                    style={{ backgroundImage: `url('${product.imageUrl}')` }}
+                    style={{
+                      backgroundImage: `url('${product.imageUrl}')`,
+                    }}
                   />
                   <p className={styles.productName}>{product.name}</p>
                   <p className={styles.productBrand}>{product.brand}</p>
-
                   <p>
                     {product.priceOriginal &&
                       product.priceOriginal !== product.priceFinal && (

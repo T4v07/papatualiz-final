@@ -75,10 +75,16 @@
   }
   
   .mainContent {
-    flex: 1;
-    padding: 40px;
-    margin-left: 270px;
-  }
+  margin-left: 250px; /* mesma largura da sidebar */
+  padding: 25px 40px;
+  background-color: white;
+  min-height: 100vh;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  overflow-x: hidden;
+}
+
   
   .mainContent h2 {
     color: #002244;

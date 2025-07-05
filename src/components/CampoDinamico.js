@@ -1,6 +1,6 @@
 // src/components/CampoDinamico.js
 import React, { useEffect, useState } from "react";
-import styles from "@/styles/gestaoProdutos.module.css";
+import styles from "@/styles/adicprodutoadm.module.css";
 
 const CampoDinamico = ({
   label,
@@ -27,6 +27,7 @@ const CampoDinamico = ({
 
       {opcoes.length > 0 ? (
         <select
+          id={name}
           name={name}
           value={value}
           onChange={onChange}
@@ -44,6 +45,7 @@ const CampoDinamico = ({
         </select>
       ) : (
         <input
+          id={name}
           type="text"
           name={name}
           value={value}
@@ -56,12 +58,13 @@ const CampoDinamico = ({
 
       {mostrarOutro && (
         <input
+          id={`${name}Outro`}
           type="text"
           name={`${name}Outro`}
           value={outroValue || ""}
           onChange={onOutroChange}
           placeholder={`Especifica outro ${label.toLowerCase()}...`}
-          className={styles.input}
+          className={`${styles.input} ${styles.fadeIn}`}
         />
       )}
     </div>

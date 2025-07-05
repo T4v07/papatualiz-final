@@ -1,4 +1,3 @@
-// /pages/api/carrinho.js
 import { pool } from "@/utils/db";
 
 export default async function handler(req, res) {
@@ -11,11 +10,20 @@ export default async function handler(req, res) {
 
     try {
       const [rows] = await pool.query(
-        `SELECT c.ID_carrinho, c.Quantidade, c.ID_produto,
-                p.Nome_Produtos, p.Preco, p.Foto, p.Marca
-         FROM Carrinho c
-         JOIN Produtos p ON c.ID_produto = p.ID_produto
-         WHERE c.ID_utilizador = ?`,
+        `SELECT 
+          c.ID_carrinho, 
+          c.Quantidade, 
+          p.ID_produto,
+          p.Nome_Produtos AS nome,
+          p.Preco AS preco,
+          p.Foto AS foto,
+          p.Marca AS marca,
+          p.Cor AS cor,
+          p.Genero AS genero,
+          p.Tamanho AS tamanho
+        FROM Carrinho c
+        JOIN Produtos p ON c.ID_produto = p.ID_produto
+        WHERE c.ID_utilizador = ?`,
         [id_utilizador]
       );
 
@@ -26,6 +34,5 @@ export default async function handler(req, res) {
     }
   }
 
-  // 👇 Isso garante que qualquer método diferente de GET seja bloqueado
   return res.status(405).json({ message: "Método não permitido" });
 }

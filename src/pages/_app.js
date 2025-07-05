@@ -1,8 +1,9 @@
 import { AuthProvider } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "@/styles/global.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import "@/styles/globals.css";
 import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
@@ -11,7 +12,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const handleStorage = (event) => {
       if (event.key === "compraConfirmada" && event.newValue === "true") {
-        router.push("/encomenda");
+        router.push("/moradaenvio"); // <- alterado para o nome correto da nova rota
       }
     };
 

@@ -1,4 +1,4 @@
-import { pool } from "../../../utils/db";
+import { pool } from "@/utils/db";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -6,34 +6,62 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Total de utilizadores
-    const [users] = await pool.query("SELECT COUNT(*) AS totalUsers FROM Utilizador");
+    const [users] = await pool.query(`SELECT COUNT(*) AS totalUsers FROM Utilizador`);
+    const [products] = await pool.query(`SELECT COUNT(*) AS totalProducts FROM Produtos`);
+    const [sales] = await pool.query(`SELECT SUM(Total_Valor) AS totalSales FROM Compra`);
+    const [discounted] = await pool.query(`SELECT COUNT(*) AS count FROM Produtos WHERE Desconto > 0`);
+    const [lowStock] = await pool.query(`SELECT COUNT(*) AS count FROM Produtos WHERE Stock <= 5`);
+    const [recent] = await pool.query(`
+      SELECT COUNT(*) AS count FROM Produtos
+      WHERE Data_Criacao >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    `);
 
-    // Total de produtos
-    const [products] = await pool.query("SELECT COUNT(*) AS totalProducts FROM Produtos");
-
-    // Total de valor em compras
-    const [totalSales] = await pool.query("SELECT SUM(Total_Valor) AS totalSales FROM Compra");
-
-    // Vendas por mês (últimos 6 meses)
-    const [salesByMonth] = await pool.query(`
-      SELECT 
-        DATE_FORMAT(Data_compra, '%Y-%m') AS month,
-        SUM(Total_Valor) AS total
+    const [salesByMonthRaw] = await pool.query(`
+      SELECT DATE_FORMAT(Data_Compra, '%Y-%m') AS month, SUM(Total_Valor) AS total
       FROM Compra
-      WHERE Data_compra >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+      WHERE Data_Compra >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
       GROUP BY month
       ORDER BY month ASC
     `);
 
+    const [ordersByStateRaw] = await pool.query(`
+      SELECT Estado, COUNT(*) AS count
+      FROM Encomenda
+      GROUP BY Estado
+    `);
+
+    const [productsByCategoryRaw] = await pool.query(`
+  SELECT c.Tipo_de_Categoria AS categoria, COUNT(p.ID_Produto) AS count
+  FROM Produtos p
+  JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
+  GROUP BY c.Tipo_de_Categoria
+`);
+
+
+    const [latestOrdersRaw] = await pool.query(`
+  SELECT e.ID_Encomenda, e.Estado, e.Data_criacao, c.Total_Valor, u.Nome
+  FROM Encomenda e
+  JOIN Compra c ON e.ID_Compra = c.ID_Compra
+  JOIN Utilizador u ON c.ID_Utilizador = u.ID_Utilizador
+  ORDER BY e.Data_criacao DESC
+  LIMIT 5
+`);
+
+
     return res.status(200).json({
-      totalUsers: users[0].totalUsers || 0,
-      totalProducts: products[0].totalProducts || 0,
-      totalSales: totalSales[0].totalSales || 0,
-      salesByMonth,
+      totalUsers: users[0]?.totalUsers || 0,
+      totalProducts: products[0]?.totalProducts || 0,
+      totalSales: Number(sales[0]?.totalSales) || 0,
+      productsWithDiscount: discounted[0]?.count || 0,
+      lowStock: lowStock[0]?.count || 0,
+      recentProducts: recent[0]?.count || 0,
+      salesByMonth: Array.isArray(salesByMonthRaw) ? salesByMonthRaw : [],
+      ordersByState: Array.isArray(ordersByStateRaw) ? ordersByStateRaw : [],
+      productsByCategory: Array.isArray(productsByCategoryRaw) ? productsByCategoryRaw : [],
+      latestOrders: Array.isArray(latestOrdersRaw) ? latestOrdersRaw : [],
     });
   } catch (error) {
     console.error("Erro ao obter dados da dashboard:", error);
-    return res.status(500).json({ message: "Erro interno ao obter dados." });
+    return res.status(500).json({ message: "Erro ao buscar dados da dashboard." });
   }
 }

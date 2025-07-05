@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sidebar Fixa + Conteúdo</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+  }
+  .sidebarAdmin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background-color: #002244;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    z-index: 3000;
+  }
+  .sidebarAdmin h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  .sidebarAdmin nav a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+  }
+  .sidebarAdmin nav a:hover {
+    background-color: #004080;
+  }
+
+  .mainContent {
+    margin-left: 220px;
+    padding: 25px 40px;
+    background-color: white;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .mainContent h1 {
+    color: #002244;
+    margin-top: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebarAdmin">
+  <h2>Administrador</h2>
+  <nav>
+    <a href="#">Dashboard</a>
+    <a href="#"><strong>Gestão de Produtos</strong></a>
+    <a href="#">Adicionar Produto</a>
+    <a href="#">Gestão de Categorias</a>
+    <a href="#">Gerir Encomendas</a>
+  </nav>
+</div>
+
+<div class="mainContent">
+  <h1>Gestão de Produtos</h1>
+  <p>Aqui vai todo o conteúdo da página, respeitando a sidebar fixa.</p>
+</div>
+
+</body>
+</html>

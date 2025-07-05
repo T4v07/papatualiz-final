@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Navbar from "@/components/navbar"; // IMPORTAR A NAVBAR
-
-import styles from "../styles/verifcemail.module.css";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import styles from "../styles/auth.module.css"; // usamos o mesmo CSS do login
 
 export default function Verifcemail() {
   const router = useRouter();
@@ -10,55 +10,126 @@ export default function Verifcemail() {
 
   const [email, setEmail] = useState("");
   const [codigo, setCodigo] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  const [tipoMensagem, setTipoMensagem] = useState(""); // sucesso ou erro
+  const [reenviando, setReenviando] = useState(false);
 
   useEffect(() => {
     if (emailQuery) setEmail(emailQuery);
   }, [emailQuery]);
 
   const handleVerificar = () => {
-    console.log("Verificando com código:", codigo);
+    if (!codigo || codigo.trim().length < 6) {
+      setMensagem("O código deve ter pelo menos 6 dígitos.");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (codigo.trim() === "123456") {
+      setMensagem("✅ Código verificado com sucesso!");
+      setTipoMensagem("sucesso");
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
+    } else {
+      setMensagem("❌ Código inválido. Tente novamente.");
+      setTipoMensagem("erro");
+    }
   };
 
   const handleReenviar = () => {
-    console.log("Reenviando código para:", email);
+    setReenviando(true);
+    setMensagem(`Código reenviado com sucesso para ${email}`);
+    setTipoMensagem("sucesso");
+
+    setTimeout(() => {
+      setReenviando(false);
+    }, 3000);
   };
 
   return (
-    <>
-      <Navbar /> {/* ADICIONA A NAVBAR AQUI */}
+    <div className={styles.splitContainer}>
+      {/* Lado da imagem com botão Voltar */}
+      <div
+        className={styles.imageSide}
+        style={{
+          backgroundImage:
+            'url("https://res.cloudinary.com/dk56q7rsl/image/upload/v1750469378/login-banner1_c0nitz.jpg")',
+        }}
+      >
+        <Link href="/" className={styles.backOverlay}>
+          <ArrowLeft size={18} style={{ marginRight: 6 }} />
+          Voltar
+        </Link>
+      </div>
 
-      <div className={styles.container}>
-        <div className={styles.imageSide}></div>
+      {/* Formulário de verificação */}
+      <div className={styles.formSide}>
+        <div className={styles.authCard}>
+          <h1 className={styles.brand}>SPORT’S ET</h1>
+          <h2 className={styles.title}>Verificar E-mail</h2>
+          <p className={styles.subtitle}>
+            Introduz o código que foi enviado para o teu e-mail.
+          </p>
 
-        <div className={styles.formSide}>
-          <div className={styles.formBox}>
-            <h2>Verificar E-mail</h2>
+          {mensagem && (
+            <div
+              className={styles.error}
+              style={{
+                background: tipoMensagem === "sucesso" ? "#e1f9e4" : "#ffe5e5",
+                color: tipoMensagem === "sucesso" ? "#207d36" : "#d8000c",
+                borderLeft:
+                  tipoMensagem === "sucesso"
+                    ? "4px solid #207d36"
+                    : "4px solid #d8000c",
+              }}
+            >
+              {mensagem}
+            </div>
+          )}
 
-            <input
-              type="email"
-              className={styles.input}
-              value={email}
-              readOnly
-            />
+          <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+            <div className={styles.inputGroup}>
+              <input
+                type="email"
+                value={email}
+                readOnly
+                placeholder="Email"
+                className={styles.input}
+              />
+            </div>
 
-            <input
-              type="text"
-              className={styles.input}
-              placeholder="Código de Verificação"
-              value={codigo}
-              onChange={(e) => setCodigo(e.target.value)}
-            />
+            <div className={styles.inputGroup}>
+              <input
+                type="text"
+                placeholder="Código de Verificação"
+                value={codigo}
+                onChange={(e) => setCodigo(e.target.value)}
+                maxLength={6}
+              />
+            </div>
 
-            <button className={styles.button} onClick={handleVerificar}>
+            <button
+              type="button"
+              className={styles.submitButton}
+              onClick={handleVerificar}
+            >
               Verificar
             </button>
 
-            <button className={styles.button} onClick={handleReenviar}>
-              Reenviar Código
+            <button
+              type="button"
+              className={styles.submitButton}
+              onClick={handleReenviar}
+              disabled={reenviando}
+              style={{ marginTop: "10px", backgroundColor: "#e0e0e0", color: "#333" }}
+            >
+              {reenviando ? "Aguarde..." : "Reenviar Código"}
             </button>
-          </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
