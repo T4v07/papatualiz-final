@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from '@/styles/adminDashboard.module.css'
 import axios from "axios";
 import { Bar, Pie } from "react-chartjs-2";
 import Chart from "chart.js/auto";
