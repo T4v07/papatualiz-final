@@ -3,7 +3,7 @@ import AuthContext from "@/context/AuthContext";
 import Navbar from "@/components/navbar";
 import SidebarConta from "@/components/SidebarConta";
 import ProdutoCardFavorito from "@/components/ProdutoCardFavorito";
-import styles from "@/styles/Favoritos.module.css";
+import styles from "@/styles/favoritos.module.css";
 
 const ITEMS_PER_PAGE = 8;
 

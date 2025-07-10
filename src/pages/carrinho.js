@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import CarrinhoVazio from "@/components/CarrinhoVazio";
 import AuthContext from "@/context/AuthContext";
-import styles from "@/styles/Carrinho.module.css";
+import styles from "@/styles/carrinho.module.css";
 import Link from "next/link";
 import Image from "next/image";
 
