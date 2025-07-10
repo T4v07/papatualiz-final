@@ -5,21 +5,11 @@ import { ChevronUp, Search } from 'lucide-react';
 import styles from '@/styles/filtrosSidebar.module.css';
 
 export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
-  // Estados para pesquisa e toggle "ver mais"
   const [filtroGeneroPesquisa, setFiltroGeneroPesquisa] = useState('');
-  const [mostrarMaisGenero, setMostrarMaisGenero] = useState(false);
-
   const [filtroCategoriaPesquisa, setFiltroCategoriaPesquisa] = useState('');
-  const [mostrarMaisCategoria, setMostrarMaisCategoria] = useState(false);
-
   const [filtroTamanhoPesquisa, setFiltroTamanhoPesquisa] = useState('');
-  const [mostrarMaisTamanho, setMostrarMaisTamanho] = useState(false);
-
   const [filtroCorPesquisa, setFiltroCorPesquisa] = useState('');
-  const [mostrarMaisCor, setMostrarMaisCor] = useState(false);
-
   const [filtroMarcaPesquisa, setFiltroMarcaPesquisa] = useState('');
-  const [mostrarMaisMarca, setMostrarMaisMarca] = useState(false);
 
   // Atualiza checkbox
   const atualizarCheckbox = (campo, valor) => {
@@ -31,11 +21,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
     }));
   };
 
-  // Atualiza switch (checkbox simples)
-  const atualizarSwitch = (campo) => {
-    setFiltros((prev) => ({ ...prev, [campo]: !prev[campo] }));
-  };
-
   // Atualiza preço mínimo e máximo
   const atualizarPreco = (campo, valor) => {
     const novoPreco = [...filtros.preco];
@@ -45,29 +30,24 @@ export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
   };
 
   // Contagem produtos por filtro
-
-  // Gênero
   const generoContagem = produtos.reduce((acc, produto) => {
     const genero = produto.Genero || 'Outro';
     acc[genero] = (acc[genero] || 0) + 1;
     return acc;
   }, {});
 
-  // Categoria
   const categoriaContagem = produtos.reduce((acc, produto) => {
-    const categoria = produto.Tipo_de_Categoria || 'Outro';
+    const categoria = produto.NomeCategoria || 'Outro';
     acc[categoria] = (acc[categoria] || 0) + 1;
     return acc;
   }, {});
 
-  // Marca
   const marcaContagem = produtos.reduce((acc, produto) => {
     const marca = produto.Marca || 'Outro';
     acc[marca] = (acc[marca] || 0) + 1;
     return acc;
   }, {});
 
-  // Cor (baseado nas variações)
   const coresUnicas = [...new Set(produtos.flatMap(p => p.variacoes?.map(v => v.cor) || []))].filter(Boolean);
   const corContagem = {};
   produtos.forEach(p => {
@@ -76,28 +56,29 @@ export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
     });
   });
 
-  // Tamanho (baseado nas variações)
-  const tamanhosUnicos = [...new Set(produtos.flatMap(p => p.variacoes?.map(v => v.tamanho) || []))].filter(Boolean);
+  const tamanhosSeparados = produtos.flatMap(p => 
+    p.variacoes?.flatMap(v => 
+      v.tamanho ? v.tamanho.split(',').map(t => t.trim()) : []
+    ) || []
+  ).filter(Boolean);
+
+  const tamanhosUnicos = [...new Set(tamanhosSeparados)];
+
   const tamanhoContagem = {};
-  produtos.forEach(p => {
-    p.variacoes?.forEach(v => {
-      if (v.tamanho) tamanhoContagem[v.tamanho] = (tamanhoContagem[v.tamanho] || 0) + 1;
-    });
+  tamanhosSeparados.forEach(tamanho => {
+    tamanhoContagem[tamanho] = (tamanhoContagem[tamanho] || 0) + 1;
   });
 
-  // Filtra e ordena com base na pesquisa e na contagem
   const filtrarOrdenar = (contagemObj, filtroPesquisa) => {
     return Object.entries(contagemObj)
       .filter(([nome]) => nome.toLowerCase().includes(filtroPesquisa.toLowerCase()))
       .sort((a, b) => b[1] - a[1]);
   };
 
-  // Dados filtrados para cada filtro
   const generosFiltrados = filtrarOrdenar(generoContagem, filtroGeneroPesquisa);
   const categoriasFiltradas = filtrarOrdenar(categoriaContagem, filtroCategoriaPesquisa);
   const marcasFiltradas = filtrarOrdenar(marcaContagem, filtroMarcaPesquisa);
 
-  // Para cor e tamanho: filtra e adiciona contagem
   const coresFiltradas = coresUnicas
     .filter(cor => cor.toLowerCase().includes(filtroCorPesquisa.toLowerCase()))
     .map(cor => [cor, corContagem[cor] || 0])
@@ -108,7 +89,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
     .map(tam => [tam, tamanhoContagem[tam] || 0])
     .sort((a, b) => b[1] - a[1]);
 
-  // Renderizador genérico de filtro
   const renderFiltro = (titulo, aberto, setAberto, filtroPesquisa, setFiltroPesquisa, itens, filtroCampo) => {
     const mostrarMais = aberto;
     const itensParaMostrar = mostrarMais ? itens : itens.slice(0, 5);
@@ -163,7 +143,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
     );
   };
 
-  // Estados controle toggles "Ver mais"
   const [abertoGenero, setAbertoGenero] = useState(true);
   const [abertoCategoria, setAbertoCategoria] = useState(true);
   const [abertoMarca, setAbertoMarca] = useState(true);
@@ -224,73 +203,7 @@ export default function FiltrosSidebar({ filtros, setFiltros, produtos }) {
         "tamanho"
       )}
 
-      {/* Stock */}
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <>
-            <Disclosure.Button className={styles.disclosureButton}>
-              Stock
-              <ChevronUp className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`} />
-            </Disclosure.Button>
-            <Disclosure.Panel className={styles.disclosurePanel}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={filtros.stock}
-                  onChange={() => atualizarSwitch("stock")}
-                />
-                Apenas com stock
-              </label>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-
-      {/* Desconto */}
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <>
-            <Disclosure.Button className={styles.disclosureButton}>
-              Desconto
-              <ChevronUp className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`} />
-            </Disclosure.Button>
-            <Disclosure.Panel className={styles.disclosurePanel}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={filtros.desconto}
-                  onChange={() => atualizarSwitch("desconto")}
-                />
-                Apenas com desconto
-              </label>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-
-      {/* Novidade */}
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <>
-            <Disclosure.Button className={styles.disclosureButton}>
-              Novidade
-              <ChevronUp className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`} />
-            </Disclosure.Button>
-            <Disclosure.Panel className={styles.disclosurePanel}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={filtros.novidade}
-                  onChange={() => atualizarSwitch("novidade")}
-                />
-                Apenas novidades
-              </label>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-
-      {/* Preço */}
+      {/* Filtro preço */}
       <Disclosure defaultOpen>
         {({ open }) => (
           <>

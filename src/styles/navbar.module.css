@@ -69,10 +69,26 @@
   outline: none;
 }
 
+.searchButton {
+  background: #003366;   /* azul escuro */
+  border: none;
+  padding: 8px 14px;
+  margin-left: 8px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchButton:hover {
+  background: #0059b3;
+}
+
 .searchIcon {
-  font-size: 20px;
-  margin-left: 10px;
-  color: #003366;
+  font-size: 18px;
+  color: white;
 }
 
 /* Ícones */

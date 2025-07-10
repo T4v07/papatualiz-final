@@ -3,6 +3,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+// Import Swiper CSS globalmente
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 import "@/styles/globals.css";
 import Head from "next/head";
 
@@ -12,7 +18,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const handleStorage = (event) => {
       if (event.key === "compraConfirmada" && event.newValue === "true") {
-        router.push("/moradaenvio"); // <- alterado para o nome correto da nova rota
+        router.push("/moradaenvio");
       }
     };
 

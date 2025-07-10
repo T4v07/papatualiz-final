@@ -1,0 +1,75 @@
+.dashboard {
+  padding: 20px;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 0.15);
+}
+
+.icon {
+  font-size: 36px;
+  margin-right: 20px;
+  user-select: none;
+}
+
+.info h3 {
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.info p {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0070f3;
+}
+
+.chartsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+  gap: 40px;
+}
+
+.chart {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+}
+
+.chart h4 {
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+  .chartsContainer {
+    grid-template-columns: 1fr;
+  }
+}

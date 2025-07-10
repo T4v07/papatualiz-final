@@ -10,7 +10,14 @@ export default async function handler(req, res) {
     const [products] = await pool.query(`SELECT COUNT(*) AS totalProducts FROM Produtos`);
     const [sales] = await pool.query(`SELECT SUM(Total_Valor) AS totalSales FROM Compra`);
     const [discounted] = await pool.query(`SELECT COUNT(*) AS count FROM Produtos WHERE Desconto > 0`);
-    const [lowStock] = await pool.query(`SELECT COUNT(*) AS count FROM Produtos WHERE Stock <= 5`);
+
+    // Corrigido: contar produtos com stock baixo considerando ProdutoVariacoes
+    const [lowStock] = await pool.query(`
+      SELECT COUNT(DISTINCT produto_id) AS count
+      FROM ProdutoVariacoes
+      WHERE stock <= 5
+    `);
+
     const [recent] = await pool.query(`
       SELECT COUNT(*) AS count FROM Produtos
       WHERE Data_Criacao >= DATE_SUB(NOW(), INTERVAL 30 DAY)
@@ -31,22 +38,20 @@ export default async function handler(req, res) {
     `);
 
     const [productsByCategoryRaw] = await pool.query(`
-  SELECT c.Tipo_de_Categoria AS categoria, COUNT(p.ID_Produto) AS count
-  FROM Produtos p
-  JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
-  GROUP BY c.Tipo_de_Categoria
-`);
-
+      SELECT c.Tipo_de_Categoria AS categoria, COUNT(p.ID_produto) AS count
+      FROM Produtos p
+      JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
+      GROUP BY c.Tipo_de_Categoria
+    `);
 
     const [latestOrdersRaw] = await pool.query(`
-  SELECT e.ID_Encomenda, e.Estado, e.Data_criacao, c.Total_Valor, u.Nome
-  FROM Encomenda e
-  JOIN Compra c ON e.ID_Compra = c.ID_Compra
-  JOIN Utilizador u ON c.ID_Utilizador = u.ID_Utilizador
-  ORDER BY e.Data_criacao DESC
-  LIMIT 5
-`);
-
+      SELECT e.ID_Encomenda, e.Estado, e.Data_criacao, c.Total_Valor, u.Nome
+      FROM Encomenda e
+      JOIN Compra c ON e.ID_Compra = c.ID_Compra
+      JOIN Utilizador u ON c.ID_Utilizador = u.ID_Utilizador
+      ORDER BY e.Data_criacao DESC
+      LIMIT 5
+    `);
 
     return res.status(200).json({
       totalUsers: users[0]?.totalUsers || 0,

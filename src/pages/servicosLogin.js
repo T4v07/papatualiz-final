@@ -1,20 +1,23 @@
 // pages/servicosLogin.js
-import {useState, useContext } from "react";
+import { useState, useContext } from "react";
 import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/router";
-import Navbar from "../components/navbar";
-import styles from "../styles/auth.module.css";
+import Navbar from "@/components/navbar";
+import styles from "@/styles/auth.module.css";
 
 export default function ServicosLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { login } = useContext(AuthContext); // <- IMPORTANTE
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (loading) return; // evita múltiplos cliques
     setError("");
+    setLoading(true);
 
     try {
       const response = await fetch("/api/login", {
@@ -27,12 +30,14 @@ export default function ServicosLogin() {
 
       if (!response.ok) {
         setError(data.message || "Erro ao fazer login");
+        setLoading(false);
         return;
       }
 
-      login(data.user); // <- SALVAR NO CONTEXTO!
+      login(data.user);
 
       const tipoConta = data.user?.Tipo_de_Conta?.toLowerCase();
+
       if (tipoConta === "admin") {
         router.push("/areaAdmin");
       } else if (tipoConta === "funcionario") {
@@ -42,6 +47,8 @@ export default function ServicosLogin() {
       }
     } catch (err) {
       setError("Erro de conexão. Tente novamente.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +66,8 @@ export default function ServicosLogin() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              autoComplete="username"
+              disabled={loading}
             />
             <input
               type="password"
@@ -66,9 +75,11 @@ export default function ServicosLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="current-password"
+              disabled={loading}
             />
-            <button type="submit" className={styles.submitButton}>
-              Entrar
+            <button type="submit" className={styles.submitButton} disabled={loading}>
+              {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
         </div>

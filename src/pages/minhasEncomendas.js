@@ -1,25 +1,40 @@
+// /pages/minhasEncomendas.js
 import { useEffect, useState, useContext } from "react";
+import { useRouter } from "next/router";
 import AuthContext from "@/context/AuthContext";
 import Navbar from "@/components/navbar";
 import SidebarConta from "@/components/SidebarConta";
 import styles from "@/styles/minhaConta.module.css";
-import { useRouter } from "next/router";
 
 export default function MinhasEncomendas() {
-  const { user } = useContext(AuthContext);
+  const { user, loading: authLoading } = useContext(AuthContext);
   const [encomendas, setEncomendas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    if (authLoading || !user?.ID_utilizador) return;
+
     const fetchEncomendas = async () => {
-      if (!user) return;
-      const res = await fetch(`/api/encomendas-do-utilizador?email=${user?.Email}`);
-      const data = await res.json();
-      if (res.ok) setEncomendas(data);
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/encomendas/listar-por-id?usuario_id=${user.ID_utilizador}`);
+        if (!res.ok) throw new Error("Erro ao buscar encomendas");
+        const data = await res.json();
+        setEncomendas(data);
+        setError(null);
+      } catch (err) {
+        console.error("Erro ao buscar encomendas:", err);
+        setError(err.message);
+        setEncomendas([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchEncomendas();
-  }, [user]);
+  }, [authLoading, user]);
 
   return (
     <div className={styles.pageContainer}>
@@ -28,16 +43,22 @@ export default function MinhasEncomendas() {
         <SidebarConta active="encomendas" />
         <main className={styles.mainContent}>
           <section className={styles.section}>
-            <h2>📦 As minhas encomendas</h2>
-            {encomendas.length === 0 ? (
-              <p>(Ainda não tens encomendas registradas)</p>
+            <h2>📦 As Minhas Encomendas</h2>
+
+            {loading ? (
+              <p>Carregando encomendas...</p>
+            ) : error ? (
+              <p className={styles.error}>Erro: {error}</p>
+            ) : encomendas.length === 0 ? (
+              <p>Não tens encomendas registradas.</p>
             ) : (
               <div className={styles.cardGrid}>
                 {encomendas.map((enc) => (
                   <div key={enc.ID_encomenda} className={styles.card}>
-                    <h4>Código: {enc.Codigo_rastreio}</h4>
-                    <p>Estado: {enc.Estado}</p>
-                    <p>Data: {new Date(enc.Data_criacao).toLocaleDateString()}</p>
+                    <h4>Encomenda #{enc.ID_encomenda}</h4>
+                    <p><strong>Estado:</strong> {enc.Estado}</p>
+                    <p><strong>Data:</strong> {new Date(enc.Data_criacao).toLocaleDateString()}</p>
+                    <p><strong>Código de Rastreio:</strong> {enc.Codigo_rastreio || "Não atribuído"}</p>
                     <button
                       className={styles.saveButton}
                       onClick={() => router.push(`/encomenda/${enc.ID_encomenda}`)}

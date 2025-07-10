@@ -38,7 +38,6 @@ const Navbar = () => {
     setActiveDropdown((prev) => (prev === nome ? "" : nome));
   };
 
-  // 👉 Fecha dropdowns ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -78,7 +77,7 @@ const Navbar = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit">
+            <button type="submit" className={styles.searchButton}>
               <FaSearch className={styles.searchIcon} />
             </button>
           </form>
@@ -127,7 +126,7 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <Link href="/login">
+              <Link href="/login" className={styles.iconWrapper}>
                 <FaUser className={styles.icon} />
                 <span>Área Pessoal</span>
               </Link>

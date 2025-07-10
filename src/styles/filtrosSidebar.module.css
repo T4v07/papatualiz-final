@@ -156,6 +156,7 @@
   color: #666;
 }
 
+/* Preço */
 .precoContainer {
   display: flex;
   align-items: center;
@@ -178,7 +179,6 @@
 }
 
 /* Responsividade */
-
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;

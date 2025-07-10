@@ -1,4 +1,4 @@
-// components/funcionario/SidebarFuncionario.js
+  // components/funcionario/SidebarFuncionario.js
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import AuthContext from "@/context/AuthContext";

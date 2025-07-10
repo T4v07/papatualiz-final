@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   try {
     const [favoritos] = await pool.query(
-      "SELECT ID_produto FROM Favorito WHERE ID_utilizador = ?",
+      "SELECT ID_produto FROM Favoritos WHERE ID_utilizador = ?",
       [id_utilizador]
     );
 

@@ -1,4 +1,3 @@
-// src/pages/pesquisa.js
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import ProdutoCard from "@/components/ProdutoCard";
@@ -22,9 +21,6 @@ export default function Pesquisa() {
     genero: [],
     idade: [],
     categoria: [],
-    stock: false,
-    desconto: false,
-    novidade: false,
     tamanho: [],
     tecnologia: [],
     origem: [],
@@ -43,35 +39,69 @@ export default function Pesquisa() {
     }
   }, [termo]);
 
-  // Função de filtro (mesma que antes)
   const aplicarFiltros = () => {
     if (!Array.isArray(produtos)) return [];
 
     return produtos.filter((produto) => {
-      const matchMarca = filtros.marca.length === 0 || filtros.marca.includes(produto.Marca);
-      const matchCor = filtros.cor.length === 0 || filtros.cor.includes(produto.Cor);
-      const matchGenero = filtros.genero.length === 0 || filtros.genero.includes(produto.Genero);
-      const matchIdade = filtros.idade.length === 0 || filtros.idade.includes(produto.Idade);
-      const matchCategoria = filtros.categoria.length === 0 || filtros.categoria.includes(produto.Tipo_de_Categoria);
+      const matchMarca =
+        filtros.marca.length === 0 || filtros.marca.includes(produto.Marca);
+
+      const matchCor =
+        filtros.cor.length === 0 ||
+        (produto.variacoes &&
+          produto.variacoes.some((v) => filtros.cor.includes(v.cor)));
+
+      const matchGenero =
+        filtros.genero.length === 0 || filtros.genero.includes(produto.Genero);
+
+      const matchIdade =
+        filtros.idade.length === 0 || filtros.idade.includes(produto.Idade);
+
+      const matchCategoria =
+        filtros.categoria.length === 0 ||
+        filtros.categoria.includes(produto.NomeCategoria);
+
       const matchTamanho =
         filtros.tamanho.length === 0 ||
-        (produto.Tamanho_Roupa && produto.Tamanho_Roupa.split(',').some(t => filtros.tamanho.includes(t))) ||
-        (produto.Tamanho_Calcado && produto.Tamanho_Calcado.split(',').some(t => filtros.tamanho.includes(t))) ||
-        (produto.Tamanho_Objeto && produto.Tamanho_Objeto.split(',').some(t => filtros.tamanho.includes(t)));
-      const matchTecnologia = filtros.tecnologia.length === 0 || filtros.tecnologia.includes(produto.Tecnologia);
-      const matchOrigem = filtros.origem.length === 0 || filtros.origem.includes(produto.Origem);
-      const matchMaterial = filtros.material.length === 0 || filtros.material.includes(produto.Material);
-      const matchUso = filtros.uso.length === 0 || filtros.uso.includes(produto.Uso_Recomendado);
+        (produto.variacoes &&
+          produto.variacoes.some((v) => {
+            if (!v.tamanho) return false;
+            const tamanhos = v.tamanho.split(",").map((t) => t.trim());
+            return tamanhos.some((tam) => filtros.tamanho.includes(tam));
+          })) ||
+        (produto.Tamanho_Roupa &&
+          produto.Tamanho_Roupa.split(",").some((t) => filtros.tamanho.includes(t))) ||
+        (produto.Tamanho_Calcado &&
+          produto.Tamanho_Calcado.split(",").some((t) => filtros.tamanho.includes(t))) ||
+        (produto.Tamanho_Objeto &&
+          produto.Tamanho_Objeto.split(",").some((t) => filtros.tamanho.includes(t)));
+
+      const matchTecnologia =
+        filtros.tecnologia.length === 0 || filtros.tecnologia.includes(produto.Tecnologia);
+
+      const matchOrigem =
+        filtros.origem.length === 0 || filtros.origem.includes(produto.Origem);
+
+      const matchMaterial =
+        filtros.material.length === 0 || filtros.material.includes(produto.Material);
+
+      const matchUso =
+        filtros.uso.length === 0 || filtros.uso.includes(produto.Uso_Recomendado);
+
       const matchPreco = produto.Preco >= filtros.preco[0] && produto.Preco <= filtros.preco[1];
-      const matchStock = !filtros.stock || produto.Stock > 0;
-      const matchDesconto = !filtros.desconto || (produto.Desconto && produto.Desconto > 0);
-      const matchNovidade = !filtros.novidade || produto.Novidade === 1;
 
       return (
-        matchMarca && matchCor && matchGenero && matchIdade &&
-        matchCategoria && matchTamanho && matchTecnologia &&
-        matchOrigem && matchMaterial && matchUso &&
-        matchPreco && matchStock && matchDesconto && matchNovidade
+        matchMarca &&
+        matchCor &&
+        matchGenero &&
+        matchIdade &&
+        matchCategoria &&
+        matchTamanho &&
+        matchTecnologia &&
+        matchOrigem &&
+        matchMaterial &&
+        matchUso &&
+        matchPreco
       );
     });
   };

@@ -1,54 +1,46 @@
-import styles from "@/styles/minhaConta.module.css";
-import Link from "next/link";
+import Image from "next/image";
+import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
+import styles from "./ProdutoCardFavorito.module.css";
 
 export default function ProdutoCardFavorito({
   produto,
+  favoritos,
   onToggleFavorito,
   onAddCarrinho,
-  favoritos = [],
-  selecionado,
-  onSelecionar,
 }) {
   const isFavorito = favoritos.includes(produto.ID_produto);
+  const imagem = produto.Foto || null;
 
   return (
     <div className={styles.card}>
-      <Link href={`/produto/${produto.ID_produto}`} className={styles.linkSemEstilo}>
-        {produto.Foto ? (
-          <img src={produto.Foto} alt={produto.Nome_Produtos} style={{ width: "100%", height: "180px", objectFit: "contain", marginBottom: "10px" }} />
-        ) : (
-          <div style={{ textAlign: "center", marginBottom: "10px" }}>Sem imagem</div>
-        )}
-        <h4>{produto.Nome_Produtos}</h4>
-        <p>{produto.Marca}</p>
-        <p style={{ fontWeight: "bold", color: "#002244" }}>{parseFloat(produto.Preco).toFixed(2)} €</p>
-      </Link>
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
-        <button className={styles.saveButton} onClick={() => onAddCarrinho(produto.ID_produto)}>
-          🛒 Carrinho
-        </button>
-        <button onClick={() => onToggleFavorito(produto.ID_produto)} style={{ background: "none", border: "none", cursor: "pointer" }}>
-          <img
-            src={
-              isFavorito
-                ? "/images/coracaoadicpreenchido.jpg"
-                : "/images/coracaoadic.jpg"
-            }
-            alt="Favorito"
-            style={{ width: "28px", height: "28px" }}
+      <div className={styles.imageWrapper}>
+        {imagem ? (
+          <Image
+            src={imagem}
+            alt={produto.Nome_Produtos}
+            width={280}
+            height={180}
+            className={styles.image}
+            unoptimized // para imagens externas
           />
-        </button>
+        ) : (
+          <div className={styles.semImagem}>Sem imagem</div>
+        )}
       </div>
 
-      <label style={{ fontSize: "0.85rem", color: "#444", marginTop: "8px", display: "block" }}>
-        <input
-          type="checkbox"
-          checked={selecionado}
-          onChange={() => onSelecionar(produto.ID_produto)}
-        />{" "}
-        Selecionar
-      </label>
+      <div className={styles.content}>
+        <h3 className={styles.nome}>{produto.Nome_Produtos}</h3>
+        <p className={styles.marca}>{produto.Marca}</p>
+        <p className={styles.preco}>€ {parseFloat(produto.Preco).toFixed(2)}</p>
+        <div className={styles.buttons}>
+          <button onClick={() => onAddCarrinho(produto.ID_produto)} className={styles.buttonCarrinho}>
+            <FaShoppingCart /> Carrinho
+          </button>
+          <button onClick={() => onToggleFavorito(produto.ID_produto)} className={styles.buttonFavorito}>
+            {isFavorito ? <FaHeart color="#e63946" size={22} /> : <FaRegHeart color="#e63946" size={22} />}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

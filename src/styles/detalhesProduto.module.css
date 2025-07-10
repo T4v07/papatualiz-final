@@ -1,177 +1,256 @@
-.breadcrumbLeft {
-  margin: 20px 40px;
-  font-size: 14px;
-  color: #0070f3; /* azul */
+
+.breadcrumb {
+  max-width: 1200px;
+  margin: 3rem auto 1.5rem auto;
+  font-size: 0.95rem;
+  color: #555;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.breadcrumb a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
 }
 
 .produtoContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-  padding: 40px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  margin: 30px auto;
+  gap: 3rem;
+  padding: 2rem;
   max-width: 1200px;
-}
-
-.produtoImagem {
-  flex: 1;
-  min-width: 300px;
-  max-width: 500px;
-}
-
-.produtoImagem img {
-  width: 100%;
+  margin: 0 auto;
+  background: white;
   border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.05);
 }
 
-.produtoInfo {
+.fotosContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-width: 300px;
-}
-
-.headerInfo {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.headerInfo h1 {
-  font-size: 28px;
-  color: #002244;
+.imagemPrincipal {
+  width: 100%;
+  max-width: 500px;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  background: #fafafa;
+  transition: transform 0.3s ease;
 }
 
-.favoritoBtn {
-  font-size: 24px;
-  background: none;
-  border: none;
+.imagemPrincipal:hover {
+  transform: scale(1.03);
+}
+
+/* Miniaturas */
+.galeriaMiniaturas {
+  margin-top: 1rem;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.miniatura {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid transparent;
   cursor: pointer;
-  color: #0070f3;
+  background: white;
+  transition: border-color 0.3s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.miniaturaAtiva {
+  border-color: #0070f3;
+  box-shadow: 0 0 10px #0070f3;
+}
+
+.infoContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.titulo {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: -0.5rem;
 }
 
 .preco {
-  font-size: 24px;
-  font-weight: bold;
   color: #0070f3;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: -0.5rem;
 }
 
-.marcaModelo,
-.categoria,
-.stock,
-.referencia {
-  font-size: 15px;
+.pText {
+  font-size: 1rem;
+  color: #444;
+  margin: 0.2rem 0;
+}
+
+.stock {
+  font-weight: 600;
+  color: green;
+}
+
+.stockZero {
+  font-weight: 600;
+  color: #d32f2f;
+}
+
+.grupoVariacoes {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+}
+
+.variacoesContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 160px;
+}
+
+.variacoesContainer label {
+  font-weight: 600;
   color: #333;
+  margin-bottom: 0.4rem;
 }
 
-.btnCarrinho {
-  margin-top: 10px;
-  padding: 12px 20px;
+.selectBox {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #0070f3;
+  border-radius: 6px;
+  background: white;
+  color: #222;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.selectBox:focus {
+  outline: none;
+  border-color: #0047ab;
+}
+
+.btnAdicionar {
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
   background-color: #0070f3;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 112, 243, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btnCarrinho:hover {
-  background-color: #005bb5;
+.btnAdicionar:hover {
+  background-color: #0056c1;
+  transform: translateY(-2px);
 }
 
-.tabsContainer {
-  margin-top: 30px;
+.btnAdicionar:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.tabButtons {
+.tabs {
+  margin-top: 2rem;
   display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 1rem;
 }
 
-.tabButtons button {
-  padding: 10px 18px;
-  border: 1px solid #0070f3;
+.tabs button {
+  padding: 0.6rem 1.4rem;
+  border: 2px solid #0070f3;
   background: white;
   color: #0070f3;
-  border-radius: 6px;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.tabButtons button:hover {
-  background-color: #e6f0ff;
+.tabs button:hover {
+  background-color: #0070f3;
+  color: white;
 }
 
-.tabButtons .ativo {
+.tabs button.ativo {
   background-color: #0070f3;
   color: white;
 }
 
 .tabConteudo {
-  padding: 12px;
-  border: 1px solid #ccc;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .produtoContainer {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .imagemPrincipal {
+    max-width: 100%;
+  }
+
+  .infoContainer {
+    padding-top: 1rem;
+  }
+
+  .grupoVariacoes {
+    flex-direction: column;
+  }
+}
+
+.btnFavorito {
+  margin-top: 12px;
+  background-color: #ff4444;
+  color: white;
+  padding: 10px 14px;
+  border: none;
   border-radius: 6px;
-  background-color: #fafafa;
-  color: #333;
-}
-
-/* Produtos sugeridos */
-.sugeridos {
-  margin: 60px auto;
-  padding: 0 40px;
-  max-width: 1200px;
-}
-
-.sugeridos h3 {
-  font-size: 20px;
-  color: #002244;
-  margin-bottom: 16px;
-}
-
-.listaSugeridos {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.cardSugerido {
-  width: 200px;
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  text-align: center;
-  background-color: white;
-  transition: transform 0.2s ease;
-}
-
-.cardSugerido:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.cardSugerido img {
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 600;
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+  max-width: 300px;
 }
 
-.cardSugerido p {
-  font-size: 14px;
-  color: #333;
-  margin-top: 10px;
+.btnFavorito:hover {
+  background-color: #cc0000;
 }
 
-.cardSugerido span {
-  font-weight: bold;
-  color: #0070f3;
-  font-size: 15px;
-}

@@ -1,0 +1,283 @@
+.container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem 3rem;
+  box-sizing: border-box;
+  font-size: 1.125rem;
+  overflow-x: hidden; /* evita scroll horizontal */
+}
+
+/* HEADER */
+.header {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 1rem;
+  box-sizing: border-box;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.linkHeader {
+  font-weight: 600;
+  color: #0369a1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  padding-left: 1rem;
+}
+
+.linkHeader:hover {
+  color: #0284c7;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  padding-left: 40px; /* desloca logo um pouco para direita */
+}
+
+.logo {
+  max-width: 180px;
+  height: auto;
+}
+
+.user {
+  color: #4b5563;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+/* BARRA DE PROGRESSO */
+.progressBar {
+  width: 100%;
+  padding: 1.5rem 3rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  box-sizing: border-box;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4b5563;
+  text-align: center;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.stepNumber {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepActive {
+  color: #0284c7;
+}
+
+.stepInactive {
+  color: #9ca3af;
+}
+
+/* MAIN CONTENT */
+.main {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 0 3rem;
+  max-width: 1600px;
+  margin: 3rem auto;
+}
+
+/* LEFT BOX */
+.leftBox {
+  flex: 2 1 650px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem 3rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  box-sizing: border-box;
+}
+
+/* FORMULÁRIO */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.field input,
+.field textarea {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.errorInput {
+  border-color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.errorMsg {
+  color: #b91c1c;
+  font-size: 0.85rem;
+  margin-top: 0.15rem;
+}
+
+.submitBtn {
+  background-color: #00b37e;
+  color: white;
+  border: none;
+  padding: 14px 0;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.submitBtn:hover {
+  background-color: #019267;
+}
+
+/* RIGHT BOX */
+.rightBox {
+  flex: 1 1 350px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-sizing: border-box;
+}
+
+.rightBox h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+  color: #333;
+}
+
+.resumoLinha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #444;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.resumoTotal {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #111;
+  padding-top: 12px;
+  border-top: 2px solid #ccc;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .leftBox,
+  .rightBox {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .header {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .logoContainer {
+    padding-left: 0;
+    justify-content: center;
+  }
+
+  .linkHeader,
+  .user {
+    padding: 0;
+    text-align: center;
+  }
+}

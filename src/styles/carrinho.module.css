@@ -1,0 +1,357 @@
+/* CONTAINER GERAL */
+.container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  max-width: 1600px;
+  margin: 0 auto;
+  font-size: 1.125rem;
+  box-sizing: border-box;
+}
+
+/* HEADER */
+.header {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.linkHeader {
+  font-weight: 600;
+  color: #0369a1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  justify-self: start;
+  margin-left: 3rem;
+}
+
+.linkHeader:hover {
+  color: #0284c7;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+}
+
+.logo {
+  max-width: 180px;
+  height: auto;
+}
+
+.user {
+  color: #4b5563;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: right;
+  justify-self: end;
+  margin-right: 3rem;
+}
+
+/* PROGRESS BAR */
+.progressBar {
+  width: 100%;
+  padding: 0 3rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.stepActive {
+  color: #0284c7;
+}
+
+.stepInactive {
+  color: #9ca3af;
+}
+
+.stepNumber {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 0 3rem;
+}
+
+/* LEFT BOX */
+.leftBox {
+  flex: 2 1 650px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+}
+
+.item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
+}
+
+.imagem {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.detalhes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.detalhes h3 {
+  margin: 0 0 0.3rem 0;
+  font-weight: 700;
+}
+
+.detalhes p {
+  margin: 0.15rem 0;
+  color: #6b7280;
+}
+
+/* QUANTIDADE */
+.quantidadeBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.qtdBtn {
+  background-color: #0284c7;
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.qtdBtn:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.qtdBtn:hover:not(:disabled) {
+  background-color: #0369a1;
+}
+
+.quantidadeBox input[type="number"] {
+  width: 50px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* BOTÃO REMOVER */
+.removerBtn {
+  background-color: transparent;
+  border: none;
+  color: #ef4444;
+  font-weight: 600;
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.removerBtn:hover {
+  color: #b91c1c;
+}
+
+/* RIGHT BOX */
+.rightBox {
+  flex: 1 1 350px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rightBox h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+  color: #333;
+}
+
+.resumoLinha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #444;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.resumoTotal {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #111;
+  padding-top: 12px;
+  border-top: 2px solid #ccc;
+}
+
+/* BOTÃO PAGAR */
+.pagarBtn {
+  margin-top: 20px;
+  background-color: #00b37e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pagarBtn:hover {
+  background-color: #019267;
+}
+
+/* CUPOM */
+.cupomBox {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.cupomInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.cupomBtn {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cupomBtn:hover {
+  background-color: #0059c1;
+}
+
+/* INPUT FIELD */
+.inputField {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 6px 0 14px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .main {
+    flex-direction: column;
+    padding: 0 1.5rem;
+  }
+
+  .progressBar {
+    padding: 0 1.5rem;
+  }
+
+  .leftBox,
+  .rightBox {
+    width: 100%;
+  }
+
+  .imagem {
+    width: 100px;
+    height: 100px;
+  }
+
+  .quantidadeBox input[type="number"] {
+    width: 40px;
+  }
+
+  .cupomBox {
+    flex-direction: column;
+  }
+
+  .cupomBtn {
+    width: 100%;
+  }
+
+  .header {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .logoContainer {
+    justify-content: center;
+  }
+
+  .user {
+    text-align: center;
+    margin: 0;
+  }
+
+  .linkHeader {
+    margin: 0;
+  }
+}

@@ -1,0 +1,106 @@
+.container {
+  display: flex;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+.imagemWrapper {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+.imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.nome {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.marca {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.quantidadeControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.btnQuantidade {
+  background-color: #ddd;
+  border: none;
+  padding: 4px 10px;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnQuantidade:hover {
+  background-color: #bbb;
+}
+
+.quantidade {
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+.botaoRemover {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.botaoRemover:hover {
+  background-color: #c0392b;
+}
+
+.preco {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  min-width: 100px;
+  text-align: right;
+}

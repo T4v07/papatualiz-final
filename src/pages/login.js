@@ -50,6 +50,9 @@ export default function Login() {
         return;
       }
 
+      // ✅ Salva o ID do utilizador no localStorage para o carrinho funcionar
+      localStorage.setItem("usuarioId", data.user.ID_utilizador);
+
       login(data.user);
       router.push("/home");
     } catch {
