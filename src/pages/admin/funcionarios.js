@@ -4,7 +4,7 @@ import styles from "@/styles/admin.module.css";
 
 export default function PaginaFuncionarios() {
   return (
-    <div className={styles.adminContainer}>
+    <div className="containerFull">
       <SidebarAdmin />
       <main className={styles.mainContent}>
         <GestaoFuncionarios />

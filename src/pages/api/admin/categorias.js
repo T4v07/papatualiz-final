@@ -25,8 +25,22 @@ export default async function handler(req, res) {
 
     if (method === "DELETE") {
       const { id } = req.query;
+
+      // Verifica se há produtos com essa categoria
+      const [produtos] = await pool.query(
+        "SELECT Nome_Produtos FROM Produtos WHERE Tipo_de_Categoria = ?",
+        [id]
+      );
+
+      if (produtos.length > 0) {
+        return res.status(400).json({
+          message: `Não é possível apagar esta categoria. Existem produtos associados.`,
+          produtos: produtos.map(p => p.Nome_Produtos),
+        });
+      }
+
       await pool.execute("DELETE FROM Categoria WHERE ID_categoria = ?", [id]);
-      return res.status(200).json({ message: "Categoria apagada!" });
+      return res.status(200).json({ message: "Categoria apagada com sucesso!" });
     }
 
     if (method === "PUT") {

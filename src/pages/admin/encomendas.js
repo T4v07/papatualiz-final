@@ -5,7 +5,7 @@ import styles from "@/styles/admin.module.css";
 
 export default function EncomendasAdminPage() {
   return (
-    <div className={styles.adminContainer}>
+    <div className="containerFull">
       <SidebarAdmin />
       <main className={styles.mainContent}>
         <GestaoEncomendas />

@@ -6,18 +6,21 @@ export default async function handler(req, res) {
   if (!id) return res.status(400).json({ message: "ID da compra é obrigatório" });
 
   try {
-    // Busca produtos da compra com a imagem principal (ordem = 1)
+    // Busca produtos da compra com uma imagem (qualquer uma, pega a primeira)
     const [produtos] = await pool.query(
       `
       SELECT 
         p.ID_produto,
         p.Nome_Produtos AS Nome,
-        pf.url AS Imagem,
+        (
+          SELECT url FROM ProdutoFotos
+          WHERE produto_id = p.ID_produto
+          LIMIT 1
+        ) AS Imagem,
         cp.Quantidade,
         cp.Preco_unitario
       FROM Compra_Produto cp
       JOIN Produtos p ON cp.ID_produto = p.ID_produto
-      LEFT JOIN ProdutoFotos pf ON p.ID_produto = pf.produto_id AND pf.ordem = 1
       WHERE cp.ID_compra = ?
       `,
       [id]

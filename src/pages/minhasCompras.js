@@ -86,17 +86,7 @@ export default function MinhasCompras() {
                         <strong>Data:</strong>{" "}
                         {new Date(compra.Data_compra).toLocaleDateString("pt-PT")}
                       </p>
-                      <p>
-                        <strong>Status:</strong>{" "}
-                        <span
-                          style={{
-                            color: statusColors[compra.Estado?.toLowerCase()] || "#333",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {compra.Estado || "Desconhecido"}
-                        </span>
-                      </p>
+                      
 
                       {compra.produtos && (
                         <ul className={styles.listaBonita}>

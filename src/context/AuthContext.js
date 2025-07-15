@@ -1,3 +1,4 @@
+// context/AuthContext.js
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -27,12 +28,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     const normalizado = {
-      ID_utilizador: userData.ID_utilizador || userData.id,
-      nome: userData.nome || userData.Nome,
-      email: userData.email || userData.Email,
+      ID_utilizador: userData.ID_utilizador || userData.id || userData.ID || null,
+      nome: userData.nome || userData.Nome || "",
+      email: userData.email || userData.Email || "",
       tipo_de_conta: userData.tipo_de_conta || userData.Tipo_de_Conta || "Cliente",
     };
-    console.log("login function normalizado user:", normalizado);
+    console.log("👤 login function normalizado user:", normalizado);
     setUser(normalizado);
     localStorage.setItem("user", JSON.stringify(normalizado));
   };

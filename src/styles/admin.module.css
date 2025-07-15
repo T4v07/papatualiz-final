@@ -101,27 +101,29 @@
   /* ... existente acima ... */
 
 .logoutContainer {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: calc(100% - 40px);
+  margin-top: 70px; /* ← Aqui podes ajustar o valor como quiseres */
+  padding-top: 20px;
+  border-top: 1px solid #444;
 }
+
 
 .logoutButton {
   width: 100%;
   padding: 10px;
-  background-color: #c62828;
+  background-color: #c0392b;
   color: white;
-  font-size: 15px;
   border: none;
   border-radius: 6px;
+  font-size: 15px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
 .logoutButton:hover {
-  background-color: #a32121;
+  background-color: #e74c3c;
 }
+
 
 
 /* Tabela de Encomendas */
@@ -251,7 +253,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  
   min-height: 100vh;
   position: fixed;
   top: 0;
@@ -323,8 +325,11 @@
 }
 
 .logoutContainer {
-  margin-top: auto;
+  margin-top: 30px; /* sobe o botão */
+  padding-top: 10px;
+  border-top: 1px solid #444;
 }
+
 
 .logoutButton {
   width: 100%;

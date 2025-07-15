@@ -1,53 +1,126 @@
-import { useEffect, useState } from "react";
-import styles from "@/styles/admin.module.css";
+import { useEffect, useState, useContext } from "react";
+import AuthContext from "@/context/AuthContext";
+import ModalAdicionarFuncionario from "@/components/ModalAdicionarFuncionario";
+import ModalHistoricoFuncionario from "@/components/ModalHistoricoFuncionario.js";
+import styles from "@/styles/GestaoFuncionarios.module.css";
 
 export default function GestaoFuncionarios() {
+  const { user } = useContext(AuthContext);
   const [funcionarios, setFuncionarios] = useState([]);
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [novoFuncionario, setNovoFuncionario] = useState({
-    nome: "",
-    username: "",
-    email: "",
-    telefone: "",
-    password: "",
+  const [filtros, setFiltros] = useState({
+    pesquisa: "",
+    ativo: "todos",
   });
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [funcionarioSelecionado, setFuncionarioSelecionado] = useState(null);
+  const [pagina, setPagina] = useState(1);
+  const porPagina = 5;
 
   useEffect(() => {
-    fetch("/api/admin/funcionarios")
-      .then((res) => res.json())
-      .then((data) => setFuncionarios(data));
+    fetchFuncionarios();
   }, []);
 
-  const adicionarFuncionario = async () => {
+  const fetchFuncionarios = async () => {
+    const res = await fetch("/api/admin/funcionarios");
+    const data = await res.json();
+    setFuncionarios(data);
+  };
+
+  const adicionarFuncionario = async (novoFuncionario) => {
     const res = await fetch("/api/admin/funcionarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(novoFuncionario),
+      body: JSON.stringify({ ...novoFuncionario, autorNome: user?.nome || "Administrador" }),
     });
 
     if (res.ok) {
-      const novo = await res.json();
-      setFuncionarios((prev) => [...prev, novo]);
-      setMostrarFormulario(false);
-      setNovoFuncionario({
-        nome: "",
-        username: "",
-        email: "",
-        telefone: "",
-        password: "",
-      });
+      await fetchFuncionarios();
+      setMostrarModal(false);
     } else {
       alert("Erro ao adicionar funcionário.");
     }
   };
 
+  const atualizarFuncionario = async (id, campo, valor) => {
+    const res = await fetch("/api/admin/funcionarios", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, campo, valor, autorNome: user?.nome || "Administrador" }),
+    });
+
+    if (res.ok) {
+      await fetchFuncionarios();
+    } else {
+      alert("Erro ao atualizar funcionário.");
+    }
+  };
+
+  const excluirFuncionario = async (id) => {
+    const res = await fetch("/api/admin/funcionarios", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, autorNome: user?.nome || "Administrador" }),
+    });
+
+    if (res.ok) {
+      await fetchFuncionarios();
+    } else {
+      alert("Erro ao excluir funcionário.");
+    }
+  };
+
+  const funcionariosFiltrados = funcionarios.filter((f) => {
+    const termo = filtros.pesquisa.toLowerCase();
+    const correspondePesquisa =
+      f.Nome.toLowerCase().includes(termo) ||
+      f.Username.toLowerCase().includes(termo) ||
+      f.Email.toLowerCase().includes(termo) ||
+      f.Telefone.toLowerCase().includes(termo);
+
+    const correspondeAtivo =
+      filtros.ativo === "todos" ||
+      (filtros.ativo === "ativos" && f.Ativo) ||
+      (filtros.ativo === "inativos" && !f.Ativo);
+
+    return correspondePesquisa && correspondeAtivo;
+  });
+
+  const totalPaginas = Math.ceil(funcionariosFiltrados.length / porPagina);
+  const funcionariosPaginados = funcionariosFiltrados.slice((pagina - 1) * porPagina, pagina * porPagina);
+
   return (
     <div className={styles.pagina}>
       <h2 className={styles.titulo}>👨‍💼 Gestão de Funcionários</h2>
 
-      <button className={styles.botaoPrincipal} onClick={() => setMostrarFormulario(true)}>
-        ➕ Adicionar Novo Funcionário
-      </button>
+      <div className={styles.filtrosContainer}>
+        <input
+          type="text"
+          placeholder="🔍 Pesquisar por nome, email..."
+          value={filtros.pesquisa}
+          onChange={(e) => {
+            setFiltros({ ...filtros, pesquisa: e.target.value });
+            setPagina(1);
+          }}
+          className={styles.inputFiltro}
+        />
+
+        <select
+          value={filtros.ativo}
+          onChange={(e) => {
+            setFiltros({ ...filtros, ativo: e.target.value });
+            setPagina(1);
+          }}
+          className={styles.selectFiltro}
+        >
+          <option value="todos">Todos</option>
+          <option value="ativos">Apenas Ativos</option>
+          <option value="inativos">Apenas Inativos</option>
+        </select>
+
+        <button className={styles.botaoPrincipal} onClick={() => setMostrarModal(true)}>
+          ➕ Adicionar Novo Funcionário
+        </button>
+      </div>
 
       <table className={styles.tabela}>
         <thead>
@@ -57,77 +130,50 @@ export default function GestaoFuncionarios() {
             <th>Email</th>
             <th>Telefone</th>
             <th>Ativo</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {funcionarios.map((f) => (
+          {funcionariosPaginados.map((f) => (
             <tr key={f.ID_utilizador}>
               <td>{f.Nome}</td>
               <td>{f.Username}</td>
               <td>{f.Email}</td>
               <td>{f.Telefone}</td>
               <td>{f.Ativo ? "✅" : "❌"}</td>
+              <td>
+                <button
+                  className={styles.botaoHistorico}
+                  onClick={() => setFuncionarioSelecionado(f)}
+                >
+                  📜 Histórico
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {mostrarFormulario && (
-        <div className={styles.formContainer}>
-          <div className={styles.formTitle}>Adicionar Funcionário</div>
-          <div className={styles.formRow}>
-            <input
-              type="text"
-              placeholder="Nome"
-              value={novoFuncionario.nome}
-              onChange={(e) =>
-                setNovoFuncionario({ ...novoFuncionario, nome: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Username"
-              value={novoFuncionario.username}
-              onChange={(e) =>
-                setNovoFuncionario({ ...novoFuncionario, username: e.target.value })
-              }
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={novoFuncionario.email}
-              onChange={(e) =>
-                setNovoFuncionario({ ...novoFuncionario, email: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Telefone"
-              value={novoFuncionario.telefone}
-              onChange={(e) =>
-                setNovoFuncionario({ ...novoFuncionario, telefone: e.target.value })
-              }
-            />
-            <input
-              type="password"
-              placeholder="Senha"
-              value={novoFuncionario.password}
-              onChange={(e) =>
-                setNovoFuncionario({ ...novoFuncionario, password: e.target.value })
-              }
-            />
-          </div>
-
-          <button className={styles.botaoAcao} onClick={adicionarFuncionario}>
-            Adicionar
-          </button>
-          <button
-            className={`${styles.botaoAcao} ${styles.botaoCancelar}`}
-            onClick={() => setMostrarFormulario(false)}
-          >
-            Cancelar
-          </button>
+      {totalPaginas > 1 && (
+        <div className={styles.paginacao}>
+          <button onClick={() => setPagina(pagina - 1)} disabled={pagina === 1}>◀</button>
+          <span>{pagina} / {totalPaginas}</span>
+          <button onClick={() => setPagina(pagina + 1)} disabled={pagina === totalPaginas}>▶</button>
         </div>
+      )}
+
+      {mostrarModal && (
+        <ModalAdicionarFuncionario
+          onClose={() => setMostrarModal(false)}
+          onAdicionar={adicionarFuncionario}
+        />
+      )}
+
+      {funcionarioSelecionado && (
+        <ModalHistoricoFuncionario
+          funcionario={funcionarioSelecionado}
+          onClose={() => setFuncionarioSelecionado(null)}
+        />
       )}
     </div>
   );

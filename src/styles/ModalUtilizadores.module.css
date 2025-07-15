@@ -1,0 +1,91 @@
+/* styles/ModalUtilizadores.module.css */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  color: #0c3c6e;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #222;
+}
+
+.modal select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  margin-top: 6px;
+  outline-offset: 3px;
+  outline-color: #0c3c6e;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.modal select:hover,
+.modal select:focus {
+  border-color: #0c3c6e;
+  box-shadow: 0 0 8px rgba(12, 60, 110, 0.3);
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.botoes button {
+  background-color: #0c3c6e;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.botoes button:hover:not(:disabled) {
+  background-color: #084a99;
+}
+
+.botoes button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.erro {
+  color: #d93025;
+  margin-top: 10px;
+  font-weight: 600;
+}

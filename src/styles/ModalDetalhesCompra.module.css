@@ -1,0 +1,134 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 820px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal h3 {
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #002244;
+}
+
+.modal h3::before {
+  content: "📦";
+  margin-right: 8px;
+  font-size: 1.6rem;
+}
+
+.fechar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #cc0000;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.fechar:hover {
+  background-color: #a30000;
+}
+
+.detalhesCompra {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.detalhesCompra p {
+  margin: 6px 0;
+}
+
+.produtosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.produtoCard {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  width: calc(50% - 10px);
+}
+
+.produtoCard img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.produtoCard div {
+  display: flex;
+  flex-direction: column;
+}
+
+.produtoCard strong {
+  font-size: 14px;
+  color: #002244;
+}
+
+.produtoCard p {
+  font-size: 13px;
+  margin: 2px 0;
+}
+
+.btnArquivar {
+  margin-bottom: 25px;
+  padding: 8px 16px;
+  background-color: #f1c40f;
+  color: #222;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btnArquivar:hover {
+  background-color: #d4ac0d;
+}
+
+@media (max-width: 600px) {
+  .produtoCard {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .produtoCard img {
+    margin-bottom: 8px;
+  }
+}

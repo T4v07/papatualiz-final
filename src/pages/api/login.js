@@ -9,10 +9,10 @@ export default async function handler(req, res) {
   const { username, password } = req.body;
 
   try {
-    // Verifica se é um email (tem "@"), se não, assume como username
+    // Consulta pelo username ou email
     const [rows] = await pool.query(
       "SELECT * FROM Utilizador WHERE Username = ? OR Email = ?",
-      [username, username] // usa o mesmo valor para ambas colunas
+      [username, username]
     );
 
     if (rows.length === 0) {
@@ -20,12 +20,23 @@ export default async function handler(req, res) {
     }
 
     const user = rows[0];
+
+    // Verifica se a conta está ativa
+    if (user.Ativo === 0) {
+  return res.status(403).json({ 
+    message: "Sua conta foi desativada. Para mais informações, por favor envie um email para suportepapsportset@gmail.com." 
+  });
+}
+
+
+    // Verifica a senha
     const isMatch = await bcrypt.compare(password, user.Password);
 
     if (!isMatch) {
       return res.status(401).json({ message: "Senha incorreta!" });
     }
 
+    // Login bem-sucedido
     return res.status(200).json({
       message: "Login bem-sucedido!",
       user: {
@@ -36,7 +47,6 @@ export default async function handler(req, res) {
         Tipo_de_Conta: user.Tipo_de_Conta,
       },
     });
-
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     return res.status(500).json({ message: "Erro interno ao fazer login." });

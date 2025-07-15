@@ -67,32 +67,18 @@ export default function DetalhesCompra() {
             <>
               <section className={styles.secao}>
                 <h3>📍 Endereço de Entrega</h3>
-                <p>
-                  {encomenda.nome} {encomenda.apelido}
-                </p>
-                <p>
-                  {encomenda.Rua}, {encomenda.Numero}
-                </p>
-                <p>
-                  {encomenda.Codigo_postal} — {encomenda.Cidade}, {encomenda.Pais}
-                </p>
+                <p>{encomenda.nome} {encomenda.apelido}</p>
+                <p>{encomenda.Rua}, {encomenda.Numero}</p>
+                <p>{encomenda.Codigo_postal} — {encomenda.Cidade}, {encomenda.Pais}</p>
                 <p>Tel: {encomenda.telefone}</p>
                 <p>Email: {encomenda.email}</p>
-                {encomenda.Notas && (
-                  <p>
-                    <strong>Notas:</strong> {encomenda.Notas}
-                  </p>
-                )}
+                {encomenda.Notas && <p><strong>Notas:</strong> {encomenda.Notas}</p>}
               </section>
 
               <section className={styles.secao}>
                 <h3>🚚 Rastreamento</h3>
-                <p>
-                  <strong>Código:</strong> {encomenda.ID_compra}
-                </p>
-                <p>
-                  <strong>Status:</strong> {encomenda.Estado}
-                </p>
+                <p><strong>Código:</strong> {encomenda.ID_compra}</p>
+                <p><strong>Status:</strong> {encomenda.Estado}</p>
               </section>
             </>
           )}

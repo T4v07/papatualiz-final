@@ -1,0 +1,120 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 700px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #002244;
+  font-weight: bold;
+  text-align: left;
+}
+
+.variacoesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.linha input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.linha button {
+  background-color: #aaa;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.linha button:hover {
+  background-color: #888;
+}
+
+.adicionarBtn {
+  margin-top: 10px;
+  background-color: #007e33;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+}
+
+.adicionarBtn:hover {
+  background-color: #009e3c;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.cancelar {
+  background-color: #ccc;
+  color: #222;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cancelar:hover {
+  background-color: #aaa;
+}
+
+.salvar {
+  background-color: #003366;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.salvar:hover {
+  background-color: #0055aa;
+}

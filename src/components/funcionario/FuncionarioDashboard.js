@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "@/styles/funcionarioDashboard.module.css";
 import { Bar, Pie } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import AuthContext from "@/context/AuthContext";
 
 export default function FuncionarioDashboard() {
   const [dados, setDados] = useState(null);
+  const { user } = useContext(AuthContext); // pega o nome diretamente do contexto
 
   useEffect(() => {
     async function fetchDados() {
@@ -14,10 +16,9 @@ export default function FuncionarioDashboard() {
 
         setDados({
           totalProdutos: data.totalProducts,
-          totalCompras: data.totalSales ? data.totalSales.toFixed(2) + " €" : "0.00 €",
-          encomendasPendentes: data.ordersByState?.find(e => e.Estado === "Pendente")?.count || 0,
           stockCritico: data.lowStock,
-          salesByMonth: data.salesByMonth || [],
+          suportePendente: data.pendingSupport,
+          encomendasPendentes: data.pendingOrders,
           ordersByState: data.ordersByState || [],
           productsByCategory: data.productsByCategory || [],
         });
@@ -25,6 +26,7 @@ export default function FuncionarioDashboard() {
         console.error("Erro ao carregar dados:", error);
       }
     }
+
     fetchDados();
   }, []);
 
@@ -32,6 +34,8 @@ export default function FuncionarioDashboard() {
 
   return (
     <div className={styles.dashboard}>
+      <h2 className={styles.boasVindas}>Olá, {user?.nome || "Funcionário"} 👋</h2>
+
       <div className={styles.kpiGrid}>
         <div className={styles.card}>
           <div className={styles.icon}>📦</div>
@@ -41,10 +45,10 @@ export default function FuncionarioDashboard() {
           </div>
         </div>
         <div className={styles.card}>
-          <div className={styles.icon}>🛒</div>
+          <div className={styles.icon}>🧾</div>
           <div className={styles.info}>
-            <h3>Compras</h3>
-            <p>{dados.totalCompras}</p>
+            <h3>Pedidos Suporte</h3>
+            <p>{dados.suportePendente}</p>
           </div>
         </div>
         <div className={styles.card}>
@@ -64,31 +68,6 @@ export default function FuncionarioDashboard() {
       </div>
 
       <div className={styles.chartsContainer}>
-        <section className={styles.chart}>
-          <h4>📈 Vendas Últimos 6 Meses</h4>
-          <Bar
-            data={{
-              labels: dados.salesByMonth.map((item) => item.month),
-              datasets: [{
-                label: "Vendas (€)",
-                data: dados.salesByMonth.map((item) => item.total),
-                backgroundColor: "rgba(0,123,255,0.6)",
-                borderColor: "#007bff",
-                borderWidth: 2,
-                borderRadius: 6,
-              }],
-            }}
-            options={{
-              responsive: true,
-              plugins: { legend: { display: false } },
-              scales: {
-                y: { beginAtZero: true, ticks: { color: "#333" } },
-                x: { ticks: { color: "#333" } },
-              },
-            }}
-          />
-        </section>
-
         <section className={styles.chart}>
           <h4>📦 Encomendas por Estado</h4>
           <Pie

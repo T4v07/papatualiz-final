@@ -1,14 +1,13 @@
-import GestaoCategorias from "../../components/admin/GestaoCategorias";
-import SidebarAdmin from "../../components/admin/SidebarAdmin";
-import styles from "../../styles/admin.module.css";
+import SidebarAdmin from "@/components/admin/SidebarAdmin";
+import GestaoCategorias from "@/components/admin/GestaoCategorias";
 
 export default function PaginaCategorias() {
   return (
-    <div className={styles.adminContainer}>
+    <div className="containerFull">
       <SidebarAdmin />
-      <main className={styles.mainContent}>
+      <div className="mainFormContainer">
         <GestaoCategorias />
-      </main>
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import styles from "@/styles/admin.module.css";
 
 export default function SuporteFuncionarioPage() {
   return (
-    <div className={styles.funcionarioContainer}>
+    <div className="containerFull">
       <SidebarFuncionario />
       <div className={styles.mainContent}>
         <FuncionarioSuporte />

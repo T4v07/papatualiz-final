@@ -1,78 +1,129 @@
 .container {
-    display: flex;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-  }
-  
-  .listaPedidos {
-    width: 35%;
-    background-color: #f5f5f5;
-    border-right: 1px solid #ddd;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  .listaPedidos h2 {
-    margin-bottom: 20px;
-    font-size: 20px;
-  }
-  
-  .item {
-    background: white;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: 0.2s;
-  }
-  
-  .item:hover {
-    background: #f0f0f0;
-  }
-  
-  .ativo {
-    border-color: #007bff;
-    background-color: #e7f1ff;
-  }
-  
-  .areaResposta {
-    width: 65%;
-    padding: 30px;
-  }
-  
-  .areaResposta textarea {
-    width: 100%;
-    height: 150px;
-    margin-top: 10px;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    resize: vertical;
-  }
-  
-  .areaResposta button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #003366;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .areaResposta button:hover {
-    background-color: #002244;
-  }
-  
-  .feedback {
-    margin-top: 10px;
-    color: green;
-  }
-  
-  .nenhum {
-    font-style: italic;
-    color: #666;
-  }
-  
+  display: flex;
+  gap: 40px;
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.pedidosBox {
+  width: 360px;
+  flex-shrink: 0;
+}
+
+.pedidosBox h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.inputPesquisa,
+.selectEstado {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.botaoAcao {
+  background-color: #004aad;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  font-weight: 500;
+  font-size: 14px;
+  width: 100%;
+}
+
+.botaoAcao:hover {
+  background-color: #003580;
+}
+
+.listaPedidos {
+  border-radius: 8px;
+  max-height: 580px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.itemPedido {
+  padding: 12px;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  border-left: 4px solid transparent;
+}
+
+.itemPedido:hover {
+  background-color: #f9f9f9;
+}
+
+.itemRespondido {
+  background-color: #e9fbe9;
+  border-left: 4px solid #2ecc71;
+}
+
+.itemSelecionado {
+  background-color: #e6f0ff;
+  border-left: 4px solid #3498db;
+}
+
+.estado-pendente,
+.estado-respondido {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.estado-pendente {
+  background-color: #fff3cd;
+  color: #e98e06;
+}
+
+.estado-respondido {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.painelResposta {
+  flex: 1;
+  padding: 25px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  min-width: 700px;
+  max-width: 100%;
+}
+
+.painelResposta h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.painelResposta textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 15px;
+  resize: vertical;
+  margin-bottom: 12px;
+  min-height: 130px;
+}
+
+.botoesResposta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}

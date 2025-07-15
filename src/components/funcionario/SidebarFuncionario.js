@@ -13,6 +13,8 @@ export default function SidebarFuncionario() {
     { label: "Produtos", path: "/funcionario/produtos" },
     { label: "Compras dos Clientes", path: "/funcionario/compras" },
     { label: "Encomendas", path: "/funcionario/encomendas" },
+    { label: "Gestão de Categorias", path: "/funcionario/funccategoria" },
+    { label: "Controle de Stock", path: "/funcionario/CrlStock" },
     { label: "Ajuda ao Cliente", path: "/funcionario/suporte" },
   ];
 

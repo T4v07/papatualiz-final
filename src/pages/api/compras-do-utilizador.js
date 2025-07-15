@@ -44,8 +44,7 @@ export default async function handler(req, res) {
       if (produtos.length > 0) {
         compras.push({
           ID_compra: encomenda.ID_compra,
-          Data_compra: encomenda.Data_criacao,
-          Status: encomenda.Estado || "Desconhecido",
+          Data_compra: encomenda.Data_criacao,        
           produtos,
           Total_Valor: produtos.reduce(
             (acc, p) => acc + p.Quantidade * p.Preco_unitario,

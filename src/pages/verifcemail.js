@@ -1,8 +1,9 @@
+// /pages/verifcemail.js
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import styles from "../styles/auth.module.css"; // usamos o mesmo CSS do login
+import styles from "../styles/auth.module.css";
 
 export default function Verifcemail() {
   const router = useRouter();
@@ -11,46 +12,74 @@ export default function Verifcemail() {
   const [email, setEmail] = useState("");
   const [codigo, setCodigo] = useState("");
   const [mensagem, setMensagem] = useState("");
-  const [tipoMensagem, setTipoMensagem] = useState(""); // sucesso ou erro
+  const [tipoMensagem, setTipoMensagem] = useState("");
   const [reenviando, setReenviando] = useState(false);
 
   useEffect(() => {
     if (emailQuery) setEmail(emailQuery);
   }, [emailQuery]);
 
-  const handleVerificar = () => {
+  const handleVerificar = async () => {
     if (!codigo || codigo.trim().length < 6) {
       setMensagem("O código deve ter pelo menos 6 dígitos.");
       setTipoMensagem("erro");
       return;
     }
 
-    if (codigo.trim() === "123456") {
-      setMensagem("✅ Código verificado com sucesso!");
-      setTipoMensagem("sucesso");
+    try {
+      const res = await fetch("/api/verifyCode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: codigo }),
+      });
 
-      setTimeout(() => {
-        router.push("/login");
-      }, 1500);
-    } else {
-      setMensagem("❌ Código inválido. Tente novamente.");
+      const data = await res.json();
+
+      if (res.ok) {
+        setMensagem("✅ Código verificado com sucesso!");
+        setTipoMensagem("sucesso");
+        setTimeout(() => router.push("/login"), 1500);
+      } else {
+        setMensagem(data.message || "❌ Código inválido.");
+        setTipoMensagem("erro");
+      }
+    } catch {
+      setMensagem("Erro no servidor. Tenta novamente.");
       setTipoMensagem("erro");
     }
   };
 
-  const handleReenviar = () => {
+  const handleReenviar = async () => {
     setReenviando(true);
-    setMensagem(`Código reenviado com sucesso para ${email}`);
-    setTipoMensagem("sucesso");
+    setMensagem("");
+    setTipoMensagem("");
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/resendCode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setMensagem(data.message || `✅ Novo código enviado para ${email}`);
+        setTipoMensagem("sucesso");
+      } else {
+        setMensagem(data.message || "❌ Erro ao reenviar código.");
+        setTipoMensagem("erro");
+      }
+    } catch (error) {
+      setMensagem("Erro no servidor ao reenviar o código.");
+      setTipoMensagem("erro");
+    } finally {
       setReenviando(false);
-    }, 3000);
+    }
   };
 
   return (
     <div className={styles.splitContainer}>
-      {/* Lado da imagem com botão Voltar */}
       <div
         className={styles.imageSide}
         style={{
@@ -64,7 +93,6 @@ export default function Verifcemail() {
         </Link>
       </div>
 
-      {/* Formulário de verificação */}
       <div className={styles.formSide}>
         <div className={styles.authCard}>
           <h1 className={styles.brand}>SPORT’S ET</h1>

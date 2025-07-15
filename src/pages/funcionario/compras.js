@@ -1,34 +1,13 @@
-import { useEffect, useState } from "react";
 import SidebarFuncionario from "@/components/funcionario/SidebarFuncionario";
-import ComprasClientesFuncionario from "@/components/funcionario/ComprasClientesFuncionario";
-import styles from "@/styles/funcionario.module.css";
+import VerCompras from "@/components/funcionario/ComprasClientesFuncionario";
+import styles from "@/styles/admin.module.css";
 
-export default function ComprasFuncionarioPage() {
-  const [compras, setCompras] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchCompras() {
-      try {
-        const res = await fetch("/api/funcionario/compras");
-        const data = await res.json();
-        setCompras(data);
-      } catch (err) {
-        console.error("Erro ao buscar compras:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCompras();
-  }, []);
-
+export default function ComprasAdminPage() {
   return (
-    <div className={styles.funcionarioContainer}>
+    <div className="containerFull">
       <SidebarFuncionario />
       <main className={styles.mainContent}>
-        <h2>🧾 Compras dos Clientes</h2>
-        {loading ? <p>A carregar...</p> : <ComprasClientesFuncionario compras={compras} />}
+        <VerCompras />
       </main>
     </div>
   );

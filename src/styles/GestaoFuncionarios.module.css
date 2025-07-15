@@ -1,0 +1,120 @@
+.pagina {
+  padding: 30px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.titulo {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.filtrosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.inputFiltro,
+.selectFiltro {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  min-width: 180px;
+  background: white;
+  transition: border 0.2s ease;
+}
+
+.inputFiltro:focus,
+.selectFiltro:focus {
+  outline: none;
+  border-color: #0070f3;
+}
+
+.botaoPrincipal {
+  background-color: #0070f3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.botaoPrincipal:hover {
+  background-color: #005ac1;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tabela thead {
+  background-color: #e6eef9;
+}
+
+.tabela th,
+.tabela td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.tabela tr:hover {
+  background-color: #f2f6fc;
+}
+
+.botaoHistorico {
+  background-color: #555;
+  color: white;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.botaoHistorico:hover {
+  background-color: #333;
+}
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.paginacao button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.paginacao button:hover {
+  background-color: #005ac1;
+}
+
+.paginacao button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

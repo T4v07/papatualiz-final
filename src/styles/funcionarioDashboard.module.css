@@ -1,10 +1,16 @@
 .dashboard {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 40px 30px; /* Reduzido o padding-top */
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .kpiGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
 }
@@ -12,64 +18,104 @@
 .card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.08);
   padding: 24px;
   display: flex;
   align-items: center;
-  cursor: default;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  justify-content: flex-start;
+  gap: 16px;
+  height: 120px;
+  transition: all 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 28px rgb(0 0 0 / 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .icon {
-  font-size: 36px;
-  margin-right: 20px;
-  user-select: none;
+  font-size: 32px;
 }
 
 .info h3 {
-  margin: 0 0 8px 0;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: #333;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #444;
 }
 
 .info p {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #0070f3;
+  margin: 4px 0 0;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #0057b8;
 }
 
 .chartsContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px 32px;
 }
 
 .chart {
   background: #fff;
-  padding: 24px;
+  padding: 20px 24px 12px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .chart h4 {
-  margin-bottom: 20px;
-  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 🎯 Estilo da legenda do gráfico */
+.chart canvas + div {
+  display: flex !important;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: -12px;
+  font-size: 13px;
+  line-height: 1.2;
   color: #333;
 }
 
-/* Responsivo */
-@media (max-width: 600px) {
-  .kpiGrid {
-    grid-template-columns: 1fr;
+.chart canvas + div > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 📱 Responsivo */
+@media (max-width: 768px) {
+  .dashboard {
+    margin-left: 0;
+    padding: 16px;
   }
+
+  .kpiGrid,
   .chartsContainer {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
+}
+
+
+.boasVindas {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  margin-top: 0; /* Garante que não tenha espaço extra */
+  color: #0057b8;
 }

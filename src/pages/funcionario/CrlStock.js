@@ -1,13 +1,13 @@
-import SidebarAdmin from "@/components/admin/SidebarAdmin";
-import GestaoEstoque from "@/components/admin/GestaoEstoque";
+import SidebarFuncionario from "@/components/funcionario/SidebarFuncionario";
+import ControleStock from "@/components/funcionario/ControleStock";
 import styles from "@/styles/estoque.module.css";
 
 export default function ControleEstoque() {
   return (
     <div className="containerFull">
-      <SidebarAdmin />
+      <SidebarFuncionario />
       <div className={styles.conteudo}>
-        <GestaoEstoque />
+        <ControleStock />
       </div>
     </div>
   );

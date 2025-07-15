@@ -27,7 +27,7 @@ export default function AreaAdmin() {
   }
 
   return (
-    <div className={styles.adminContainer}>
+    <div className="containerFull">
       <SidebarAdmin />
       <main className={styles.mainContent}>
         <AdminDashboard />

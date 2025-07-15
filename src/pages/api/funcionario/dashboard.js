@@ -1,3 +1,4 @@
+// /pages/api/funcionario/dashboard.js
 import { pool } from "@/utils/db";
 
 export default async function handler(req, res) {
@@ -6,10 +7,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [users] = await pool.query(`SELECT COUNT(*) AS totalUsers FROM Utilizador`);
     const [products] = await pool.query(`SELECT COUNT(*) AS totalProducts FROM Produtos`);
-    const [sales] = await pool.query(`SELECT SUM(Total_Valor) AS totalSales FROM Compra`);
-    const [discounted] = await pool.query(`SELECT COUNT(*) AS count FROM Produtos WHERE Desconto > 0`);
 
     const [lowStock] = await pool.query(`
       SELECT COUNT(DISTINCT produto_id) AS count
@@ -17,17 +15,16 @@ export default async function handler(req, res) {
       WHERE stock <= 5
     `);
 
-    const [recent] = await pool.query(`
-      SELECT COUNT(*) AS count FROM Produtos
-      WHERE Data_Criacao >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    const [pendingSupport] = await pool.query(`
+      SELECT COUNT(*) AS count
+      FROM Suporte
+      WHERE Estado = 'pendente'
     `);
 
-    const [salesByMonthRaw] = await pool.query(`
-      SELECT DATE_FORMAT(Data_Compra, '%Y-%m') AS month, SUM(Total_Valor) AS total
-      FROM Compra
-      WHERE Data_Compra >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-      GROUP BY month
-      ORDER BY month ASC
+    const [pendingOrders] = await pool.query(`
+      SELECT COUNT(*) AS count
+      FROM Encomenda
+      WHERE Estado IN ('pendente', 'em preparação')
     `);
 
     const [ordersByStateRaw] = await pool.query(`
@@ -43,29 +40,16 @@ export default async function handler(req, res) {
       GROUP BY c.Tipo_de_Categoria
     `);
 
-    const [latestOrdersRaw] = await pool.query(`
-      SELECT e.ID_Encomenda, e.Estado, e.Data_criacao, c.Total_Valor, u.Nome
-      FROM Encomenda e
-      JOIN Compra c ON e.ID_Compra = c.ID_Compra
-      JOIN Utilizador u ON c.ID_Utilizador = u.ID_Utilizador
-      ORDER BY e.Data_criacao DESC
-      LIMIT 5
-    `);
-
     return res.status(200).json({
-      totalUsers: users[0]?.totalUsers || 0,
       totalProducts: products[0]?.totalProducts || 0,
-      totalSales: Number(sales[0]?.totalSales) || 0,
-      productsWithDiscount: discounted[0]?.count || 0,
       lowStock: lowStock[0]?.count || 0,
-      recentProducts: recent[0]?.count || 0,
-      salesByMonth: salesByMonthRaw || [],
+      pendingSupport: pendingSupport[0]?.count || 0,
+      pendingOrders: pendingOrders[0]?.count || 0,
       ordersByState: ordersByStateRaw || [],
       productsByCategory: productsByCategoryRaw || [],
-      latestOrders: latestOrdersRaw || [],
     });
   } catch (error) {
-    console.error("Erro ao obter dados da dashboard:", error);
-    return res.status(500).json({ message: "Erro ao buscar dados da dashboard." });
+    console.error("Erro na dashboard do funcionário:", error);
+    return res.status(500).json({ message: "Erro ao buscar dados da dashboard do funcionário." });
   }
 }

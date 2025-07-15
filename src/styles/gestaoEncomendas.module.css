@@ -1,0 +1,288 @@
+.pagina {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+}
+
+.titulo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #002244;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* FILTROS MODERNOS */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 30px;
+  align-items: flex-end;
+}
+
+.inputBusca,
+.selectEstadoFiltro,
+.inputData,
+.inputPreco {
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1.8px solid #ccc;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  min-width: 160px;
+  flex: 1 1 200px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.inputBusca:focus,
+.selectEstadoFiltro:focus,
+.inputData:focus,
+.inputPreco:focus {
+  border-color: #0070f3;
+  box-shadow: 0 0 8px rgba(0, 112, 243, 0.2);
+}
+
+.botaoLimpar {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.botaoLimpar:hover {
+  background-color: #d32f2f;
+  transform: scale(1.03);
+}
+
+.botaoLimpar:active {
+  transform: scale(0.98);
+}
+
+.cardEncomenda {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 24px 32px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: box-shadow 0.3s ease;
+}
+
+.cardEncomenda:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+}
+
+.topoCard {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0c3c6e;
+}
+
+.topoCard > div {
+  flex: 1 1 250px;
+  min-width: 250px;
+}
+
+.estado {
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+  text-transform: capitalize;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Cores dos estados */
+.pendente {
+  background-color: #f0ad4e;
+  box-shadow: 0 0 12px #f0ad4e;
+}
+
+.empreparacao {
+  background-color: #0275d8;
+  box-shadow: 0 0 12px #0275d8;
+}
+
+.enviado {
+  background-color: #5bc0de;
+  box-shadow: 0 0 12px #5bc0de;
+}
+
+.entregue {
+  background-color: #5cb85c;
+  box-shadow: 0 0 12px #5cb85c;
+}
+
+.selectEstado {
+  margin-top: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1.8px solid #ccc;
+  color: #222;
+  outline-offset: 3px;
+  outline-color: #0c3c6e;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  min-width: 150px;
+  user-select: none;
+}
+
+.selectEstado:hover,
+.selectEstado:focus {
+  border-color: #0c3c6e;
+  box-shadow: 0 0 8px rgba(12, 60, 110, 0.4);
+}
+
+.morada {
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  border-left: 4px solid #0c3c6e;
+  padding-left: 16px;
+  margin-bottom: 16px;
+}
+
+.listaProdutos {
+  border-top: 1px solid #ddd;
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.produtoLinha {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 14px;
+  padding: 10px 14px;
+  background-color: #f9f9f9;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.produtoLinha img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.produtoLinha > div {
+  font-size: 14px;
+  color: #222;
+  line-height: 1.3;
+}
+
+.produtoLinha strong {
+  font-weight: 700;
+  color: #0c3c6e;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.totalLinha {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0c3c6e;
+  text-align: right;
+}
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.botaoPagina {
+  background-color: #0070f3;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.botaoPagina:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Mensagem quando não há encomendas */
+.pagina > p {
+  font-size: 18px;
+  color: #666;
+  margin-top: 50px;
+}
+
+/* RESPONSIVIDADE */
+@media screen and (max-width: 768px) {
+  .controles {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inputBusca,
+  .selectEstadoFiltro,
+  .inputData,
+  .inputPreco,
+  .botaoLimpar {
+    width: 100%;
+    flex: 1;
+  }
+
+  .cardEncomenda {
+    padding: 20px 24px;
+  }
+
+  .topoCard {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .topoCard > div {
+    min-width: 100%;
+  }
+
+  .selectEstado {
+    min-width: 100%;
+  }
+
+  .produtoLinha {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .produtoLinha img {
+    width: 100%;
+    height: auto;
+  }
+
+  .totalLinha {
+    text-align: left;
+  }
+}
