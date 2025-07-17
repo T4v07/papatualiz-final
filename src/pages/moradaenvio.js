@@ -13,7 +13,10 @@ export default function MoradaEnvio() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
-  const desconto = parseFloat(localStorage.getItem("desconto")) || 0;
+  const [desconto, setDesconto] = useState(0);
+
+
+
 
   const [form, setForm] = useState({
     nome: "",
@@ -36,11 +39,27 @@ export default function MoradaEnvio() {
         setLoading(false);
         return;
       }
+
       try {
         const res = await axios.get("/api/carrinho", {
           headers: { "x-usuario-id": user.ID_utilizador },
         });
         setProdutos(res.data);
+
+        // Lê desconto só se existir
+        if (typeof window !== "undefined") {
+          const cupomGuardado = localStorage.getItem("cupom");
+          const descontoGuardado = localStorage.getItem("desconto");
+
+          if (cupomGuardado && descontoGuardado && !isNaN(parseFloat(descontoGuardado))) {
+            setDesconto(parseFloat(descontoGuardado));
+          } else {
+            localStorage.removeItem("cupom");
+            localStorage.removeItem("desconto");
+            setDesconto(0);
+          }
+        }
+
       } catch (error) {
         console.error("Erro ao buscar carrinho:", error);
         setErro("Erro ao buscar carrinho.");
@@ -48,8 +67,11 @@ export default function MoradaEnvio() {
         setLoading(false);
       }
     }
+
     buscarCarrinho();
   }, [user?.ID_utilizador]);
+
+
 
   function validarCampos() {
     const novosErros = {};
@@ -93,12 +115,14 @@ export default function MoradaEnvio() {
 
   const freteGratisAcimaDe = 50;
   const valorFrete = 5.99;
+
   const subtotal = produtos.reduce(
     (acc, item) => acc + (Number(item.Preco) || 0) * item.Quantidade,
     0
   );
   const frete = subtotal >= freteGratisAcimaDe ? 0 : valorFrete;
-  const total = subtotal + frete;
+  const totalFinal = subtotal + frete - desconto;
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -109,7 +133,7 @@ export default function MoradaEnvio() {
       return;
     }
 
-    const desconto = parseFloat(localStorage.getItem("desconto")) || 0;
+    
     const total = subtotal + frete - desconto;
 
     try {
@@ -126,8 +150,8 @@ export default function MoradaEnvio() {
         observacoes: form.observacoes,
         subtotal,
         frete,
-        desconto,
-        total, // <--- novo campo
+        desconto, // ✅ AQUI!
+        total,
       });
 
       const { ID_compra } = res.data;
@@ -138,6 +162,7 @@ export default function MoradaEnvio() {
       console.error("Erro ao criar encomenda:", error);
       alert("Erro ao criar encomenda. Tente novamente.");
     }
+
   }
 
 
@@ -365,7 +390,7 @@ export default function MoradaEnvio() {
 
             <div className={styles.resumoTotal}>
               <span>Total</span>
-              <span>€{(total - desconto).toFixed(2).replace(".", ",")}</span>
+              <span>€{totalFinal.toFixed(2).replace(".", ",")}</span>
             </div>
 
             </>

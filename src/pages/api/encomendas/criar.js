@@ -55,51 +55,52 @@ export default async function handler(req, res) {
       return res.status(400).json({ mensagem: "Carrinho vazio." });
     }
 
-   await pool.execute(
-    `
-    INSERT INTO Encomenda (
-      ID_compra,
-      usuario_id,
-      Endereco_entrega,
-      Notas,
-      Data_criacao,
-      Estado,
-      Rua,
-      Numero,
-      Codigo_postal,
-      Cidade,
-      Pais,
-      nome,
-      apelido,
-      telefone,
-      email,
-      Subtotal,
-      Frete,
-      Total_Valor
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `,
-    [
-      ID_compra,
-      usuario_id,
-      `${morada}, Nº ${numero || "s/n"}, ${codpostal} ${localidade}`,
-      observacoes || "",
-      new Date(), // <- agora passamos a data aqui
-      "pendente",
-      morada,
-      numero || "s/n",
-      codpostal,
-      localidade,
-      "Portugal",
-      nome,
-      apelido,
-      telefone,
-      email,
-      subtotal,
-      frete,
-      total,
-    ]
-  );
-
+    await pool.execute(
+      `
+      INSERT INTO Encomenda (
+        ID_compra,
+        usuario_id,
+        Endereco_entrega,
+        Notas,
+        Data_criacao,
+        Estado,
+        Rua,
+        Numero,
+        Codigo_postal,
+        Cidade,
+        Pais,
+        nome,
+        apelido,
+        telefone,
+        email,
+        Subtotal,
+        Frete,
+        Desconto,
+        Total_Valor
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      [
+        ID_compra,
+        usuario_id,
+        `${morada}, Nº ${numero || "s/n"}, ${codpostal} ${localidade}`,
+        observacoes || "",
+        new Date(),
+        "pendente",
+        morada,
+        numero || "s/n",
+        codpostal,
+        localidade,
+        "Portugal",
+        nome,
+        apelido,
+        telefone,
+        email,
+        subtotal,
+        frete,
+        desconto,
+        total,
+      ]
+    );
 
     const inseridos = new Set();
     for (const produto of produtos) {
@@ -115,7 +116,7 @@ export default async function handler(req, res) {
           Quantidade,
           Preco_unitario
         ) VALUES (?, ?, ?, ?, ?)
-      `,
+        `,
         [
           ID_compra,
           produto.ID_produto,

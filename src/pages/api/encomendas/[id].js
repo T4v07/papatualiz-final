@@ -1,3 +1,4 @@
+// /api/encomendas/[id].js
 import { pool } from "@/utils/db";
 
 export default async function handler(req, res) {
@@ -12,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Buscar dados da encomenda com os novos campos Subtotal, Frete e Total_Valor
+    // Buscar dados da encomenda com os campos necessários
     const [encomendaRows] = await pool.execute(
       `SELECT 
          ID_compra, 
@@ -27,6 +28,7 @@ export default async function handler(req, res) {
          email,
          Subtotal,
          Frete,
+         Desconto,
          Total_Valor
        FROM Encomenda 
        WHERE ID_compra = ?`,
@@ -39,7 +41,7 @@ export default async function handler(req, res) {
 
     const encomenda = encomendaRows[0];
 
-    // Buscar produtos da encomenda com a imagem principal (ordem 1)
+    // Buscar produtos da encomenda com a imagem principal
     const [produtos] = await pool.execute(
       `SELECT
          cp.ID_produto,

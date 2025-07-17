@@ -14,9 +14,6 @@ export default function Carrinho() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
-  const [cupom, setCupom] = useState("");
-  const [cupomAtivo, setCupomAtivo] = useState(false);
-  const [desconto, setDesconto] = useState(0);
 
   const freteGratisAcimaDe = 50;
   const valorFrete = 5.99;
@@ -97,23 +94,11 @@ export default function Carrinho() {
     0
   );
   const frete = subtotal >= freteGratisAcimaDe ? 0 : valorFrete;
-  const totalSemDesconto = subtotal + frete;
-  const totalComDesconto = totalSemDesconto - desconto;
+  const total = subtotal + frete;
 
-  const aplicarCupom = () => {
-  if (cupom.trim().toUpperCase() === "SPORT10") {
-    setDesconto(10);
-    setCupomAtivo(true);
-    localStorage.setItem("desconto", "10"); // <-- ADICIONADO
-    alert("Cupom aplicado! 10€ de desconto.");
-  } else {
-    setDesconto(0);
-    setCupomAtivo(false);
-    localStorage.removeItem("desconto"); // <-- limpar caso inválido
-    alert("Cupom inválido.");
-  }
-};
-
+  const continuarParaEntrega = () => {
+    router.push("/moradaenvio");
+  };
 
   if (loading) {
     return (
@@ -133,7 +118,6 @@ export default function Carrinho() {
 
   return (
     <div className={styles.container}>
-      {/* TOPO CORRIGIDO COM GRID */}
       <header className={styles.header}>
         <Link href="/" className={styles.linkHeader}>
           &larr; Continuar a comprar
@@ -155,7 +139,6 @@ export default function Carrinho() {
         </span>
       </header>
 
-      {/* BARRA DE PROGRESSO */}
       <div className={styles.progressBar}>
         <div className={styles.steps}>
           {["Carrinho", "Entrega", "Pagamento"].map((etapa, index) => (
@@ -173,7 +156,6 @@ export default function Carrinho() {
         </div>
       </div>
 
-      {/* CONTEÚDO PRINCIPAL */}
       <main className={styles.main}>
         {produtos.length === 0 ? (
           <CarrinhoVazio modo="box" />
@@ -232,7 +214,6 @@ export default function Carrinho() {
           </section>
         )}
 
-        {/* RESUMO */}
         <aside className={styles.rightBox}>
           <h3>Resumo da encomenda</h3>
 
@@ -248,40 +229,12 @@ export default function Carrinho() {
             <span>{frete === 0 ? "Grátis" : `€${frete.toFixed(2).replace(".", ",")}`}</span>
           </div>
 
-          <div className={styles.cupomBox}>
-            <input
-              type="text"
-              placeholder="Tem cupom? Insira aqui"
-              value={cupom}
-              onChange={(e) => setCupom(e.target.value)}
-              className={styles.cupomInput}
-              disabled={cupomAtivo}
-            />
-            <button
-              onClick={aplicarCupom}
-              disabled={cupomAtivo || cupom.trim() === ""}
-              className={styles.cupomBtn}
-            >
-              {cupomAtivo ? "Cupom aplicado" : "Aplicar"}
-            </button>
-          </div>
-
-          {cupomAtivo && (
-            <div className={styles.resumoLinha}>
-              <span>Desconto</span>
-              <span>-€{desconto.toFixed(2).replace(".", ",")}</span>
-            </div>
-          )}
-
           <div className={styles.resumoTotal}>
             <span>Total</span>
-            <span>€{totalComDesconto.toFixed(2).replace(".", ",")}</span>
+            <span>€{total.toFixed(2).replace(".", ",")}</span>
           </div>
 
-          <button
-            className={styles.pagarBtn}
-            onClick={() => router.push("/moradaenvio")}
-          >
+          <button onClick={continuarParaEntrega} className={styles.botaoFinalizar}>
             Finalizar Compra
           </button>
         </aside>
