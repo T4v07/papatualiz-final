@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Método não permitido." });
   }
 
-  const { id, nome, email, telefone, endereco, dataNascimento, senhaAtual, novaSenha } = req.body;
+  const { id, nome, username, email, telefone, dataNascimento, senhaAtual, novaSenha } = req.body;
 
   if (!id) {
     return res.status(400).json({ message: "ID do usuário é obrigatório." });
@@ -31,14 +31,14 @@ export default async function handler(req, res) {
 
     const query = `
       UPDATE Utilizador 
-      SET Nome = ?, Email = ?, Telefone = ?, Endereco = ?, DataNascimento = ?
+      SET Nome = ?, Username = ?, Email = ?, Telefone = ?, DataNascimento = ?
       ${novaSenha ? ", Password = ?" : ""}
       WHERE ID_utilizador = ?
     `;
 
     const params = novaSenha
-      ? [nome, email, telefone, endereco, dataNascimento || null, hashedNovaSenha, id]
-      : [nome, email, telefone, endereco, dataNascimento || null, id];
+      ? [nome, username, email, telefone, dataNascimento || null, hashedNovaSenha, id]
+      : [nome, username, email, telefone, dataNascimento || null, id];
 
     await pool.query(query, params);
 

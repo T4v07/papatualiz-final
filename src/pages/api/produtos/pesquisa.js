@@ -86,7 +86,7 @@ export default async function handler(req, res) {
         c.Tipo_de_Categoria AS NomeCategoria
       FROM Produtos p
       LEFT JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
-      WHERE ${conditions}
+      WHERE (${conditions}) AND p.Ativo = 1
       `,
       params
     );

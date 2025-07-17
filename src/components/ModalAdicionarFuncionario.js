@@ -13,11 +13,17 @@ export default function ModalAdicionarFuncionario({ onClose, onAdicionar }) {
 
   const [erro, setErro] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { nome, username, email, telefone, password, confirmar } = formData;
 
     if (!nome || !username || !email || !password || !confirmar) {
       setErro("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailValido) {
+      setErro("O email inserido não é válido.");
       return;
     }
 
@@ -26,15 +32,34 @@ export default function ModalAdicionarFuncionario({ onClose, onAdicionar }) {
       return;
     }
 
-    onAdicionar({
-      nome,
-      username,
-      email,
-      telefone,
-      password,
-    });
+    try {
+      const res = await fetch("/api/admin/verificar-utilizador", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, username }),
+      });
 
-    setErro("");
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Erro desconhecido.");
+
+      if (data.emailExiste) {
+        setErro("Já existe uma conta com este email.");
+        return;
+      }
+
+      if (data.usernameExiste) {
+        setErro("Este nome de utilizador já está em uso.");
+        return;
+      }
+
+      setErro("");
+      onAdicionar({ nome, username, email, telefone, password });
+
+    } catch (err) {
+      console.error(err);
+      setErro("Erro ao verificar dados: " + err.message);
+    }
   };
 
   return (

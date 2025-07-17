@@ -234,7 +234,12 @@ export default function Carrinho() {
             <span>€{total.toFixed(2).replace(".", ",")}</span>
           </div>
 
-          <button onClick={continuarParaEntrega} className={styles.botaoFinalizar}>
+          <button
+            onClick={continuarParaEntrega}
+            className={styles.botaoFinalizar}
+            disabled={produtos.length === 0}
+            style={produtos.length === 0 ? { opacity: 0.5, cursor: "not-allowed" } : {}}
+          >
             Finalizar Compra
           </button>
         </aside>

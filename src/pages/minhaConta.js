@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 import Navbar from "../components/navbar";
 import SidebarConta from "../components/SidebarConta";
+import ModalAlterarPassword from "../components/ModalAlterarPassword";
 import styles from "../styles/gerirConta.module.css";
 
 const MinhaConta = () => {
@@ -13,8 +14,6 @@ const MinhaConta = () => {
     email: "",
     telefone: "",
     dataNascimento: "",
-    senhaAtual: "",
-    novaSenha: ""
   });
   const [infoExtra, setInfoExtra] = useState({
     tipoConta: "",
@@ -23,7 +22,7 @@ const MinhaConta = () => {
     ativo: 1
   });
   const [notificacao, setNotificacao] = useState({ tipo: "", mensagem: "" });
-  const [mostrarSenhaAtual, setMostrarSenhaAtual] = useState(false);
+  const [mostrarModalSenha, setMostrarModalSenha] = useState(false);
 
   useEffect(() => {
     if (!user?.ID_utilizador) return;
@@ -39,8 +38,6 @@ const MinhaConta = () => {
             email: data.Email,
             telefone: data.Telefone || "",
             dataNascimento: data.DataNascimento?.split("T")[0] || "",
-            senhaAtual: "",
-            novaSenha: ""
           });
           setInfoExtra({
             tipoConta: data.Tipo_de_Conta,
@@ -63,22 +60,9 @@ const MinhaConta = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validarSenha = (senha) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    return regex.test(senha);
-  };
-
   const handleSaveChanges = async () => {
     if (!formData.nome || !formData.email || !formData.username) {
       return setNotificacao({ tipo: "erro", mensagem: "Nome, Username e Email são obrigatórios." });
-    }
-
-    if (formData.novaSenha && !validarSenha(formData.novaSenha)) {
-      return setNotificacao({
-        tipo: "erro",
-        mensagem:
-          "A nova palavra-passe deve ter pelo menos 8 caracteres, incluindo uma maiúscula e um número.",
-      });
     }
 
     try {
@@ -155,36 +139,14 @@ const MinhaConta = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label>Palavra-passe Atual:</label>
-                <div className={styles.passwordWrapper}>
-                  <input
-                    type={mostrarSenhaAtual ? "text" : "password"}
-                    name="senhaAtual"
-                    value={formData.senhaAtual}
-                    onChange={handleInputChange}
-                    autoComplete="current-password"
-                  />
-                  <button
-                    type="button"
-                    className={styles.eyeButton}
-                    onClick={() => setMostrarSenhaAtual((prev) => !prev)}
-                    aria-label={mostrarSenhaAtual ? "Ocultar senha" : "Mostrar senha"}
-                  >
-                    {mostrarSenhaAtual ? "Ocultar" : "Mostrar"}
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Nova Palavra-passe:</label>
-                <input
-                  type="password"
-                  name="novaSenha"
-                  value={formData.novaSenha}
-                  onChange={handleInputChange}
-                  placeholder="Mín. 8 caracteres, 1 número, 1 maiúscula"
-                  autoComplete="new-password"
-                />
+                <label>Palavra-passe:</label>
+                <button
+                  type="button"
+                  className={styles.alterarSenhaBtn}
+                  onClick={() => setMostrarModalSenha(true)}
+                >
+                  🔒 Alterar Palavra-passe
+                </button>
               </div>
 
               <div className={styles.buttonGroup}>
@@ -199,6 +161,14 @@ const MinhaConta = () => {
           </section>
         </main>
       </div>
+
+      {mostrarModalSenha && (
+        <ModalAlterarPassword
+          userId={formData.id}
+          fecharModal={() => setMostrarModalSenha(false)}
+          setNotificacao={setNotificacao}
+        />
+      )}
     </div>
   );
 };

@@ -207,3 +207,25 @@
     gap: 8px;
   }
 }
+.alterarSenhaBtn {
+  background-color: #0070f3;
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: fit-content;
+  align-self: start;
+}
+
+.alterarSenhaBtn:hover {
+  background-color: #0059b3;
+  transform: translateY(-1px);
+}
+
+.alterarSenhaBtn:active {
+  transform: scale(0.98);
+}
