@@ -18,6 +18,7 @@ export default function SidebarAdmin() {
     { label: "Funcionários", path: "/admin/funcionarios" },
     { label: "Ver Compras", path: "/admin/compras" },
     { label: "Controle de Stock", path: "/admin/estoque" },
+    { label: "Home", path: "/home" },
   ];
 
   const handleNavigate = (path) => {

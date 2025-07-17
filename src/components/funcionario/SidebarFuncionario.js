@@ -16,6 +16,7 @@ export default function SidebarFuncionario() {
     { label: "Gestão de Categorias", path: "/funcionario/funccategoria" },
     { label: "Controle de Stock", path: "/funcionario/CrlStock" },
     { label: "Ajuda ao Cliente", path: "/funcionario/suporte" },
+    { label: "Home", path: "/home" },
   ];
 
   const handleNavigate = (path) => {

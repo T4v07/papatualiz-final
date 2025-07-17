@@ -1,4 +1,3 @@
-// pages/api/produtos/pesquisa.js
 import { pool } from "@/utils/db";
 
 export default async function handler(req, res) {
@@ -6,52 +5,45 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Método não permitido" });
   }
 
-  const { q } = req.query;
+  const { termo } = req.query;
 
-  if (!q || q.trim() === "") {
-    return res.status(400).json({ message: "Parâmetro de pesquisa inválido" });
+  if (!termo || termo.trim() === "") {
+    return res.status(400).json({ message: "Termo de pesquisa inválido" });
   }
 
   try {
-    // 🔍 Função de limpeza avançada com remoção de preposições
-    const limpar = (str) =>
-      str
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9\s]/gi, "")
-        .split(" ")
-        .filter(
-          (palavra) =>
-            palavra &&
-            !["de", "da", "do", "e", "a", "o", "os", "as", "com", "para"].includes(palavra)
-        );
+    // 🔎 Normaliza e separa termos por palavra
+    const termosSeparados = termo
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9À-ÿ\s]/g, "")
+      .split(" ")
+      .filter(Boolean);
 
-    const palavras = limpar(q);
-
-    if (palavras.length === 0) {
-      return res.status(200).json([]);
+    if (termosSeparados.length === 0) {
+      return res.status(400).json({ message: "Sem termos válidos" });
     }
 
-    const conditions = palavras
+    // Cria a cláusula dinâmica do WHERE (ex: campo LIKE ? AND campo LIKE ?)
+    const clausulas = termosSeparados
       .map(() => `
         (
           p.Nome_Produtos LIKE ? OR 
           p.Marca LIKE ? OR 
-          p.Modelo LIKE ? OR
-          p.Material LIKE ? OR
-          p.Tecnologia LIKE ? OR
+          p.Modelo LIKE ? OR 
+          p.Material LIKE ? OR 
+          p.Tecnologia LIKE ? OR 
           p.Descricao LIKE ? OR
           c.Tipo_de_Categoria LIKE ?
         )
       `)
-      .join(" OR ");
+      .join(" AND ");
 
-    const params = palavras.flatMap((palavra) => {
-      const like = `%${palavra}%`;
-      return [like, like, like, like, like, like, like];
+    const valores = termosSeparados.flatMap((t) => {
+      const likeTerm = `%${t}%`;
+      return [likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm];
     });
 
+    // 🔍 Query principal
     const [produtos] = await pool.query(
       `
       SELECT 
@@ -86,9 +78,9 @@ export default async function handler(req, res) {
         c.Tipo_de_Categoria AS NomeCategoria
       FROM Produtos p
       LEFT JOIN Categoria c ON p.Tipo_de_Categoria = c.ID_categoria
-      WHERE ${conditions}
+      WHERE ${clausulas}
       `,
-      params
+      valores
     );
 
     if (produtos.length === 0) {

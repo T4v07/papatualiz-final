@@ -243,6 +243,15 @@ export default function Pagamento() {
             </span>
           </div>
 
+          <div className={styles.resumoLinha}>
+            <span>Desconto</span>
+            <span>
+              {encomenda.Desconto && encomenda.Desconto > 0
+                ? `- €${Number(encomenda.Desconto).toFixed(2).replace(".", ",")}`
+                : "-"}
+            </span>
+          </div>
+
           <div className={styles.resumoTotal}>
             <span>Total</span>
             <span>€{Number(encomenda.Total_Valor).toFixed(2).replace(".", ",")}</span>

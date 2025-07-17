@@ -101,16 +101,19 @@ export default function Carrinho() {
   const totalComDesconto = totalSemDesconto - desconto;
 
   const aplicarCupom = () => {
-    if (cupom.trim().toUpperCase() === "SPORT10") {
-      setDesconto(10);
-      setCupomAtivo(true);
-      alert("Cupom aplicado! 10€ de desconto.");
-    } else {
-      setDesconto(0);
-      setCupomAtivo(false);
-      alert("Cupom inválido.");
-    }
-  };
+  if (cupom.trim().toUpperCase() === "SPORT10") {
+    setDesconto(10);
+    setCupomAtivo(true);
+    localStorage.setItem("desconto", "10"); // <-- ADICIONADO
+    alert("Cupom aplicado! 10€ de desconto.");
+  } else {
+    setDesconto(0);
+    setCupomAtivo(false);
+    localStorage.removeItem("desconto"); // <-- limpar caso inválido
+    alert("Cupom inválido.");
+  }
+};
+
 
   if (loading) {
     return (

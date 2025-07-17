@@ -3,7 +3,6 @@ import AuthContext from "@/context/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  FaBars,
   FaHeart,
   FaQuestionCircle,
   FaUser,
@@ -16,6 +15,7 @@ import FavoritosDropdown from "./FavoritosDropdown";
 import AjudaDropdown from "./AjudaDropdown";
 import AreaPessoalDropdown from "./AreaPessoalDropdown";
 import CarrinhoDropdown from "./CarrinhoDropdown";
+import SearchSuggestions from "./SearchSuggestions";
 import { useRouter } from "next/router";
 
 const Navbar = () => {
@@ -23,14 +23,16 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sugestoes, setSugestoes] = useState({ categorias: [], produtos: [] });
+  const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
   const router = useRouter();
-
   const dropdownRef = useRef(null);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/pesquisa?q=${encodeURIComponent(searchQuery)}`);
+      setMostrarSugestoes(false);
     }
   };
 
@@ -38,13 +40,29 @@ const Navbar = () => {
     setActiveDropdown((prev) => (prev === nome ? "" : nome));
   };
 
+  const handleInputChange = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    if (value.trim().length >= 2) {
+      try {
+        const res = await fetch(`/api/sugestoes?q=${encodeURIComponent(value)}`);
+        const data = await res.json();
+        setSugestoes(data);
+        setMostrarSugestoes(true);
+      } catch (error) {
+        console.error("Erro ao buscar sugestões:", error);
+        setMostrarSugestoes(false);
+      }
+    } else {
+      setMostrarSugestoes(false);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setActiveDropdown("");
+        setMostrarSugestoes(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -52,6 +70,9 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const podeVerSidebar =
+    user && (user.tipo_de_conta === "admin" || user.tipo_de_conta === "funcionario");
 
   return (
     <>
@@ -61,11 +82,6 @@ const Navbar = () => {
 
       <header className={styles.navbar}>
         <div className={styles.navbarContainer} ref={dropdownRef}>
-          <div className={styles.menuIcon} onClick={() => setMenuOpen(true)}>
-            <FaBars />
-            <span className={styles.menuText}>menu</span>
-          </div>
-
           <Link href="/" className={styles.logo}>
             <Image src="/logo3.png" alt="Logo" width={140} height={40} />
           </Link>
@@ -75,15 +91,22 @@ const Navbar = () => {
               type="text"
               placeholder="Pesquisa um produto, desporto..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleInputChange}
             />
             <button type="submit" className={styles.searchButton}>
               <FaSearch className={styles.searchIcon} />
             </button>
+            {mostrarSugestoes && (
+              <SearchSuggestions
+                sugestoesPesquisa={sugestoes.sugestoesPesquisa}
+                produtos={sugestoes.produtos}
+                onClose={() => setMostrarSugestoes(false)}
+              />
+            )}
+
           </form>
 
           <nav className={styles.icons}>
-            {/* FAVORITOS */}
             <div
               className={styles.iconWrapper}
               onClick={() => toggleDropdown("favoritos")}
@@ -97,7 +120,6 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* AJUDA */}
             <div
               className={styles.iconWrapper}
               onClick={() => toggleDropdown("ajuda")}
@@ -111,7 +133,6 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* ÁREA PESSOAL */}
             {user ? (
               <div
                 className={styles.iconWrapper}
@@ -132,7 +153,6 @@ const Navbar = () => {
               </Link>
             )}
 
-            {/* CARRINHO */}
             <div
               className={styles.iconWrapper}
               onClick={() => toggleDropdown("carrinho")}
@@ -149,7 +169,9 @@ const Navbar = () => {
         </div>
       </header>
 
-      <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      {podeVerSidebar && router.pathname === "/home" && (
+        <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      )}
     </>
   );
 };

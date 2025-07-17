@@ -4,6 +4,8 @@ import AuthContext from "@/context/AuthContext";
 import Navbar from "@/components/navbar";
 import styles from "@/styles/detalhesProduto.module.css";
 import Link from "next/link";
+import InnerImageZoom from 'react-inner-image-zoom';
+import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 
 export default function ProdutoDetalhes() {
   const router = useRouter();
@@ -19,8 +21,6 @@ export default function ProdutoDetalhes() {
   const [quantidade, setQuantidade] = useState(1);
   const [adicionando, setAdicionando] = useState(false);
   const [tabAtiva, setTabAtiva] = useState("descricao");
-
-  // Estado para favoritos
   const [favorito, setFavorito] = useState(false);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ export default function ProdutoDetalhes() {
       });
   }, [id]);
 
-  // Checar se está favoritado
   useEffect(() => {
     if (!user?.ID_utilizador || !produto) return;
 
@@ -45,12 +44,10 @@ export default function ProdutoDetalhes() {
         const res = await fetch(`/api/favoritos/listar?id_utilizador=${user.ID_utilizador}`);
         if (res.ok) {
           const favoritos = await res.json();
-          // favoritos é array de objetos {ID_utilizador, ID_produto}
           const idsFavoritos = favoritos.map((f) => f.ID_produto);
           setFavorito(idsFavoritos.includes(produto.ID_produto));
         }
-      } catch (error) {
-        // console.error("Erro ao buscar favoritos", error);
+      } catch {
         setFavorito(false);
       }
     };
@@ -127,13 +124,12 @@ export default function ProdutoDetalhes() {
         const erro = await res.json();
         alert(erro.message || "Erro ao adicionar ao carrinho.");
       }
-    } catch (e) {
+    } catch {
       alert("Erro ao adicionar ao carrinho.");
     }
     setAdicionando(false);
   };
 
-  // Função para alternar favorito
   const toggleFavorito = async () => {
     if (!user?.ID_utilizador) {
       alert("Faça login para gerenciar favoritos.");
@@ -141,30 +137,17 @@ export default function ProdutoDetalhes() {
       return;
     }
     try {
-      if (favorito) {
-        const res = await fetch("/api/favoritos", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_utilizador: user.ID_utilizador,
-            id_produto: produto.ID_produto,
-          }),
-        });
-        if (res.ok) setFavorito(false);
-        else alert("Erro ao remover favorito");
-      } else {
-        const res = await fetch("/api/favoritos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_utilizador: user.ID_utilizador,
-            id_produto: produto.ID_produto,
-          }),
-        });
-        if (res.ok) setFavorito(true);
-        else alert("Erro ao adicionar favorito");
-      }
-    } catch (error) {
+      const res = await fetch("/api/favoritos", {
+        method: favorito ? "DELETE" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_utilizador: user.ID_utilizador,
+          id_produto: produto.ID_produto,
+        }),
+      });
+      if (res.ok) setFavorito(!favorito);
+      else alert("Erro ao atualizar favoritos");
+    } catch {
       alert("Erro ao gerenciar favoritos");
     }
   };
@@ -184,9 +167,11 @@ export default function ProdutoDetalhes() {
 
       <div className={styles.produtoContainer}>
         <div className={styles.fotosContainer}>
-          <img
+          <InnerImageZoom
             src={produto.fotos?.[imagemPrincipalIndex]?.url || ""}
-            alt={produto.Nome_Produtos}
+            zoomSrc={produto.fotos?.[imagemPrincipalIndex]?.url || ""}
+            zoomType="hover"
+            zoomPreload={true}
             className={styles.imagemPrincipal}
           />
           <div className={styles.galeriaMiniaturas}>
@@ -205,31 +190,38 @@ export default function ProdutoDetalhes() {
         </div>
 
         <div className={styles.infoContainer}>
-          <h1 className={styles.titulo}>
-            {produto.Nome_Produtos}{" "}
+          <div className={styles.linhaTituloFavorito}>
+            <div className={styles.blocoTituloSelos}>
+              <h1 className={styles.titulo}>{produto.Nome_Produtos}</h1>
+              <div className={styles.selos}>
+                {produto.Novo === 1 && (
+                  <span className={styles.seloNovo}>
+                    🆕 Novo
+                  </span>
+                )}
+                {stockAtual <= 3 && (
+                  <span className={styles.seloBaixoStock}>
+                    ⚠️ Baixo stock
+                  </span>
+                )}
+              </div>
+            </div>
             <button
               onClick={toggleFavorito}
               className={styles.btnFavorito}
               type="button"
               aria-label={favorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "1.8rem",
-                color: favorito ? "red" : "#888",
-                marginLeft: "10px",
-                verticalAlign: "middle",
-              }}
             >
               {favorito ? "❤️" : "🤍"}
             </button>
-          </h1>
+          </div>
+
+
           <p className={styles.preco}>{parseFloat(produto.Preco).toFixed(2)} €</p>
-          <p>
-            {produto.Marca} – {produto.Modelo}
-          </p>
-          <p>{produto.Tipo_de_Produto}</p>
+          <div className={styles.infoProdutoSecundaria}>
+            <p className={styles.marcaModelo}>{produto.Marca} — {produto.Modelo}</p>
+            <p className={styles.categoria}>Categoria: {produto.Tipo_de_Categoria}</p>
+          </div>
           <p>
             {stockAtual !== null
               ? stockAtual > 0
@@ -278,22 +270,26 @@ export default function ProdutoDetalhes() {
             </div>
 
             <div className={styles.variacoesContainer}>
-              <label htmlFor="quantidade">Quantidade:</label>
-              <input
-                id="quantidade"
-                type="number"
-                min={1}
-                max={stockAtual || 1}
-                value={quantidade}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value);
-                  if (!isNaN(val)) {
-                    setQuantidade(Math.min(Math.max(val, 1), stockAtual || 1));
-                  }
-                }}
-                disabled={!tamanhoSelecionado || stockAtual === 0}
-                className={styles.selectBox}
-              />
+              <label>Quantidade:</label>
+              <div className={styles.quantidadeWrapper}>
+                <button
+                  type="button"
+                  className={styles.btnQtd}
+                  onClick={() => setQuantidade(Math.max(1, quantidade - 1))}
+                  disabled={!tamanhoSelecionado || quantidade <= 1}
+                >
+                  -
+                </button>
+                <span className={styles.quantidadeValor}>{quantidade}</span>
+                <button
+                  type="button"
+                  className={styles.btnQtd}
+                  onClick={() => setQuantidade(Math.min((stockAtual || 1), quantidade + 1))}
+                  disabled={!tamanhoSelecionado || quantidade >= (stockAtual || 1)}
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
 
@@ -323,11 +319,45 @@ export default function ProdutoDetalhes() {
           </div>
 
           <div className={styles.tabConteudo}>
-            {tabAtiva === "descricao" && <p>{produto.Descricao}</p>}
-            {tabAtiva === "ficha" && <p>{produto.Ficha_Tecnica}</p>}
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  {tabAtiva === "descricao" && (
+    <p>{produto.Descricao}</p>
+  )}
+
+  {tabAtiva === "ficha" && (
+    <div className={styles.fichaTabela}>
+      <table>
+        <tbody>
+          <tr>
+            <th>Material</th>
+            <td>{produto.Material || produto.Material_Outro || "—"}</td>
+          </tr>
+          <tr>
+            <th>Garantia</th>
+            <td>{produto.Garantia || "—"}</td>
+          </tr>
+          <tr>
+            <th>Tecnologia</th>
+            <td>{produto.Tecnologia || produto.Tecnologia_Outro || "—"}</td>
+          </tr>
+          <tr>
+            <th>Uso Recomendado</th>
+            <td>{produto.Uso_Recomendado || "—"}</td>
+          </tr>
+          <tr>
+            <th>Origem</th>
+            <td>{produto.Origem || produto.Origem_Outro || "—"}</td>
+          </tr>
+          <tr>
+            <th>Peso</th>
+            <td>{produto.Peso ? `${produto.Peso} kg` : "—"}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
+</div> {/* fecha infoContainer */}
+</div> {/* fecha produtoContainer */}
+</>
+);
 }

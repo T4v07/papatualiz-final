@@ -19,6 +19,7 @@ export default async function handler(req, res) {
     observacoes,
     subtotal,
     frete,
+    desconto = 0,
   } = req.body;
 
   if (
@@ -37,7 +38,7 @@ export default async function handler(req, res) {
   }
 
   const ID_compra = uuidv4();
-  const total = parseFloat(subtotal) + parseFloat(frete);
+  const total = parseFloat(subtotal) + parseFloat(frete) - parseFloat(desconto);
 
   try {
     const [produtos] = await pool.execute(
@@ -54,49 +55,51 @@ export default async function handler(req, res) {
       return res.status(400).json({ mensagem: "Carrinho vazio." });
     }
 
-    await pool.execute(
-      `
-      INSERT INTO Encomenda (
-        ID_compra,
-        usuario_id,
-        Endereco_entrega,
-        Notas,
-        Data_criacao,
-        Estado,
-        Rua,
-        Numero,
-        Codigo_postal,
-        Cidade,
-        Pais,
-        nome,
-        apelido,
-        telefone,
-        email,
-        Subtotal,
-        Frete,
-        Total_Valor
-      ) VALUES (?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `,
-      [
-        ID_compra,
-        usuario_id,
-        `${morada}, Nº ${numero || "s/n"}, ${codpostal} ${localidade}`,
-        observacoes || "",
-        "pendente",
-        morada,
-        numero || "s/n",
-        codpostal,
-        localidade,
-        "Portugal",
-        nome,
-        apelido,
-        telefone,
-        email,
-        subtotal,
-        frete,
-        total,
-      ]
-    );
+   await pool.execute(
+    `
+    INSERT INTO Encomenda (
+      ID_compra,
+      usuario_id,
+      Endereco_entrega,
+      Notas,
+      Data_criacao,
+      Estado,
+      Rua,
+      Numero,
+      Codigo_postal,
+      Cidade,
+      Pais,
+      nome,
+      apelido,
+      telefone,
+      email,
+      Subtotal,
+      Frete,
+      Total_Valor
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+    [
+      ID_compra,
+      usuario_id,
+      `${morada}, Nº ${numero || "s/n"}, ${codpostal} ${localidade}`,
+      observacoes || "",
+      new Date(), // <- agora passamos a data aqui
+      "pendente",
+      morada,
+      numero || "s/n",
+      codpostal,
+      localidade,
+      "Portugal",
+      nome,
+      apelido,
+      telefone,
+      email,
+      subtotal,
+      frete,
+      total,
+    ]
+  );
+
 
     const inseridos = new Set();
     for (const produto of produtos) {

@@ -1,4 +1,3 @@
-
 .breadcrumb {
   max-width: 1200px;
   margin: 3rem auto 1.5rem auto;
@@ -27,18 +26,20 @@
   border-radius: 12px;
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.05);
 }
-
 .fotosContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* centraliza a imagem principal */
+  max-width: 580px;
+  gap: 1rem;
+  justify-content: center; /* NOVO: centraliza verticalmente */
 }
 
 .imagemPrincipal {
   width: 100%;
-  max-width: 500px;
-  max-height: 450px;
+  max-width: 560px;
+  height: 560px; /* NOVO: define altura fixa */
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
@@ -46,11 +47,12 @@
   transition: transform 0.3s ease;
 }
 
+
+
 .imagemPrincipal:hover {
   transform: scale(1.03);
 }
 
-/* Miniaturas */
 .galeriaMiniaturas {
   margin-top: 1rem;
   display: flex;
@@ -84,11 +86,32 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.linhaTituloFavorito {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .titulo {
   font-size: 2.3rem;
   font-weight: 700;
   color: #111;
-  margin-bottom: -0.5rem;
+  margin: 0;
+  flex: 1;
+}
+
+.btnFavorito {
+  background-color: transparent;
+  border: none;
+  font-size: 3.2rem; /* aumentado */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-top: 0.3rem;
+}
+
+.btnFavorito:hover {
+  transform: scale(1.15);
 }
 
 .preco {
@@ -114,43 +137,81 @@
   color: #d32f2f;
 }
 
+/* NOVO estilo horizontal e responsivo */
 .grupoVariacoes {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
-  padding: 1rem 0;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
   border-top: 1px solid #eee;
 }
 
 .variacoesContainer {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  gap: 0.4rem;
   min-width: 160px;
 }
 
 .variacoesContainer label {
+  font-size: 0.95rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 0.4rem;
 }
 
 .selectBox {
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  border: 2px solid #0070f3;
-  border-radius: 6px;
-  background: white;
-  color: #222;
-  cursor: pointer;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  border: 1.8px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .selectBox:focus {
   outline: none;
-  border-color: #0047ab;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+}
+
+/* Botões de quantidade */
+.quantidadeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btnQtd {
+  padding: 6px 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btnQtd:hover:not(:disabled) {
+  background-color: #ddd;
+}
+
+.btnQtd:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantidadeValor {
+  width: 45px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
 }
 
 .btnAdicionar {
@@ -186,34 +247,55 @@
   margin-top: 2rem;
   display: flex;
   gap: 1rem;
+  position: relative;
+  border-bottom: 2px solid #eee;
 }
 
 .tabs button {
   padding: 0.6rem 1.4rem;
-  border: 2px solid #0070f3;
-  background: white;
-  color: #0070f3;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   font-weight: 600;
-  border-radius: 8px;
+  font-size: 1rem;
+  color: #555;
   cursor: pointer;
-  transition: all 0.2s ease;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-.tabs button:hover {
+.tabs button::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 3px;
   background-color: #0070f3;
-  color: white;
+  transition: width 0.3s ease;
+}
+
+.tabs button:hover::after {
+  width: 100%;
 }
 
 .tabs button.ativo {
-  background-color: #0070f3;
-  color: white;
+  color: #0070f3;
+}
+
+.tabs button.ativo::after {
+  width: 100%;
 }
 
 .tabConteudo {
   margin-top: 1rem;
-  font-size: 1rem;
-  color: #333;
-  line-height: 1.5;
+  font-size: 1.05rem;
+  color: #444;
+  line-height: 1.6;
+  background: #fafafa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Responsivo */
@@ -233,24 +315,121 @@
 
   .grupoVariacoes {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .variacoesContainer {
+    width: 100%;
+  }
+
+  .quantidadeWrapper {
+    gap: 0.8rem;
+  }
+
+  .linhaTituloFavorito {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btnFavorito {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 0.3rem;
+  }
+
+
+}
+
+.infoProdutoSecundaria {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: -10px;
+  margin-bottom: 1.2rem;
+}
+
+.marcaModelo {
+  font-size: 1.05rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.categoria {
+  font-size: 0.95rem;
+  color: #0070f3;
+  font-weight: 600;
+  background: #e8f0ff;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.selos {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.seloNovo {
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.seloBaixoStock {
+  background-color: #d32f2f;
+  color: white;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.blocoTituloSelos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.fichaTabela {
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.fichaTabela table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.fichaTabela th {
+  background-color: #f5f5f5;
+  padding: 10px 14px;
+  text-align: left;
+  width: 35%;
+  color: #333;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+}
+
+.fichaTabela td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .fichaTabela table {
+    font-size: 14px;
   }
 }
-
-.btnFavorito {
-  margin-top: 12px;
-  background-color: #ff4444;
-  color: white;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: 600;
-  width: 100%;
-  max-width: 300px;
-}
-
-.btnFavorito:hover {
-  background-color: #cc0000;
-}
-

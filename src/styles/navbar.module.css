@@ -5,6 +5,8 @@
   text-align: center;
   padding: 8px;
   font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
 /* Navbar */
@@ -37,6 +39,10 @@
   font-size: 22px;
   cursor: pointer;
   color: white;
+  transition: transform 0.2s ease;
+}
+.menuIcon:hover {
+  transform: scale(1.05);
 }
 
 .menuText {
@@ -46,8 +52,11 @@
 
 /* Logo */
 .logo img {
-  max-height: 40px;
+  height: 55px; /* Aumenta a altura */
+  width: auto;  /* Mantém a proporção */
+  margin-left: 80px;
 }
+
 
 /* Barra de Pesquisa */
 .searchBar {
@@ -59,7 +68,10 @@
   width: 50%;
   max-width: 600px;
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  margin-left: auto;
+  margin-right: 85px; /* opcional para espaçamento com os ícones */
 }
+
 
 .searchBar input {
   width: 100%;
@@ -67,10 +79,11 @@
   background: none;
   font-size: 16px;
   outline: none;
+  color: #333;
 }
 
 .searchButton {
-  background: #003366;   /* azul escuro */
+  background: #003366;
   border: none;
   padding: 8px 14px;
   margin-left: 8px;
@@ -108,11 +121,25 @@
   font-size: 14px;
   position: relative;
   cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.icons a:hover,
+.iconWrapper:hover {
+  color: #00aaff;
 }
 
 .icons .icon {
   font-size: 22px;
   margin-bottom: 4px;
+}
+
+/* Dropdown ativo */
+.dropdownAtivo {
+  position: absolute;
+  top: 100%;
+  margin-top: 5px;
+  z-index: 100;
 }
 
 /* Responsivo */
@@ -125,11 +152,16 @@
     gap: 10px;
   }
 
-  .icons a span {
+  .icons a span,
+  .iconWrapper span {
     font-size: 12px;
   }
 
   .navbarContainer {
     width: 95%;
+  }
+
+  .menuText {
+    display: none;
   }
 }

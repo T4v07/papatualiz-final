@@ -13,6 +13,7 @@ export default function MoradaEnvio() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
+  const desconto = parseFloat(localStorage.getItem("desconto")) || 0;
 
   const [form, setForm] = useState({
     nome: "",
@@ -108,6 +109,9 @@ export default function MoradaEnvio() {
       return;
     }
 
+    const desconto = parseFloat(localStorage.getItem("desconto")) || 0;
+    const total = subtotal + frete - desconto;
+
     try {
       const res = await axios.post("/api/encomendas/criar", {
         usuario_id: user.ID_utilizador,
@@ -122,6 +126,8 @@ export default function MoradaEnvio() {
         observacoes: form.observacoes,
         subtotal,
         frete,
+        desconto,
+        total, // <--- novo campo
       });
 
       const { ID_compra } = res.data;
@@ -133,6 +139,8 @@ export default function MoradaEnvio() {
       alert("Erro ao criar encomenda. Tente novamente.");
     }
   }
+
+
 
   return (
     <div className={styles.container}>
@@ -348,10 +356,18 @@ export default function MoradaEnvio() {
                 </span>
               </div>
 
-              <div className={styles.resumoTotal}>
-                <span>Total</span>
-                <span>€{total.toFixed(2).replace(".", ",")}</span>
+              {desconto > 0 && (
+              <div className={styles.resumoLinha}>
+                <span>Desconto</span>
+                <span>-€{desconto.toFixed(2).replace(".", ",")}</span>
               </div>
+            )}
+
+            <div className={styles.resumoTotal}>
+              <span>Total</span>
+              <span>€{(total - desconto).toFixed(2).replace(".", ",")}</span>
+            </div>
+
             </>
           )}
         </aside>
