@@ -147,7 +147,7 @@
         formData.append("tipoCategoria", tipoCategoria?.value || "");
 
         // Características técnicas e outros campos
-        formData.append("preco", preco);
+        formData.append("preco", parseFloat(preco).toFixed(2));
         formData.append("peso", peso);
         formData.append("descricao", descricao);
         formData.append("Ficha_Tecnica", fichaTecnica);
@@ -397,7 +397,14 @@
                 value={desconto}
                 onChange={(e) => setDesconto(e.target.value)}
               />
-
+              <input
+                type="number"
+                className={styles.inputText}
+                placeholder="Preço (€)"
+                value={preco}
+                onChange={(e) => setPreco(e.target.value)}
+                step="0.01"
+              />
               <label className={styles.label}>
                 <input
                   type="checkbox"

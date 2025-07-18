@@ -1,3 +1,4 @@
+// src/components/admin/GestaoProdutos.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
@@ -53,17 +54,20 @@ export default function GestaoProdutos({ produto, categorias, onClose, onAtualiz
     const valor = parseJSONSafe(campo);
     const outro = parseJSONSafe(campoOutro);
 
-    if (typeof valor === "string" && (valor === "Outro" || valor === '["Outro"]')) {
+    if (valor === "Outro" || valor === '["Outro"]') {
       return outro || "";
     }
+
     if (Array.isArray(valor)) {
-      if (valor[0] === "Outro" && outro && outro.trim() !== "") {
-        return outro;
+      if (valor.includes("Outro")) {
+        return outro || "";
       }
       return valor.join(", ");
     }
-    return valor;
+
+    return valor || "";
   };
+
 
   const mostrarTextoLimpo = (valor) => {
     if (!valor) return "";
@@ -122,7 +126,7 @@ export default function GestaoProdutos({ produto, categorias, onClose, onAtualiz
 
   const validarPasso = () => {
     if (step === 1) {
-      if (!nome.trim()) {
+      if (!String(nome).trim()) {
         toast.error("Nome do produto é obrigatório");
         return false;
       }
@@ -155,6 +159,7 @@ export default function GestaoProdutos({ produto, categorias, onClose, onAtualiz
     }
     return true;
   };
+
 
   const nextStep = () => {
     if (!validarPasso()) return;
@@ -203,7 +208,7 @@ export default function GestaoProdutos({ produto, categorias, onClose, onAtualiz
         generoOutro,
         idade,
         idadeOutro,
-        preco,
+        preco: Number(parseFloat(preco).toFixed(2)),
         peso,
         descricao,
         tipoCategoria: tipoCategoria.value,
