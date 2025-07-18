@@ -10,11 +10,11 @@
   import "react-toastify/dist/ReactToastify.css";
 
   const opcoesPadrao = {
-    marca: ["Nike", "Adidas", "Puma"],
+    marca: ["Nike", "Adidas", "Puma", "MarcaXPTO"],
     genero: ["Masculino", "Feminino", "Unissexo"],
     idade: ["Bebé", "Criança", "Júnior", "Adolescente", "Adulto", "Todos"],
-    material: ["Algodão", "Poliéster", "Nylon"],
-    tecnologia: ["DryFit", "AirCool"],
+    material: ["Algodão", "Poliéster", "Nylon", "Poliéster reciclado", "Algodão e Elastano"],
+    tecnologia: ["DryFit", "AirCool", "Dri-FIT", "StretchFit"],
     origem: ["Portugal", "China", "Espanha"],
   };
 
