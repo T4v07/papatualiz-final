@@ -86,9 +86,13 @@ export default async function handler(req, res) {
       })
     );
 
-    res.status(200).json(resultados);
+        res.status(200).json(resultados);
   } catch (erro) {
-    console.error("Erro ao buscar produtos por categoria:", erro);
-    res.status(500).json({ erro: "Erro interno do servidor." });
+    console.error("ERRO COMPLETO NA API CATEGORIA:", erro);
+
+  return res.status(500).json({
+      erro: "Erro interno do servidor.",
+      detalhe: erro.message,
+    });
   }
 }
